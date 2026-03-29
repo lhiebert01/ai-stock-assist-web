@@ -22,6 +22,7 @@ export default function App() {
   const [view, setView] = useState<View>('landing');
   const [isAuthReady, setIsAuthReady] = useState(false);
   const [analyzerInput, setAnalyzerInput] = useState('');
+  const [paymentMessage, setPaymentMessage] = useState<string | null>(null);
 
   // ── Auth setup ──────────────────────────────────────────────
   useEffect(() => {
@@ -114,14 +115,21 @@ export default function App() {
   const deductCredit = async () => {
     if (!user || !userProfile) return;
     const newCredits = Math.max(0, userProfile.credits_remaining - 1);
-    await supabase
+    console.log('[Credits] Deducting: ', userProfile.credits_remaining, '→', newCredits);
+    const { error } = await supabase
       .from('user_profiles')
       .update({
         credits_remaining: newCredits,
         analyses_total_lifetime: (userProfile.analyses_total_lifetime || 0) + 1,
       })
       .eq('id', user.id);
-    await loadProfile(user);
+    if (error) {
+      console.error('[Credits] Deduction failed:', JSON.stringify(error));
+    } else {
+      console.log('[Credits] Deduction successful');
+      // Update local state immediately
+      setUserProfile(prev => prev ? { ...prev, credits_remaining: newCredits, analyses_total_lifetime: (prev.analyses_total_lifetime || 0) + 1 } : null);
+    }
   };
 
   // ── Payment callback handling ──────────────────────────────
@@ -130,9 +138,15 @@ export default function App() {
     if (params.get('session_id')) {
       // Clear URL params
       window.history.replaceState({}, '', '/');
-      // Refresh profile to get new credits
+      setPaymentMessage('Payment successful! Your credits are being added...');
+      setView('analyzer');
+      // Refresh profile after webhook has time to process
       if (user) {
-        setTimeout(() => refreshProfile(), 2000);
+        setTimeout(() => {
+          refreshProfile();
+          setPaymentMessage('Credits added! Thank you for your purchase.');
+          setTimeout(() => setPaymentMessage(null), 5000);
+        }, 3000);
       }
     }
   }, [user]);
@@ -170,6 +184,14 @@ export default function App() {
             onAuthSuccess={() => {}}
             onBack={() => navigateTo('landing')}
           />
+        )}
+
+        {paymentMessage && (
+          <div className="max-w-3xl mx-auto mt-4 px-4">
+            <div className="px-4 py-3 bg-emerald-500/10 border border-emerald-500/20 rounded-xl text-emerald-400 text-sm font-medium text-center">
+              {paymentMessage}
+            </div>
+          </div>
         )}
 
         {view === 'analyzer' && user && (
