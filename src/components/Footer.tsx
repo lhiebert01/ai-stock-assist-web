@@ -1,6 +1,6 @@
 import { TrendingUp, Heart, ExternalLink } from 'lucide-react';
 
-type View = 'landing' | 'analyzer' | 'discovery' | 'history' | 'payments' | 'admin' | 'auth' | 'learn' | 'metrics' | 'privacy' | 'terms';
+type View = 'landing' | 'analyzer' | 'discovery' | 'history' | 'payments' | 'admin' | 'auth' | 'learn' | 'metrics' | 'privacy' | 'terms' | 'reset-password';
 
 interface FooterProps {
   onNavigate: (view: View) => void;

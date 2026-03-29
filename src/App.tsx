@@ -15,10 +15,11 @@ import LearnPage from './components/LearnPage';
 import PrivacyPolicy from './components/PrivacyPolicy';
 import TermsOfService from './components/TermsOfService';
 import MetricsGuide from './components/MetricsGuide';
+import SetNewPassword from './components/SetNewPassword';
 import Footer from './components/Footer';
 import { healthCheck } from './services/stockApi';
 
-type View = 'landing' | 'analyzer' | 'discovery' | 'history' | 'payments' | 'admin' | 'auth' | 'learn' | 'metrics' | 'privacy' | 'terms';
+type View = 'landing' | 'analyzer' | 'discovery' | 'history' | 'payments' | 'admin' | 'auth' | 'learn' | 'metrics' | 'privacy' | 'terms' | 'reset-password';
 
 export default function App() {
   const [user, setUser] = useState<AppUser | null>(null);
@@ -37,15 +38,23 @@ export default function App() {
       if (session?.user) {
         const appUser: AppUser = { id: session.user.id, email: session.user.email || '' };
         setUser(appUser);
-        // Use functional update to read CURRENT view (not stale closure value)
-        setView(curr => (curr === 'auth' || curr === 'landing') ? 'analyzer' : curr);
+
+        // PASSWORD_RECOVERY event → show "Set New Password" screen instead of auto-login
+        if (_event === 'PASSWORD_RECOVERY') {
+          console.log('[Auth] Password recovery detected — showing reset screen');
+          setView('reset-password');
+        } else {
+          // Use functional update to read CURRENT view (not stale closure value)
+          setView(curr => (curr === 'auth' || curr === 'landing') ? 'analyzer' : curr);
+        }
+
         // Load profile outside the lock — use setTimeout to break out of the callback
         setTimeout(() => loadProfile(appUser), 100);
       } else {
         setUser(null);
         setUserProfile(null);
         // Use functional update to read CURRENT view
-        setView(curr => (curr !== 'landing' && curr !== 'privacy' && curr !== 'terms' && curr !== 'learn' && curr !== 'metrics') ? 'landing' : curr);
+        setView(curr => (curr !== 'landing' && curr !== 'privacy' && curr !== 'terms' && curr !== 'learn' && curr !== 'metrics' && curr !== 'reset-password') ? 'landing' : curr);
       }
       setIsAuthReady(true);
     });
@@ -201,6 +210,10 @@ export default function App() {
             onAuthSuccess={() => {}}
             onBack={() => navigateTo('landing')}
           />
+        )}
+
+        {view === 'reset-password' && user && (
+          <SetNewPassword onSuccess={() => navigateTo('analyzer')} />
         )}
 
         {paymentMessage && (

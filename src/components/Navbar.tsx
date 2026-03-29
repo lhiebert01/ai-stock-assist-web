@@ -6,7 +6,7 @@ import {
 } from 'lucide-react';
 import type { AppUser, UserProfile } from '../types/user';
 
-type View = 'landing' | 'analyzer' | 'discovery' | 'history' | 'payments' | 'admin' | 'auth' | 'learn' | 'metrics' | 'privacy' | 'terms';
+type View = 'landing' | 'analyzer' | 'discovery' | 'history' | 'payments' | 'admin' | 'auth' | 'learn' | 'metrics' | 'privacy' | 'terms' | 'reset-password';
 
 interface NavbarProps {
   user: AppUser | null;

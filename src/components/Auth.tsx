@@ -69,8 +69,9 @@ export default function Auth({ onAuthSuccess, onBack }: AuthProps) {
         if (signInError) throw signInError;
         onAuthSuccess();
       } else {
+        const appUrl = import.meta.env.VITE_APP_URL || window.location.origin;
         const { error: resetError } = await supabase.auth.resetPasswordForEmail(email, {
-          redirectTo: `${window.location.origin}/`,
+          redirectTo: `${appUrl}/`,
         });
         if (resetError) throw resetError;
         setMessage('Password reset email sent. Check your inbox.');
