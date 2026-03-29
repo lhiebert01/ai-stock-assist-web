@@ -9,11 +9,11 @@ import { getSoftwareApplicationJsonLd, getFAQJsonLd } from '../lib/json-ld';
 import { CREDIT_PACKS } from '../types/user';
 
 const blogEpisodes = [
-  { ep: 0, emoji: '💎', title: 'The Diamond in the Brook', hook: 'Investment opportunities hiding in plain sight.', url: 'https://aistockassist.substack.com/p/ep-0-the-diamond-in-the-brook' },
-  { ep: 1, emoji: '🎰', title: 'Gambling vs Investing', hook: 'Why "AI is the future" isn\'t a thesis.', url: 'https://aistockassist.substack.com/p/ep-1-gambling-vs-investing' },
-  { ep: 2, emoji: '💵', title: 'Cash Doesn\'t Lie', hook: 'Why cash flow beats earnings every time.', url: 'https://aistockassist.substack.com/p/ep-2-cash-doesnt-lie' },
-  { ep: 3, emoji: '🚗', title: 'The $100 Honda', hook: 'Price-to-Free-Cash-Flow explained simply.', url: 'https://aistockassist.substack.com/p/ep-3-the-100-honda' },
-  { ep: 4, emoji: '🔍', title: 'The Honest Company', hook: 'OCF/NI ratio catches creative accounting.', url: 'https://aistockassist.substack.com/p/ep-4-the-honest-company' },
+  { ep: 0, emoji: '💎', title: 'The Diamond in the Brook', hook: 'The "acres of diamonds" parable — investment opportunities are already in public markets.', url: 'https://lindsayhiebert.substack.com/p/episode-0-the-diamond-in-the-brook' },
+  { ep: 1, emoji: '🎰', title: 'Gambling vs Investing', hook: 'Why "AI is the future" isn\'t an investment thesis. Learn Benjamin Graham\'s 5 criteria.', url: 'https://lindsayhiebert.substack.com/p/episode-1-the-difference-between' },
+  { ep: 2, emoji: '💰', title: 'Cash Doesn\'t Lie', hook: 'How a 35% earnings surprise fooled millions — and why cash flow saves your financial future.', url: 'https://lindsayhiebert.substack.com/p/episode-2-cash-doesnt-lie' },
+  { ep: 3, emoji: '🚗', title: 'The $100 Honda', hook: 'Share price means nothing alone — learn why Price-to-Free-Cash-Flow reveals true value.', url: 'https://lindsayhiebert.substack.com/p/episode-3-the-100-honda' },
+  { ep: 4, emoji: '🐺', title: 'The Boy Who Cried Wolf', hook: '22% earnings growth sounds amazing — until you check the OCF/NI ratio. Spot creative accounting.', url: 'https://lindsayhiebert.substack.com/p/22-earnings-growth-so-why-didnt-the' },
 ];
 
 const grahamMetrics = [
@@ -228,7 +228,7 @@ export default function MarketingLanding({ onGetStarted }: LandingProps) {
         </div>
         <div className="text-center mt-10">
           <a
-            href="https://aistockassist.substack.com"
+            href="https://lindsayhiebert.substack.com"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 px-6 py-3 bg-[var(--color-surface-3)] border border-[var(--color-border)] text-white font-bold rounded-xl hover:bg-[var(--color-border-light)] transition-all"

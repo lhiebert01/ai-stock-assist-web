@@ -1,6 +1,6 @@
 import { TrendingUp, Heart, ExternalLink } from 'lucide-react';
 
-type View = 'landing' | 'analyzer' | 'discovery' | 'history' | 'payments' | 'admin' | 'auth' | 'privacy' | 'terms';
+type View = 'landing' | 'analyzer' | 'discovery' | 'history' | 'payments' | 'admin' | 'auth' | 'learn' | 'privacy' | 'terms';
 
 interface FooterProps {
   onNavigate: (view: View) => void;
@@ -35,11 +35,11 @@ export default function Footer({ onNavigate }: FooterProps) {
             <h4 className="text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)] mb-4">Learn</h4>
             <ul className="space-y-2.5 text-sm">
               <li>
-                <a href="https://aistockassist.substack.com" target="_blank" rel="noopener noreferrer" className="text-[var(--color-text-secondary)] hover:text-white transition-colors inline-flex items-center gap-1">
+                <a href="https://lindsayhiebert.substack.com" target="_blank" rel="noopener noreferrer" className="text-[var(--color-text-secondary)] hover:text-white transition-colors inline-flex items-center gap-1">
                   Substack Blog <ExternalLink className="w-3 h-3" />
                 </a>
               </li>
-              <li><button onClick={() => onNavigate('analyzer')} className="text-[var(--color-text-secondary)] hover:text-white transition-colors">Metrics Guide</button></li>
+              <li><button onClick={() => onNavigate('learn')} className="text-[var(--color-text-secondary)] hover:text-white transition-colors">Metrics Guide</button></li>
             </ul>
           </div>
 
