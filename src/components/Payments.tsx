@@ -29,6 +29,7 @@ export default function Payments({ user, userProfile, onAuthRequired, onBack }: 
           planId: packId,
           userId: user.id,
           email: user.email,
+          returnUrl: window.location.origin,
         }),
       });
       const { url, error } = await response.json();

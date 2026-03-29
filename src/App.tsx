@@ -151,19 +151,20 @@ export default function App() {
   // ── Payment callback handling ──────────────────────────────
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-    if (params.get('session_id')) {
-      // Clear URL params
+    const sessionId = params.get('session_id');
+
+    // Only process payment callback once user is authenticated
+    if (sessionId && user) {
+      // Clear URL params now that we have the user
       window.history.replaceState({}, '', '/');
       setPaymentMessage('Payment successful! Your credits are being added...');
       setView('analyzer');
       // Refresh profile after webhook has time to process
-      if (user) {
-        setTimeout(() => {
-          refreshProfile();
-          setPaymentMessage('Credits added! Thank you for your purchase.');
-          setTimeout(() => setPaymentMessage(null), 5000);
-        }, 3000);
-      }
+      setTimeout(() => {
+        refreshProfile();
+        setPaymentMessage('Credits added! Thank you for your purchase.');
+        setTimeout(() => setPaymentMessage(null), 5000);
+      }, 3000);
     }
   }, [user]);
 

@@ -6,7 +6,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const { planId, userId, email } = req.body;
+  const { planId, userId, email, returnUrl } = req.body;
   const stripeKey = process.env.STRIPE_SECRET_KEY;
 
   if (!stripeKey) {
@@ -25,14 +25,14 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       throw new Error(`Price ID for plan '${planId}' is not configured.`);
     }
 
-    const appUrl = process.env.VITE_APP_URL || 'https://aistockassist.com';
+    const appUrl = returnUrl || process.env.VITE_APP_URL || 'https://aistockassist.com';
 
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
       line_items: [{ price: priceId, quantity: 1 }],
       mode: 'payment',
       success_url: `${appUrl}/?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${appUrl}/payments`,
+      cancel_url: `${appUrl}`,
       customer_email: email,
       metadata: { userId, planId },
     });
