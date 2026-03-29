@@ -52,6 +52,15 @@ export default function StockAnalyzer({ userProfile, onCreditsUsed, onNeedCredit
       setSnapshots(result.snapshots);
       if (result.errors.length > 0) {
         setErrors(result.errors.map((e) => `${e.ticker}: ${e.error}`));
+        if (result.snapshots.length > 0 && result.errors.length > 0) {
+          setErrors(prev => [...prev, `No credits used for failed tickers. Only ${result.snapshots.length} credit${result.snapshots.length === 1 ? '' : 's'} will be deducted.`]);
+        }
+      }
+
+      // If no stocks succeeded, don't deduct anything
+      if (result.snapshots.length === 0) {
+        setErrors(prev => [...prev, 'No credits were used since no tickers could be analyzed.']);
+        return;
       }
 
       // Step 2: Comparative analysis (if 2+ stocks)
