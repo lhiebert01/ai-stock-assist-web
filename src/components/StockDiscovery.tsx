@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import {
   Gem, Cpu, Activity, TrendingUp, Target, Zap,
-  Loader2, Check, BarChart3,
+  Loader2, Check, BarChart3, AlertCircle,
 } from 'lucide-react';
 import { discoverStocks } from '../services/stockApi';
 import { formatPrice, pctFmt, changeColor, humanMoney } from '../lib/formatters';
@@ -26,6 +26,7 @@ export default function StockDiscovery({ onAnalyze }: StockDiscoveryProps) {
   const [stocks, setStocks] = useState<DiscoveredStock[]>([]);
   const [loading, setLoading] = useState(false);
   const [selected, setSelected] = useState<Set<string>>(new Set());
+  const [limitMessage, setLimitMessage] = useState<string | null>(null);
 
   const handleCategory = async (categoryId: string) => {
     if (activeCategory === categoryId) {
@@ -52,8 +53,15 @@ export default function StockDiscovery({ onAnalyze }: StockDiscoveryProps) {
   const toggleSelect = (symbol: string) => {
     setSelected((prev) => {
       const next = new Set(prev);
-      if (next.has(symbol)) next.delete(symbol);
-      else if (next.size < 10) next.add(symbol);
+      if (next.has(symbol)) {
+        next.delete(symbol);
+        setLimitMessage(null);
+      } else if (next.size < 10) {
+        next.add(symbol);
+        setLimitMessage(null);
+      } else {
+        setLimitMessage('Maximum 10 stocks per comparative analysis. Deselect one to add another.');
+      }
       return next;
     });
   };
@@ -107,6 +115,7 @@ export default function StockDiscovery({ onAnalyze }: StockDiscoveryProps) {
                 <div className="bg-[var(--color-surface-1)] border border-[var(--color-accent)]/30 rounded-xl p-3 flex items-center justify-between backdrop-blur-xl">
                   <span className="text-sm text-[var(--color-text-secondary)]">
                     {selected.size} stock{selected.size > 1 ? 's' : ''} selected
+                    <span className="text-xs text-[var(--color-text-muted)] ml-1">(10 max)</span>
                   </span>
                   <button
                     onClick={() => onAnalyze(Array.from(selected).join(' '))}
@@ -116,6 +125,14 @@ export default function StockDiscovery({ onAnalyze }: StockDiscoveryProps) {
                     Analyze Selected
                   </button>
                 </div>
+              </div>
+            )}
+
+            {/* Limit warning */}
+            {limitMessage && (
+              <div className="flex items-center gap-2 px-4 py-3 mb-4 bg-yellow-500/10 border border-yellow-500/20 rounded-xl text-yellow-400 text-sm">
+                <AlertCircle className="w-4 h-4 shrink-0" />
+                {limitMessage}
               </div>
             )}
 

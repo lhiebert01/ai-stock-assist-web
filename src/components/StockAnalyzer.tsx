@@ -14,10 +14,11 @@ interface StockAnalyzerProps {
   userProfile: UserProfile | null;
   onCreditsUsed: (count: number) => void;
   onNeedCredits: () => void;
+  initialTickers?: string;
 }
 
-export default function StockAnalyzer({ userId, userProfile, onCreditsUsed, onNeedCredits }: StockAnalyzerProps) {
-  const [input, setInput] = useState('');
+export default function StockAnalyzer({ userId, userProfile, onCreditsUsed, onNeedCredits, initialTickers = '' }: StockAnalyzerProps) {
+  const [input, setInput] = useState(initialTickers);
   const [methodology, setMethodology] = useState<Methodology>('Growth & Quality');
   const [loading, setLoading] = useState(false);
   const [loadingStep, setLoadingStep] = useState('');

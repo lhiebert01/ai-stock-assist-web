@@ -216,6 +216,7 @@ export default function App() {
             userProfile={userProfile}
             onCreditsUsed={deductCredits}
             onNeedCredits={() => navigateTo('payments')}
+            initialTickers={analyzerInput}
           />
         )}
 
