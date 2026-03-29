@@ -53,7 +53,7 @@ const faqs = [
 
 const stats = [
   { value: '50+', label: 'Financial Metrics' },
-  { value: '<5s', label: 'Analysis Time' },
+  { value: '<30s', label: 'Analysis Time' },
   { value: '2', label: 'AI Methodologies' },
   { value: '10', label: 'Stocks at Once' },
 ];
@@ -79,7 +79,7 @@ export default function MarketingLanding({ onGetStarted }: LandingProps) {
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight mb-6">
               Professional Stock Analysis
               <br />
-              <span className="text-[var(--color-accent)]">in Under 5 Seconds</span>
+              <span className="text-[var(--color-accent)]">in Under 30 Seconds</span>
             </h1>
             <p className="text-lg sm:text-xl text-[var(--color-text-secondary)] max-w-2xl mx-auto mb-10 leading-relaxed">
               AI Stock Assist uses Google Gemini AI to analyze fundamentals, cash flow quality, and valuation —
