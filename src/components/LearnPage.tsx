@@ -1,7 +1,8 @@
 import { motion } from 'motion/react';
 import {
-  BookOpen, ExternalLink, Shield, TrendingUp, CheckCircle2,
+  BookOpen, ExternalLink, Shield, TrendingUp, CheckCircle2, Sparkles,
 } from 'lucide-react';
+import type { UserProfile } from '../types/user';
 
 const blogEpisodes = [
   { ep: 0, emoji: '💎', title: 'The Diamond in the Brook', hook: 'The "acres of diamonds" parable — investment opportunities are already in public markets.', url: 'https://lindsayhiebert.substack.com/p/episode-0-the-diamond-in-the-brook' },
@@ -34,9 +35,20 @@ const ecosystem = [
   { name: 'iAppreciateYou', tagline: 'Positivity', url: 'https://affirm.neoaesop.com', emoji: '🙏' },
 ];
 
-export default function LearnPage() {
+interface LearnPageProps {
+  userProfile?: UserProfile | null;
+  onNavigateMetrics?: () => void;
+}
+
+export default function LearnPage({ userProfile, onNavigateMetrics }: LearnPageProps) {
+  const hasPaidAccess = (userProfile?.credits_remaining ?? 0) > 0;
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8">
+    <div className="relative max-w-6xl mx-auto px-4 sm:px-6 py-8">
+      <div className="fixed inset-0 -z-10 pointer-events-none">
+        <div className="absolute inset-0 bg-cover bg-center opacity-[0.06]" style={{ backgroundImage: "url('/hero-bg.jpg')" }} />
+        <div className="absolute inset-0 bg-gradient-to-b from-[var(--color-surface-0)]/80 via-transparent to-[var(--color-surface-0)]" />
+      </div>
+
       {/* Header */}
       <div className="text-center mb-12">
         <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[var(--color-accent)]/10 border border-[var(--color-accent)]/20 text-sm text-[var(--color-accent)] font-medium mb-6">
@@ -48,6 +60,40 @@ export default function LearnPage() {
           Short, actionable lessons and reference guides — no jargon, no fluff.
         </p>
       </div>
+
+      {/* Premium Metrics Guide CTA */}
+      {hasPaidAccess && onNavigateMetrics && (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="mb-12"
+        >
+          <button
+            onClick={onNavigateMetrics}
+            className="w-full group bg-gradient-to-r from-[var(--color-accent)]/10 to-purple-500/10 border border-[var(--color-accent)]/30 rounded-2xl p-6 sm:p-8 hover:border-[var(--color-accent)]/50 transition-all text-left"
+          >
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-xl bg-[var(--color-accent)]/15 flex items-center justify-center">
+                  <BookOpen className="w-6 h-6 text-[var(--color-accent)]" />
+                </div>
+                <div>
+                  <div className="flex items-center gap-2 mb-1">
+                    <h3 className="text-lg font-bold group-hover:text-[var(--color-accent)] transition-colors">Complete Metrics Guide</h3>
+                    <span className="px-2 py-0.5 bg-[var(--color-accent)]/15 border border-[var(--color-accent)]/25 rounded text-[10px] font-bold text-[var(--color-accent)] uppercase tracking-wider flex items-center gap-1">
+                      <Sparkles className="w-3 h-3" /> Pro
+                    </span>
+                  </div>
+                  <p className="text-sm text-[var(--color-text-secondary)]">
+                    25+ metrics explained with formulas, benchmarks, red flags, and investment strategies
+                  </p>
+                </div>
+              </div>
+              <ExternalLink className="w-5 h-5 text-[var(--color-text-muted)] group-hover:text-[var(--color-accent)] transition-colors hidden sm:block" />
+            </div>
+          </button>
+        </motion.div>
+      )}
 
       {/* Blog Episodes */}
       <section className="mb-16">

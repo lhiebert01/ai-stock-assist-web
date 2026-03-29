@@ -1,6 +1,6 @@
 import { TrendingUp, Heart, ExternalLink } from 'lucide-react';
 
-type View = 'landing' | 'analyzer' | 'discovery' | 'history' | 'payments' | 'admin' | 'auth' | 'learn' | 'privacy' | 'terms';
+type View = 'landing' | 'analyzer' | 'discovery' | 'history' | 'payments' | 'admin' | 'auth' | 'learn' | 'metrics' | 'privacy' | 'terms';
 
 interface FooterProps {
   onNavigate: (view: View) => void;
@@ -39,7 +39,8 @@ export default function Footer({ onNavigate }: FooterProps) {
                   Substack Blog <ExternalLink className="w-3 h-3" />
                 </a>
               </li>
-              <li><button onClick={() => onNavigate('learn')} className="text-[var(--color-text-secondary)] hover:text-white transition-colors">Metrics Guide</button></li>
+              <li><button onClick={() => onNavigate('metrics')} className="text-[var(--color-text-secondary)] hover:text-white transition-colors">Metrics Guide</button></li>
+              <li><button onClick={() => onNavigate('learn')} className="text-[var(--color-text-secondary)] hover:text-white transition-colors">Learn to Invest</button></li>
             </ul>
           </div>
 

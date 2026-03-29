@@ -67,7 +67,11 @@ export default function StockDiscovery({ onAnalyze }: StockDiscoveryProps) {
   };
 
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8">
+    <div className="relative max-w-6xl mx-auto px-4 sm:px-6 py-8">
+      <div className="fixed inset-0 -z-10 pointer-events-none">
+        <div className="absolute inset-0 bg-cover bg-center opacity-[0.06]" style={{ backgroundImage: "url('/hero-bg.jpg')" }} />
+        <div className="absolute inset-0 bg-gradient-to-b from-[var(--color-surface-0)]/80 via-transparent to-[var(--color-surface-0)]" />
+      </div>
       <div className="text-center mb-8">
         <h1 className="text-2xl sm:text-3xl font-bold mb-2">Stock Discovery</h1>
         <p className="text-[var(--color-text-secondary)] text-sm">

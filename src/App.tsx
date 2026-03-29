@@ -14,10 +14,11 @@ import AdminDashboard from './components/AdminDashboard';
 import LearnPage from './components/LearnPage';
 import PrivacyPolicy from './components/PrivacyPolicy';
 import TermsOfService from './components/TermsOfService';
+import MetricsGuide from './components/MetricsGuide';
 import Footer from './components/Footer';
 import { healthCheck } from './services/stockApi';
 
-type View = 'landing' | 'analyzer' | 'discovery' | 'history' | 'payments' | 'admin' | 'auth' | 'learn' | 'privacy' | 'terms';
+type View = 'landing' | 'analyzer' | 'discovery' | 'history' | 'payments' | 'admin' | 'auth' | 'learn' | 'metrics' | 'privacy' | 'terms';
 
 export default function App() {
   const [user, setUser] = useState<AppUser | null>(null);
@@ -44,7 +45,7 @@ export default function App() {
         setUser(null);
         setUserProfile(null);
         // Use functional update to read CURRENT view
-        setView(curr => (curr !== 'landing' && curr !== 'privacy' && curr !== 'terms' && curr !== 'learn') ? 'landing' : curr);
+        setView(curr => (curr !== 'landing' && curr !== 'privacy' && curr !== 'terms' && curr !== 'learn' && curr !== 'metrics') ? 'landing' : curr);
       }
       setIsAuthReady(true);
     });
@@ -242,7 +243,14 @@ export default function App() {
         )}
 
         {view === 'learn' && (
-          <LearnPage />
+          <LearnPage
+            userProfile={userProfile}
+            onNavigateMetrics={() => navigateTo('metrics')}
+          />
+        )}
+
+        {view === 'metrics' && user && (
+          <MetricsGuide onBack={() => navigateTo('learn')} />
         )}
 
         {view === 'privacy' && (
