@@ -113,22 +113,32 @@ export default function App() {
   };
 
   const deductCredit = async () => {
-    if (!user || !userProfile) return;
-    const newCredits = Math.max(0, userProfile.credits_remaining - 1);
-    console.log('[Credits] Deducting: ', userProfile.credits_remaining, '→', newCredits);
-    const { error } = await supabase
-      .from('user_profiles')
-      .update({
-        credits_remaining: newCredits,
-        analyses_total_lifetime: (userProfile.analyses_total_lifetime || 0) + 1,
-      })
-      .eq('id', user.id);
-    if (error) {
-      console.error('[Credits] Deduction failed:', JSON.stringify(error));
-    } else {
-      console.log('[Credits] Deduction successful');
-      // Update local state immediately
-      setUserProfile(prev => prev ? { ...prev, credits_remaining: newCredits, analyses_total_lifetime: (prev.analyses_total_lifetime || 0) + 1 } : null);
+    try {
+      if (!user || !userProfile) {
+        console.warn('[Credits] Cannot deduct — missing user or profile', { user: !!user, profile: !!userProfile });
+        return;
+      }
+      const newCredits = Math.max(0, userProfile.credits_remaining - 1);
+      console.log('[Credits] Deducting:', userProfile.credits_remaining, '→', newCredits, 'for user', user.id);
+      const { data, error } = await supabase
+        .from('user_profiles')
+        .update({
+          credits_remaining: newCredits,
+          analyses_total_lifetime: (userProfile.analyses_total_lifetime || 0) + 1,
+        })
+        .eq('id', user.id)
+        .select('credits_remaining, analyses_total_lifetime')
+        .single();
+      if (error) {
+        console.error('[Credits] Deduction DB error:', JSON.stringify(error));
+      } else if (!data) {
+        console.error('[Credits] Deduction returned no data — RLS may be blocking the update');
+      } else {
+        console.log('[Credits] Deduction confirmed — DB now shows:', data.credits_remaining);
+        setUserProfile(prev => prev ? { ...prev, credits_remaining: data.credits_remaining, analyses_total_lifetime: data.analyses_total_lifetime } : null);
+      }
+    } catch (err) {
+      console.error('[Credits] Deduction exception:', err);
     }
   };
 
