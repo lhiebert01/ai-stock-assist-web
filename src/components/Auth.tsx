@@ -58,7 +58,12 @@ export default function Auth({ onAuthSuccess, onBack }: AuthProps) {
             is_admin: isAdmin,
           });
         }
-        onAuthSuccess();
+        if (data.session) {
+          onAuthSuccess();
+        } else {
+          setMessage('Account created! Check your email to confirm, then sign in.');
+          setMode('login');
+        }
       } else if (mode === 'login') {
         const { error: signInError } = await supabase.auth.signInWithPassword({ email, password });
         if (signInError) throw signInError;
