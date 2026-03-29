@@ -42,7 +42,7 @@ export default function Navbar({ user, userProfile, view, onNavigate, onLogout }
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <button
-            onClick={() => onNavigate(user ? 'analyzer' : 'landing')}
+            onClick={() => onNavigate('landing')}
             className="flex items-center gap-2.5 hover:opacity-80 transition-opacity"
           >
             <div className="w-8 h-8 rounded-lg bg-[var(--color-accent)]/15 flex items-center justify-center">
