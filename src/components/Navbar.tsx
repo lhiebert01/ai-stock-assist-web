@@ -86,6 +86,15 @@ export default function Navbar({ user, userProfile, view, onNavigate, onLogout }
                   {userProfile?.credits_remaining ?? 0} analyses
                 </button>
 
+                {/* Buy Credits button */}
+                <button
+                  onClick={() => onNavigate('payments')}
+                  className="hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-500/15 border border-emerald-500/25 text-sm font-bold text-emerald-400 hover:bg-emerald-500/25 transition-all"
+                >
+                  <CreditCard className="w-3.5 h-3.5" />
+                  Buy Credits
+                </button>
+
                 {/* Profile dropdown */}
                 <div className="relative">
                   <button
