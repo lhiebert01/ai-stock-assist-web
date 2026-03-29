@@ -43,7 +43,11 @@ export default function Payments({ user, userProfile, onAuthRequired, onBack }: 
   };
 
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 py-12">
+    <div className="relative max-w-4xl mx-auto px-4 sm:px-6 py-12">
+      <div
+        className="absolute inset-0 bg-cover bg-center opacity-[0.05] -z-10"
+        style={{ backgroundImage: "url('/payments-bg.jpg')" }}
+      />
       <button
         onClick={onBack}
         className="flex items-center gap-2 text-sm text-[var(--color-text-muted)] hover:text-white transition-colors mb-8"
