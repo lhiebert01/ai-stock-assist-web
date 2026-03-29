@@ -9,7 +9,7 @@ import ComparisonTable from './ComparisonTable';
 
 interface StockAnalyzerProps {
   userProfile: UserProfile | null;
-  onCreditsUsed: () => void;
+  onCreditsUsed: (count: number) => void;
   onNeedCredits: () => void;
 }
 
@@ -34,7 +34,7 @@ export default function StockAnalyzer({ userProfile, onCreditsUsed, onNeedCredit
       .slice(0, 10);
 
     if (tickers.length === 0) return;
-    if (credits < 1) {
+    if (credits < tickers.length) {
       onNeedCredits();
       return;
     }
@@ -76,7 +76,7 @@ export default function StockAnalyzer({ userProfile, onCreditsUsed, onNeedCredit
         }
       }
 
-      onCreditsUsed();
+      onCreditsUsed(result.snapshots.length);
     } catch (err: any) {
       setErrors([err.message || 'Analysis failed']);
     } finally {

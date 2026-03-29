@@ -112,19 +112,19 @@ export default function App() {
     if (user) await loadProfile(user);
   };
 
-  const deductCredit = async () => {
+  const deductCredits = async (count: number = 1) => {
     try {
       if (!user || !userProfile) {
         console.warn('[Credits] Cannot deduct — missing user or profile', { user: !!user, profile: !!userProfile });
         return;
       }
-      const newCredits = Math.max(0, userProfile.credits_remaining - 1);
-      console.log('[Credits] Deducting:', userProfile.credits_remaining, '→', newCredits, 'for user', user.id);
+      const newCredits = Math.max(0, userProfile.credits_remaining - count);
+      console.log('[Credits] Deducting:', userProfile.credits_remaining, '→', newCredits, `(${count} stocks) for user`, user.id);
       const { data, error } = await supabase
         .from('user_profiles')
         .update({
           credits_remaining: newCredits,
-          analyses_total_lifetime: (userProfile.analyses_total_lifetime || 0) + 1,
+          analyses_total_lifetime: (userProfile.analyses_total_lifetime || 0) + count,
         })
         .eq('id', user.id)
         .select('credits_remaining, analyses_total_lifetime')
@@ -208,7 +208,7 @@ export default function App() {
           <StockAnalyzer
             key={analyzerInput}
             userProfile={userProfile}
-            onCreditsUsed={deductCredit}
+            onCreditsUsed={deductCredits}
             onNeedCredits={() => navigateTo('payments')}
           />
         )}
