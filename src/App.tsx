@@ -36,13 +36,15 @@ export default function App() {
       if (session?.user) {
         const appUser: AppUser = { id: session.user.id, email: session.user.email || '' };
         setUser(appUser);
-        if (view === 'auth' || view === 'landing') setView('analyzer');
+        // Use functional update to read CURRENT view (not stale closure value)
+        setView(curr => (curr === 'auth' || curr === 'landing') ? 'analyzer' : curr);
         // Load profile outside the lock — use setTimeout to break out of the callback
         setTimeout(() => loadProfile(appUser), 100);
       } else {
         setUser(null);
         setUserProfile(null);
-        if (view !== 'landing' && view !== 'privacy' && view !== 'terms' && view !== 'learn') setView('landing');
+        // Use functional update to read CURRENT view
+        setView(curr => (curr !== 'landing' && curr !== 'privacy' && curr !== 'terms' && curr !== 'learn') ? 'landing' : curr);
       }
       setIsAuthReady(true);
     });
