@@ -111,6 +111,19 @@ export default function App() {
     if (user) await loadProfile(user);
   };
 
+  const deductCredit = async () => {
+    if (!user || !userProfile) return;
+    const newCredits = Math.max(0, userProfile.credits_remaining - 1);
+    await supabase
+      .from('user_profiles')
+      .update({
+        credits_remaining: newCredits,
+        analyses_total_lifetime: (userProfile.analyses_total_lifetime || 0) + 1,
+      })
+      .eq('id', user.id);
+    await loadProfile(user);
+  };
+
   // ── Payment callback handling ──────────────────────────────
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -163,7 +176,7 @@ export default function App() {
           <StockAnalyzer
             key={analyzerInput}
             userProfile={userProfile}
-            onCreditsUsed={refreshProfile}
+            onCreditsUsed={deductCredit}
             onNeedCredits={() => navigateTo('payments')}
           />
         )}
