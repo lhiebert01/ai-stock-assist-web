@@ -21,6 +21,15 @@ export default function Navbar({ user, userProfile, view, onNavigate, onLogout }
   const [profileOpen, setProfileOpen] = useState(false);
   const isAdmin = userProfile?.is_admin === true;
 
+  // Get initials from username or email
+  const getInitials = () => {
+    const name = userProfile?.username || user?.email || '';
+    const parts = name.split(/[\s@]+/).filter(Boolean);
+    if (parts.length >= 2) return (parts[0][0] + parts[1][0]).toUpperCase();
+    return (name[0] || '?').toUpperCase();
+  };
+  const displayName = userProfile?.username || user?.email?.split('@')[0] || '';
+
   const navItems: { label: string; view: View; icon: React.ReactNode }[] = [
     { label: 'Analyze', view: 'analyzer', icon: <BarChart3 className="w-4 h-4" /> },
     { label: 'Discover', view: 'discovery', icon: <Sparkles className="w-4 h-4" /> },
@@ -84,8 +93,9 @@ export default function Navbar({ user, userProfile, view, onNavigate, onLogout }
                     className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-[var(--color-text-secondary)] hover:text-white hover:bg-white/5 transition-all"
                   >
                     <div className="w-7 h-7 rounded-full bg-[var(--color-accent)]/20 flex items-center justify-center text-xs font-bold text-[var(--color-accent)]">
-                      {(user.email?.[0] || '?').toUpperCase()}
+                      {getInitials()}
                     </div>
+                    <span className="hidden sm:block text-sm font-medium text-[var(--color-text-primary)]">{displayName}</span>
                     <ChevronDown className={`w-4 h-4 transition-transform ${profileOpen ? 'rotate-180' : ''}`} />
                   </button>
 
@@ -99,8 +109,9 @@ export default function Navbar({ user, userProfile, view, onNavigate, onLogout }
                         className="absolute right-0 top-full mt-2 w-56 bg-[var(--color-surface-2)] border border-[var(--color-border)] rounded-xl shadow-2xl overflow-hidden"
                       >
                         <div className="px-4 py-3 border-b border-[var(--color-border)]">
-                          <p className="text-sm font-medium truncate">{user.email}</p>
-                          <p className="text-xs text-[var(--color-text-muted)]">
+                          <p className="text-sm font-bold truncate">{displayName}</p>
+                          <p className="text-xs text-[var(--color-text-muted)] truncate">{user.email}</p>
+                          <p className="text-xs text-[var(--color-accent)] font-medium mt-1">
                             {userProfile?.credits_remaining ?? 0} analyses remaining
                           </p>
                         </div>
