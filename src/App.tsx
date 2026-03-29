@@ -73,6 +73,8 @@ export default function App() {
   // ── Profile loader ─────────────────────────────────────────
   async function loadProfile(appUser: AppUser) {
     try {
+      // Wait for auth token to settle before querying
+      await new Promise(resolve => setTimeout(resolve, 500));
       console.log('[Profile] Loading profile for:', appUser.id, appUser.email);
       const { data: profile, error } = await supabase
         .from('user_profiles')
