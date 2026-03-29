@@ -44,10 +44,13 @@ export default function Payments({ user, userProfile, onAuthRequired, onBack }: 
 
   return (
     <div className="relative max-w-4xl mx-auto px-4 sm:px-6 py-12">
-      <div
-        className="absolute inset-0 bg-cover bg-center opacity-[0.05] -z-10"
-        style={{ backgroundImage: "url('/payments-bg.jpg')" }}
-      />
+      <div className="fixed inset-0 -z-10 pointer-events-none">
+        <div
+          className="absolute inset-0 bg-cover bg-center opacity-[0.07]"
+          style={{ backgroundImage: "url('/hero-bg.jpg')" }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-[var(--color-surface-0)]/80 via-transparent to-[var(--color-surface-0)]" />
+      </div>
       <button
         onClick={onBack}
         className="flex items-center gap-2 text-sm text-[var(--color-text-muted)] hover:text-white transition-colors mb-8"

@@ -10,10 +10,9 @@ interface AnalysisHistoryProps {
 
 interface HistoryEntry {
   id: string;
-  tickers: string;
+  tickers: string[];
   methodology: string;
   created_at: string;
-  snapshot_count: number;
 }
 
 export default function AnalysisHistory({ user }: AnalysisHistoryProps) {
@@ -81,9 +80,9 @@ export default function AnalysisHistory({ user }: AnalysisHistoryProps) {
                   <BarChart3 className="w-5 h-5 text-[var(--color-accent)]" />
                 </div>
                 <div>
-                  <div className="font-bold font-mono text-sm">{entry.tickers}</div>
+                  <div className="font-bold font-mono text-sm">{Array.isArray(entry.tickers) ? entry.tickers.join(', ') : entry.tickers}</div>
                   <div className="text-xs text-[var(--color-text-muted)]">
-                    {entry.methodology} — {entry.snapshot_count} stock{entry.snapshot_count > 1 ? 's' : ''}
+                    {entry.methodology} — {Array.isArray(entry.tickers) ? entry.tickers.length : 1} stock{(Array.isArray(entry.tickers) ? entry.tickers.length : 1) > 1 ? 's' : ''}
                   </div>
                 </div>
               </div>

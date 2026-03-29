@@ -2,11 +2,11 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import {
   TrendingUp, BarChart3, History, CreditCard, Shield, LogOut,
-  Menu, X, Sparkles, ChevronDown,
+  Menu, X, Sparkles, ChevronDown, BookOpen,
 } from 'lucide-react';
 import type { AppUser, UserProfile } from '../types/user';
 
-type View = 'landing' | 'analyzer' | 'discovery' | 'history' | 'payments' | 'admin' | 'auth';
+type View = 'landing' | 'analyzer' | 'discovery' | 'history' | 'payments' | 'admin' | 'auth' | 'learn' | 'privacy' | 'terms';
 
 interface NavbarProps {
   user: AppUser | null;
@@ -33,6 +33,7 @@ export default function Navbar({ user, userProfile, view, onNavigate, onLogout }
   const navItems: { label: string; view: View; icon: React.ReactNode }[] = [
     { label: 'Analyze', view: 'analyzer', icon: <BarChart3 className="w-4 h-4" /> },
     { label: 'Discover', view: 'discovery', icon: <Sparkles className="w-4 h-4" /> },
+    { label: 'Learn', view: 'learn', icon: <BookOpen className="w-4 h-4" /> },
     { label: 'History', view: 'history', icon: <History className="w-4 h-4" /> },
   ];
 

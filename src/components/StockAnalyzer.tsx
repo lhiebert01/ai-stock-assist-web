@@ -4,16 +4,19 @@ import { Search, Loader2, BarChart3, BookOpen, Sparkles, X, AlertCircle } from '
 import type { StockSnapshot, AIRecommendation, Methodology } from '../types/stock';
 import type { UserProfile } from '../types/user';
 import { analyzeStocks, getRecommendation, getComparativeAnalysis } from '../services/stockApi';
+import { supabase } from '../supabase';
 import StockCard from './StockCard';
 import ComparisonTable from './ComparisonTable';
+import MetricsGlossary from './MetricsGlossary';
 
 interface StockAnalyzerProps {
+  userId: string;
   userProfile: UserProfile | null;
   onCreditsUsed: (count: number) => void;
   onNeedCredits: () => void;
 }
 
-export default function StockAnalyzer({ userProfile, onCreditsUsed, onNeedCredits }: StockAnalyzerProps) {
+export default function StockAnalyzer({ userId, userProfile, onCreditsUsed, onNeedCredits }: StockAnalyzerProps) {
   const [input, setInput] = useState('');
   const [methodology, setMethodology] = useState<Methodology>('Growth & Quality');
   const [loading, setLoading] = useState(false);
@@ -22,6 +25,7 @@ export default function StockAnalyzer({ userProfile, onCreditsUsed, onNeedCredit
   const [recommendations, setRecommendations] = useState<Record<string, AIRecommendation>>({});
   const [comparativeAnalysis, setComparativeAnalysis] = useState<string | null>(null);
   const [errors, setErrors] = useState<string[]>([]);
+  const [glossaryOpen, setGlossaryOpen] = useState(false);
 
   const credits = userProfile?.credits_remaining ?? 0;
 
@@ -86,6 +90,20 @@ export default function StockAnalyzer({ userProfile, onCreditsUsed, onNeedCredit
       }
 
       onCreditsUsed(result.snapshots.length);
+
+      // Save to analysis history
+      try {
+        await supabase.from('analysis_history').insert({
+          user_id: userId,
+          tickers: result.snapshots.map((s) => s.ticker),
+          methodology,
+          snapshots: result.snapshots,
+          recommendation: recs,
+          comparative_analysis: compContext || null,
+        });
+      } catch (histErr) {
+        console.warn('[History] Failed to save:', histErr);
+      }
     } catch (err: any) {
       setErrors([err.message || 'Analysis failed']);
     } finally {
@@ -131,9 +149,9 @@ export default function StockAnalyzer({ userProfile, onCreditsUsed, onNeedCredit
           </button>
         </div>
 
-        {/* Methodology Toggle */}
-        <div className="flex items-center justify-center gap-3">
-          <span className="text-xs text-[var(--color-text-muted)] uppercase tracking-wider font-bold">Methodology:</span>
+        {/* Methodology Toggle + Metrics Guide */}
+        <div className="flex items-center justify-center gap-3 flex-wrap">
+          <span className="text-xs text-[var(--color-text-muted)] uppercase tracking-wider font-bold">Analysis Framework:</span>
           <div className="flex bg-[var(--color-surface-2)] border border-[var(--color-border)] rounded-lg p-1">
             <button
               onClick={() => setMethodology('Growth & Quality')}
@@ -158,8 +176,17 @@ export default function StockAnalyzer({ userProfile, onCreditsUsed, onNeedCredit
               Graham Value
             </button>
           </div>
+          <button
+            onClick={() => setGlossaryOpen(true)}
+            className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium text-[var(--color-text-secondary)] hover:text-[var(--color-accent)] hover:bg-[var(--color-accent)]/10 transition-all"
+          >
+            <BookOpen className="w-3.5 h-3.5" />
+            Metrics Guide
+          </button>
         </div>
       </div>
+
+      <MetricsGlossary open={glossaryOpen} onClose={() => setGlossaryOpen(false)} />
 
       {/* Loading State */}
       {loading && (

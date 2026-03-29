@@ -11,10 +11,13 @@ import StockDiscovery from './components/StockDiscovery';
 import AnalysisHistory from './components/AnalysisHistory';
 import Payments from './components/Payments';
 import AdminDashboard from './components/AdminDashboard';
+import LearnPage from './components/LearnPage';
+import PrivacyPolicy from './components/PrivacyPolicy';
+import TermsOfService from './components/TermsOfService';
 import Footer from './components/Footer';
 import { healthCheck } from './services/stockApi';
 
-type View = 'landing' | 'analyzer' | 'discovery' | 'history' | 'payments' | 'admin' | 'auth';
+type View = 'landing' | 'analyzer' | 'discovery' | 'history' | 'payments' | 'admin' | 'auth' | 'learn' | 'privacy' | 'terms';
 
 export default function App() {
   const [user, setUser] = useState<AppUser | null>(null);
@@ -39,7 +42,7 @@ export default function App() {
       } else {
         setUser(null);
         setUserProfile(null);
-        if (view !== 'landing') setView('landing');
+        if (view !== 'landing' && view !== 'privacy' && view !== 'terms' && view !== 'learn') setView('landing');
       }
       setIsAuthReady(true);
     });
@@ -207,6 +210,7 @@ export default function App() {
         {view === 'analyzer' && user && (
           <StockAnalyzer
             key={analyzerInput}
+            userId={user.id}
             userProfile={userProfile}
             onCreditsUsed={deductCredits}
             onNeedCredits={() => navigateTo('payments')}
@@ -233,9 +237,21 @@ export default function App() {
         {view === 'admin' && user && userProfile?.is_admin && (
           <AdminDashboard />
         )}
+
+        {view === 'learn' && (
+          <LearnPage />
+        )}
+
+        {view === 'privacy' && (
+          <PrivacyPolicy onBack={() => navigateTo('landing')} />
+        )}
+
+        {view === 'terms' && (
+          <TermsOfService onBack={() => navigateTo('landing')} />
+        )}
       </main>
 
-      <Footer />
+      <Footer onNavigate={navigateTo} />
     </div>
   );
 }
