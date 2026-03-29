@@ -61,27 +61,35 @@ export default function App() {
   // ── Profile loader ─────────────────────────────────────────
   async function loadProfile(appUser: AppUser) {
     try {
+      console.log('[Profile] Loading profile for:', appUser.id, appUser.email);
       const { data: profile, error } = await supabase
         .from('user_profiles')
         .select('*')
         .eq('id', appUser.id)
         .single();
 
+      console.log('[Profile] Result:', { profile, error });
+
       if (error && error.code === 'PGRST116') {
         // No profile — create one
+        console.log('[Profile] No profile found, creating one...');
         const isAdmin = appUser.email.toLowerCase() === 'lindsay.hiebert@gmail.com';
-        const { data: newProfile } = await supabase.from('user_profiles').insert({
+        const { data: newProfile, error: insertError } = await supabase.from('user_profiles').insert({
           id: appUser.id,
           email: appUser.email,
           username: appUser.email.split('@')[0],
           is_admin: isAdmin,
         }).select().single();
+        console.log('[Profile] Insert result:', { newProfile, insertError });
         if (newProfile) setUserProfile(newProfile);
+      } else if (error) {
+        console.error('[Profile] Unexpected error:', error);
       } else if (profile) {
+        console.log('[Profile] Loaded successfully:', profile.credits_remaining, 'credits');
         setUserProfile(profile);
       }
     } catch (err) {
-      console.error('Profile load error:', err);
+      console.error('[Profile] Exception:', err);
     }
   }
 
