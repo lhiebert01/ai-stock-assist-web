@@ -934,5 +934,78 @@ a884a80  Initial scaffold: React 19 + TypeScript + Vite + FastAPI backend
 
 ---
 
+## 20. Executive Summary — Full Migration Retrospective
+
+### What We Did
+Ported AI Stock Assist from a **Streamlit Python app** (custom auth, bcrypt passwords, VARCHAR IDs) to a **React 19 Single Page Application** (Supabase Auth, UUID IDs, Stripe, Vercel + Render) in a ~24-hour sprint, then spent a follow-up session building admin tools and migrating users to production.
+
+**SPA (Single Page Application):** Instead of loading a new HTML page for each screen (like the old Streamlit app), the browser loads one page and JavaScript swaps the content dynamically. That's why we use `setView('analyzer')` instead of navigating to `/analyzer`.
+
+### What Worked Well
+- **Architecture split** — Vercel (frontend + serverless functions) + Render (FastAPI backend) + Supabase (auth + DB) is clean and scalable
+- **Serverless pattern** — `api/webhook.ts` and `api/admin/users.ts` using service role key for privileged operations keeps secrets server-side
+- **Retry patterns** — Exponential backoff for Render cold starts prevents user-facing errors
+- **Incremental deployment** — pushing small commits and testing each feature individually caught issues early
+- **Lessons doc** — having CLAUDE-LESSONS-LEARNED.md meant we didn't repeat mistakes
+
+### What Could Have Been Better
+- **Direct SQL into auth.users was a mistake** — caused "Database error querying schema" for all 4 migrated users. Supabase's GoTrue service has internal fields we didn't populate. Should have used `auth.admin.createUser()` from the start
+- **Supabase project confusion** — wasted time editing email templates on the wrong project. With multiple Supabase projects, always verify the project URL first
+- **Email rate limits** — didn't anticipate Supabase's built-in email service throttling during testing (~3-4/hour). Multiple rapid test resets caused unnecessary debugging
+- **View type duplication** — the `View` type must be identical across App.tsx, Navbar.tsx, and Footer.tsx with no single source of truth. This is fragile
+- **No React Router** — simpler but costs us deep linking, back/forward, and URL sharing
+
+### Key Lessons Learned
+1. **Never insert directly into `auth.users`** — always use `supabase.auth.admin.createUser()` via a serverless function
+2. **Supabase email templates are per-project** — if you share a project across apps, templates affect all of them
+3. **`VITE_*` env vars are build-time** — changing them requires a full redeploy
+4. **Stale closures kill SPAs** — always use functional state updates (`setX(curr => ...)`) inside `useEffect` callbacks
+5. **`.select()` after every Supabase update** — RLS can silently block writes and return 200
+6. **Render SSL certs break silently** — always keep the direct `.onrender.com` URL as a fallback
+7. **iOS Keychain autofill is per-device** — "wrong password showing up" is not an app bug
+
+### How to Do This Better Next Time
+1. **Build the admin CRUD first** — having Create User via the proper API from day one avoids SQL migration hacks
+2. **Set up custom SMTP early** — avoids rate limit frustration during testing
+3. **Extract View type to a shared file** — `types/views.ts` imported by App, Navbar, Footer
+4. **Add React Router** if the app will grow beyond ~5 views — the manual view system doesn't scale
+5. **Test password reset flow before migrating users** — we deployed the SetNewPassword screen and migration in the same session, which created debugging confusion
+6. **Document the Supabase project name/URL mapping** early — prevents editing the wrong project
+
+---
+
+## 21. Admin & Migration Session (2026-03-29)
+
+### Changes Made
+| File | Change |
+|------|--------|
+| `api/admin/users.ts` | **NEW** — Vercel serverless CRUD (POST/PUT/DELETE/GET) with admin JWT verification |
+| `src/components/AdminDashboard.tsx` | Tabs (Current/Legacy Users), create/edit/delete modals, legacy import |
+| `src/components/SetNewPassword.tsx` | **NEW** — Password reset screen (replaces auto-login on recovery) |
+| `src/App.tsx` | Handle PASSWORD_RECOVERY event, render SetNewPassword view |
+| `src/components/Auth.tsx` | Use VITE_APP_URL for reset redirect |
+| `src/components/Navbar.tsx` | View type updated with `reset-password` |
+| `src/components/Footer.tsx` | View type updated with `reset-password` |
+
+### User Migration
+- 4 users migrated from old Streamlit `users` table: epsilonv, lgroshans, Carey, agmast
+- **First attempt (SQL insert) failed** — direct inserts into `auth.users` missing GoTrue internal fields
+- **Fix:** Cleaned up via SQL DELETE, re-created via Admin Dashboard's Create User (uses `auth.admin.createUser()`)
+- Temp password: `Welcome@123`, users can reset via Forgot Password
+
+### Supabase Email Templates
+- Branded teal-blue templates created for: Reset Password, Confirm Sign Up, Invite User
+- Only Reset Password applied so far (correct project: `gcuvtpccyotujnuufxod`)
+- Built-in email rate limit: ~3-4/hour, 60s cooldown between same-type requests
+- Template files saved in Downloads for future use
+
+### Git Commits (This Session)
+```
+a78c5be  Add password reset flow with Set New Password screen
+4ff086d  Add admin user management CRUD and legacy user migration
+```
+
+---
+
 *Last updated: 2026-03-29 by Claude Code (Opus 4.6)*
 *This document should be read by Claude before making any changes to this codebase.*
