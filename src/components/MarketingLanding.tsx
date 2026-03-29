@@ -97,6 +97,20 @@ export default function MarketingLanding({ onGetStarted }: LandingProps) {
               <p className="text-sm text-[var(--color-text-muted)]">3 free analyses, no credit card required</p>
             </div>
 
+            {/* Hero showcase image */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3, duration: 0.6 }}
+              className="max-w-4xl mx-auto mb-12 rounded-2xl overflow-hidden border border-[var(--color-border)] shadow-2xl shadow-[var(--color-accent)]/10"
+            >
+              <img
+                src="/hero-showcase.jpg"
+                alt="AI Stock Assist — AI-Powered Deep Stock Research & Thinking"
+                className="w-full h-auto"
+              />
+            </motion.div>
+
             {/* Stats */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 max-w-2xl mx-auto">
               {stats.map((s) => (
