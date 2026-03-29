@@ -26,46 +26,28 @@ export default function App() {
   // ── Auth setup ──────────────────────────────────────────────
   useEffect(() => {
     const timeout = setTimeout(() => setIsAuthReady(true), 3000);
-    let profileLoaded = false;
 
-    const handleSession = async (session: any) => {
+    // Don't await profile load inside onAuthStateChange — it causes deadlock
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       if (session?.user) {
         const appUser: AppUser = { id: session.user.id, email: session.user.email || '' };
         setUser(appUser);
-        if (!profileLoaded) {
-          profileLoaded = true;
-          await loadProfile(appUser);
-        }
         if (view === 'auth' || view === 'landing') setView('analyzer');
+        // Load profile outside the lock — use setTimeout to break out of the callback
+        setTimeout(() => loadProfile(appUser), 100);
       } else {
         setUser(null);
         setUserProfile(null);
-        profileLoaded = false;
         if (view !== 'landing') setView('landing');
       }
       setIsAuthReady(true);
-    };
-
-    // Use onAuthStateChange as primary — it fires for initial session too
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
-      await handleSession(session);
     });
-
-    // Fallback: if onAuthStateChange hasn't fired after 2s, check manually
-    const fallback = setTimeout(async () => {
-      if (!profileLoaded) {
-        const { data: { session } } = await supabase.auth.getSession();
-        if (session) await handleSession(session);
-      }
-      setIsAuthReady(true);
-    }, 2000);
 
     // Warm up Render backend
     healthCheck();
 
     return () => {
       clearTimeout(timeout);
-      clearTimeout(fallback);
       subscription.unsubscribe();
     };
   }, []);
