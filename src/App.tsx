@@ -83,7 +83,7 @@ export default function App() {
         console.log('[Profile] Insert result:', { newProfile, insertError });
         if (newProfile) setUserProfile(newProfile);
       } else if (error) {
-        console.error('[Profile] Unexpected error:', error);
+        console.error('[Profile] Unexpected error:', JSON.stringify(error));
       } else if (profile) {
         console.log('[Profile] Loaded successfully:', profile.credits_remaining, 'credits');
         setUserProfile(profile);
