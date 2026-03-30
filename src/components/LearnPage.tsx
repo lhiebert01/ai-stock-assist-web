@@ -1,8 +1,19 @@
 import { motion } from 'motion/react';
 import {
-  BookOpen, ExternalLink, Shield, TrendingUp, CheckCircle2, Sparkles,
+  BookOpen, ExternalLink, Shield, TrendingUp, CheckCircle2, Sparkles, Newspaper,
 } from 'lucide-react';
 import type { UserProfile } from '../types/user';
+
+const featuredArticles = [
+  {
+    emoji: '🌍',
+    title: 'The New Investing Reality: Why Better Stock Intelligence Matters More Than Ever',
+    hook: 'Markets now swing on politics, oil shocks, inflation fears, and sentiment faster than investors can react. Learn why disciplined, AI-powered analysis is no longer optional — it\'s essential.',
+    url: 'https://lindsayhiebert.substack.com/p/the-new-investing-reality-why-better',
+    date: 'Mar 29, 2026',
+    tag: 'Featured',
+  },
+];
 
 const blogEpisodes = [
   { ep: 0, emoji: '💎', title: 'The Diamond in the Brook', hook: 'The "acres of diamonds" parable — investment opportunities are already in public markets.', url: 'https://lindsayhiebert.substack.com/p/episode-0-the-diamond-in-the-brook' },
@@ -94,6 +105,48 @@ export default function LearnPage({ userProfile, onNavigateMetrics }: LearnPageP
           </button>
         </motion.div>
       )}
+
+      {/* Featured Articles */}
+      <section className="mb-16">
+        <h2 className="text-xl font-bold mb-6 flex items-center gap-2">
+          <Newspaper className="w-5 h-5 text-[var(--color-accent)]" />
+          Featured Insights
+        </h2>
+        {featuredArticles.map((article, i) => (
+          <motion.a
+            key={article.title}
+            href={article.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: i * 0.06 }}
+            whileHover={{ y: -2 }}
+            className="group block bg-gradient-to-r from-[var(--color-surface-2)] to-[var(--color-surface-1)] border border-[var(--color-accent)]/20 rounded-2xl p-6 sm:p-8 hover:border-[var(--color-accent)]/40 transition-all"
+          >
+            <div className="flex items-start gap-4">
+              <span className="text-3xl shrink-0">{article.emoji}</span>
+              <div className="min-w-0">
+                <div className="flex items-center gap-2 mb-2 flex-wrap">
+                  <span className="px-2 py-0.5 bg-[var(--color-accent)]/15 border border-[var(--color-accent)]/25 rounded text-[10px] font-bold text-[var(--color-accent)] uppercase tracking-wider">
+                    {article.tag}
+                  </span>
+                  <span className="text-xs text-[var(--color-text-muted)]">{article.date}</span>
+                </div>
+                <h3 className="text-lg font-bold mb-2 group-hover:text-[var(--color-accent)] transition-colors leading-snug">
+                  {article.title}
+                </h3>
+                <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed mb-3">
+                  {article.hook}
+                </p>
+                <div className="flex items-center gap-1 text-xs text-[var(--color-accent)] font-medium">
+                  Read on Substack <ExternalLink className="w-3 h-3" />
+                </div>
+              </div>
+            </div>
+          </motion.a>
+        ))}
+      </section>
 
       {/* Blog Episodes */}
       <section className="mb-16">
