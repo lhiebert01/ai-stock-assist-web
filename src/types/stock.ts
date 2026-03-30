@@ -103,6 +103,16 @@ export interface ComparisonRow {
   revenue: number | null;
 }
 
+export interface FullHistoryEntry {
+  id: string;
+  tickers: string[];
+  methodology: Methodology;
+  snapshots: StockSnapshot[];
+  recommendation: Record<string, AIRecommendation>;
+  comparative_analysis: string | null;
+  created_at: string;
+}
+
 export type Methodology = 'Growth & Quality' | 'Graham Value Investing';
 
 export type ChartPeriod = '5d' | '1mo' | '3mo' | '6mo' | '1y' | '2y' | '5y' | 'max';

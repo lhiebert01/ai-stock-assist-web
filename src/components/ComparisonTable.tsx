@@ -11,8 +11,31 @@ interface ComparisonTableProps {
   comparativeAnalysis: string | null;
 }
 
+function bestInColumn(snapshots: StockSnapshot[], getter: (s: StockSnapshot) => number | null, mode: 'max' | 'min' = 'max'): string | null {
+  let best: { ticker: string; val: number } | null = null;
+  for (const s of snapshots) {
+    const v = getter(s);
+    if (v == null) continue;
+    if (!best || (mode === 'max' ? v > best.val : v < best.val)) best = { ticker: s.ticker, val: v };
+  }
+  return best?.ticker ?? null;
+}
+
 export default function ComparisonTable({ snapshots, comparativeAnalysis }: ComparisonTableProps) {
   const [showAnalysis, setShowAnalysis] = useState(true);
+
+  // Compute column bests
+  const bestYtd = bestInColumn(snapshots, (s) => s.changes.ytd_pct, 'max');
+  const bestY1 = bestInColumn(snapshots, (s) => s.changes.y1_pct, 'max');
+  const bestPe = bestInColumn(snapshots, (s) => (s.trailing_pe != null && s.trailing_pe > 0 ? s.trailing_pe : null), 'min');
+  const bestFcf = bestInColumn(snapshots, (s) => s.cash_flow.fcf_yield, 'max');
+  const bestUpside = bestInColumn(snapshots, (s) => {
+    if (s.analyst.target_price == null || s.price == null || s.price === 0) return null;
+    return ((s.analyst.target_price - s.price) / s.price) * 100;
+  }, 'max');
+
+  const highlightClass = (ticker: string, best: string | null) =>
+    ticker === best ? 'bg-emerald-500/8' : '';
 
   return (
     <div className="mb-8 space-y-4">
@@ -28,7 +51,7 @@ export default function ComparisonTable({ snapshots, comparativeAnalysis }: Comp
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-[var(--color-border)]">
-                <th className="text-left px-4 py-3 font-medium text-[var(--color-text-muted)] text-xs uppercase tracking-wider">Ticker</th>
+                <th className="text-left px-4 py-3 font-medium text-[var(--color-text-muted)] text-xs uppercase tracking-wider sticky left-0 bg-[var(--color-surface-2)] z-10">Ticker</th>
                 <th className="text-right px-4 py-3 font-medium text-[var(--color-text-muted)] text-xs uppercase tracking-wider">Price</th>
                 <th className="text-center px-4 py-3 font-medium text-[var(--color-text-muted)] text-xs uppercase tracking-wider">Rating</th>
                 <th className="text-right px-4 py-3 font-medium text-[var(--color-text-muted)] text-xs uppercase tracking-wider">Daily</th>
@@ -36,15 +59,19 @@ export default function ComparisonTable({ snapshots, comparativeAnalysis }: Comp
                 <th className="text-right px-4 py-3 font-medium text-[var(--color-text-muted)] text-xs uppercase tracking-wider">1Y</th>
                 <th className="text-right px-4 py-3 font-medium text-[var(--color-text-muted)] text-xs uppercase tracking-wider hidden lg:table-cell">P/E</th>
                 <th className="text-right px-4 py-3 font-medium text-[var(--color-text-muted)] text-xs uppercase tracking-wider hidden lg:table-cell">FCF Yield</th>
+                <th className="text-right px-4 py-3 font-medium text-[var(--color-text-muted)] text-xs uppercase tracking-wider hidden lg:table-cell">Target</th>
                 <th className="text-right px-4 py-3 font-medium text-[var(--color-text-muted)] text-xs uppercase tracking-wider hidden md:table-cell">Mkt Cap</th>
               </tr>
             </thead>
             <tbody>
               {snapshots.map((s) => {
                 const rating = s.analyst.recommendation?.replace(/_/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase()) || '—';
+                const upside = (s.analyst.target_price != null && s.price != null && s.price !== 0)
+                  ? ((s.analyst.target_price - s.price) / s.price) * 100
+                  : null;
                 return (
                   <tr key={s.ticker} className="border-b border-[var(--color-border)]/50 hover:bg-white/[0.02] transition-colors">
-                    <td className="px-4 py-3">
+                    <td className="px-4 py-3 sticky left-0 bg-[var(--color-surface-2)] z-10">
                       <div className="font-bold">{s.ticker}</div>
                       <div className="text-xs text-[var(--color-text-muted)] truncate max-w-[120px]">{s.name}</div>
                     </td>
@@ -57,17 +84,24 @@ export default function ComparisonTable({ snapshots, comparativeAnalysis }: Comp
                     <td className={`text-right px-4 py-3 font-mono ${changeColor(s.changes.daily_pct)}`}>
                       {pctFmt(s.changes.daily_pct)}
                     </td>
-                    <td className={`text-right px-4 py-3 font-mono ${changeColor(s.changes.ytd_pct)}`}>
+                    <td className={`text-right px-4 py-3 font-mono ${changeColor(s.changes.ytd_pct)} ${highlightClass(s.ticker, bestYtd)}`}>
                       {pctFmt(s.changes.ytd_pct)}
                     </td>
-                    <td className={`text-right px-4 py-3 font-mono ${changeColor(s.changes.y1_pct)}`}>
+                    <td className={`text-right px-4 py-3 font-mono ${changeColor(s.changes.y1_pct)} ${highlightClass(s.ticker, bestY1)}`}>
                       {pctFmt(s.changes.y1_pct)}
                     </td>
-                    <td className="text-right px-4 py-3 font-mono hidden lg:table-cell">
+                    <td className={`text-right px-4 py-3 font-mono hidden lg:table-cell ${highlightClass(s.ticker, bestPe)}`}>
                       {s.trailing_pe != null ? `${s.trailing_pe.toFixed(1)}x` : '—'}
                     </td>
-                    <td className="text-right px-4 py-3 font-mono hidden lg:table-cell">
+                    <td className={`text-right px-4 py-3 font-mono hidden lg:table-cell ${highlightClass(s.ticker, bestFcf)}`}>
                       {s.cash_flow.fcf_yield != null ? `${s.cash_flow.fcf_yield.toFixed(2)}%` : '—'}
+                    </td>
+                    <td className={`text-right px-4 py-3 font-mono hidden lg:table-cell ${highlightClass(s.ticker, bestUpside)}`}>
+                      {upside != null ? (
+                        <span className={upside >= 0 ? 'text-emerald-400' : 'text-red-400'}>
+                          {formatPrice(s.analyst.target_price)} <span className="text-xs">({upside >= 0 ? '+' : ''}{upside.toFixed(0)}%)</span>
+                        </span>
+                      ) : '—'}
                     </td>
                     <td className="text-right px-4 py-3 hidden md:table-cell">
                       {humanMoney(s.market_cap)}

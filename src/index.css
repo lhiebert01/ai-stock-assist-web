@@ -38,3 +38,22 @@ body {
 
 /* Selection */
 ::selection { background: var(--color-accent); color: var(--color-surface-0); }
+
+/* Print styles */
+@media print {
+  body { background: white !important; color: #1a1a2e !important; }
+  .no-print { display: none !important; }
+  nav, footer, header { display: none !important; }
+
+  * {
+    color-adjust: exact !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* Prevent page breaks inside cards/tables */
+  .rounded-2xl, .rounded-xl, table, tr {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+}

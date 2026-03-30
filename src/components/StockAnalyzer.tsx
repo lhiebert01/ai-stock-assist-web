@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { motion } from 'motion/react';
 import { Search, Loader2, BarChart3, BookOpen, Sparkles, X, AlertCircle } from 'lucide-react';
 import type { StockSnapshot, AIRecommendation, Methodology } from '../types/stock';
@@ -8,6 +8,8 @@ import { supabase } from '../supabase';
 import StockCard from './StockCard';
 import ComparisonTable from './ComparisonTable';
 import MetricsGlossary from './MetricsGlossary';
+import ExecutiveSummary from './ExecutiveSummary';
+import ReportActions from './ReportActions';
 
 interface StockAnalyzerProps {
   userId: string;
@@ -27,6 +29,7 @@ export default function StockAnalyzer({ userId, userProfile, onCreditsUsed, onNe
   const [comparativeAnalysis, setComparativeAnalysis] = useState<string | null>(null);
   const [errors, setErrors] = useState<string[]>([]);
   const [glossaryOpen, setGlossaryOpen] = useState(false);
+  const resultsRef = useRef<HTMLDivElement>(null);
 
   const credits = userProfile?.credits_remaining ?? 0;
 
@@ -224,33 +227,56 @@ export default function StockAnalyzer({ userId, userProfile, onCreditsUsed, onNe
         </div>
       )}
 
-      {/* Comparison Table */}
-      {snapshots.length >= 2 && !loading && (
-        <ComparisonTable
+      {/* Report Actions */}
+      {!loading && snapshots.length > 0 && (
+        <ReportActions
           snapshots={snapshots}
+          methodology={methodology}
           comparativeAnalysis={comparativeAnalysis}
+          resultsRef={resultsRef}
         />
       )}
 
-      {/* Stock Cards */}
-      {!loading && snapshots.length > 0 && (
-        <div className="space-y-8">
-          {snapshots.map((snap, i) => (
-            <motion.div
-              key={snap.ticker}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.1 }}
-            >
-              <StockCard
-                snapshot={snap}
-                recommendation={recommendations[snap.ticker]}
-                methodology={methodology}
-              />
-            </motion.div>
-          ))}
-        </div>
-      )}
+      {/* Results Section — captured for PDF */}
+      <div ref={resultsRef}>
+        {/* Executive Summary */}
+        {!loading && snapshots.length > 0 && (
+          <ExecutiveSummary
+            snapshots={snapshots}
+            recommendations={recommendations}
+            methodology={methodology}
+            comparativeAnalysis={comparativeAnalysis}
+          />
+        )}
+
+        {/* Comparison Table */}
+        {snapshots.length >= 2 && !loading && (
+          <ComparisonTable
+            snapshots={snapshots}
+            comparativeAnalysis={comparativeAnalysis}
+          />
+        )}
+
+        {/* Stock Cards */}
+        {!loading && snapshots.length > 0 && (
+          <div className="space-y-8">
+            {snapshots.map((snap, i) => (
+              <motion.div
+                key={snap.ticker}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.1 }}
+              >
+                <StockCard
+                  snapshot={snap}
+                  recommendation={recommendations[snap.ticker]}
+                  methodology={methodology}
+                />
+              </motion.div>
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 }

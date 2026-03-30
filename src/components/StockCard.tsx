@@ -14,6 +14,14 @@ interface StockCardProps {
   snapshot: StockSnapshot;
   recommendation?: AIRecommendation;
   methodology: Methodology;
+  hideChart?: boolean;
+}
+
+function ratingAccentBorder(rating: string): string {
+  const r = rating.toUpperCase();
+  if (r === 'BUY' || r === 'STRONG_BUY' || r === 'STRONG BUY') return 'border-l-emerald-500';
+  if (r === 'SELL' || r === 'STRONG_SELL' || r === 'STRONG SELL') return 'border-l-red-500';
+  return 'border-l-yellow-500';
 }
 
 function MetricRow({ label, value, sub }: { label: string; value: string; sub?: string }) {
@@ -28,7 +36,7 @@ function MetricRow({ label, value, sub }: { label: string; value: string; sub?: 
   );
 }
 
-export default function StockCard({ snapshot, recommendation, methodology }: StockCardProps) {
+export default function StockCard({ snapshot, recommendation, methodology, hideChart }: StockCardProps) {
   const [expanded, setExpanded] = useState(true);
   const s = snapshot;
   const ch = s.changes;
@@ -41,7 +49,7 @@ export default function StockCard({ snapshot, recommendation, methodology }: Sto
     bsHealth == null ? '—' : bsHealth >= 80 ? 'A' : bsHealth >= 60 ? 'B' : bsHealth >= 40 ? 'C' : bsHealth >= 20 ? 'D' : 'F';
 
   return (
-    <div className="bg-[var(--color-surface-2)] border border-[var(--color-border)] rounded-2xl overflow-hidden">
+    <div className={`bg-[var(--color-surface-2)] border border-[var(--color-border)] rounded-2xl overflow-hidden border-l-4 ${ratingAccentBorder(analystRating)}`}>
       {/* Header */}
       <div
         className="flex items-center justify-between px-6 py-5 cursor-pointer hover:bg-white/[0.02] transition-colors"
@@ -121,8 +129,34 @@ export default function StockCard({ snapshot, recommendation, methodology }: Sto
                 )}
               </div>
 
+              {/* Analyst Target */}
+              {s.analyst.target_price != null && s.price != null && (
+                <div className="flex items-center gap-4 px-4 py-3 bg-[var(--color-surface-1)] rounded-xl border border-[var(--color-border)]/50">
+                  <div className="text-sm text-[var(--color-text-secondary)]">Analyst Target</div>
+                  <div className="font-bold font-mono">{formatPrice(s.analyst.target_price)}</div>
+                  {(() => {
+                    const upside = ((s.analyst.target_price! - s.price!) / s.price!) * 100;
+                    return (
+                      <span className={`text-sm font-mono font-medium ${upside >= 0 ? 'text-emerald-400' : 'text-red-400'}`}>
+                        {upside >= 0 ? '+' : ''}{upside.toFixed(1)}% {upside >= 0 ? 'upside' : 'downside'}
+                      </span>
+                    );
+                  })()}
+                  {s.analyst.num_analysts != null && (
+                    <span className="text-xs text-[var(--color-text-muted)] ml-auto">{s.analyst.num_analysts} analysts</span>
+                  )}
+                </div>
+              )}
+
               {/* Chart */}
-              <PriceChart ticker={s.ticker} />
+              {hideChart ? (
+                <div className="flex items-center gap-2 px-4 py-3 bg-[var(--color-surface-1)] rounded-xl border border-[var(--color-border)]/50 text-sm text-[var(--color-text-muted)]">
+                  Price: <span className="font-mono font-bold text-[var(--color-text-primary)]">{formatPrice(s.price)}</span>
+                  <span className="ml-1">as of {new Date(s.as_of).toLocaleDateString()}</span>
+                </div>
+              ) : (
+                <PriceChart ticker={s.ticker} />
+              )}
 
               {/* Performance Grid */}
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
@@ -142,7 +176,7 @@ export default function StockCard({ snapshot, recommendation, methodology }: Sto
               </div>
 
               {/* Metrics Panels */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className={`grid grid-cols-1 gap-4 ${s.growth.cagr_3yr != null || s.growth.revenue_growth != null ? 'md:grid-cols-4' : 'md:grid-cols-3'}`}>
                 {/* Fundamentals */}
                 <div className="bg-[var(--color-surface-1)] rounded-xl p-4 border border-[var(--color-border)]/50">
                   <div className="flex items-center gap-2 mb-3">
@@ -188,6 +222,21 @@ export default function StockCard({ snapshot, recommendation, methodology }: Sto
                   <MetricRow label="Div Yield" value={sm.dividend_yield != null ? `${(sm.dividend_yield * 100).toFixed(2)}%` : '—'} />
                   <MetricRow label="52W Range" value={`${formatPrice(s.panel.low_52w)} – ${formatPrice(s.panel.high_52w)}`} />
                 </div>
+
+                {/* Growth Metrics (4th panel, only when data exists) */}
+                {(s.growth.cagr_3yr != null || s.growth.revenue_growth != null) && (
+                  <div className="bg-[var(--color-surface-1)] rounded-xl p-4 border border-[var(--color-border)]/50">
+                    <div className="flex items-center gap-2 mb-3">
+                      <TrendingUp className="w-4 h-4 text-[var(--color-accent)]" />
+                      <h4 className="text-sm font-bold">Growth</h4>
+                    </div>
+                    <MetricRow label="CAGR 3yr" value={s.growth.cagr_3yr != null ? `${(s.growth.cagr_3yr * 100).toFixed(1)}%` : '—'} />
+                    <MetricRow label="CAGR 5yr" value={s.growth.cagr_5yr != null ? `${(s.growth.cagr_5yr * 100).toFixed(1)}%` : '—'} />
+                    <MetricRow label="Rev Growth" value={s.growth.revenue_growth != null ? `${(s.growth.revenue_growth * 100).toFixed(1)}%` : '—'} />
+                    <MetricRow label="Earn Growth" value={s.growth.earnings_growth != null ? `${(s.growth.earnings_growth * 100).toFixed(1)}%` : '—'} />
+                    <MetricRow label="Earn 5yr" value={s.growth.earnings_growth_5yr != null ? `${(s.growth.earnings_growth_5yr * 100).toFixed(1)}%` : '—'} />
+                  </div>
+                )}
               </div>
 
               {/* AI Recommendation */}
