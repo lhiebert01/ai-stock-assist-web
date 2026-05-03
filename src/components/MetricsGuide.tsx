@@ -145,6 +145,17 @@ export default function MetricsGuide({ onBack }: MetricsGuideProps) {
             interpretation="Cash returned to shareholders yearly as a percentage of price. Utilities/REITs typically pay 3-6%. Tech companies often pay 0-2%, preferring stock buybacks."
             proTip="High yield + declining stock price often signals a coming dividend cut. Check if FCF covers the dividend."
           />
+          <MetricCard
+            name="Payout Ratio"
+            formula="Annual Dividends / Net Income x 100"
+            benchmarks={[
+              { color: 'green', text: '< 60% Sustainable' },
+              { color: 'yellow', text: '60–100% Watch carefully' },
+              { color: 'red', text: '> 100% Borrowing to pay' },
+            ]}
+            interpretation="What share of profit a company pays out as dividends. Below 60% = plenty of room to keep paying and grow. Above 100% = paying out more than they earn (borrowing the difference) — a dividend cut is usually coming. The single best 'is this dividend safe?' check."
+            proTip="Pair with Dividend Yield. A high yield + high payout ratio is the classic 'yield trap' (think 12% yield with 162% payout — unsustainable). A modest 3% yield with 44% payout is what J&J pays — and what compounds for decades."
+          />
         </div>
       </section>
 
@@ -331,6 +342,7 @@ export default function MetricsGuide({ onBack }: MetricsGuideProps) {
                   <li className="flex items-start gap-2"><AlertTriangle className="w-3.5 h-3.5 text-red-400 shrink-0 mt-0.5" /> Current Ratio &lt; 1.0 — liquidity crisis risk</li>
                   <li className="flex items-start gap-2"><AlertTriangle className="w-3.5 h-3.5 text-red-400 shrink-0 mt-0.5" /> Negative FCF for 3+ years (mature company)</li>
                   <li className="flex items-start gap-2"><AlertTriangle className="w-3.5 h-3.5 text-red-400 shrink-0 mt-0.5" /> Health Score &lt; 40 (D grade)</li>
+                  <li className="flex items-start gap-2"><AlertTriangle className="w-3.5 h-3.5 text-red-400 shrink-0 mt-0.5" /> Payout Ratio &gt; 100% — borrowing to pay dividends</li>
                 </ul>
               </div>
               <div>
@@ -339,7 +351,7 @@ export default function MetricsGuide({ onBack }: MetricsGuideProps) {
                   <li className="flex items-start gap-2"><AlertTriangle className="w-3.5 h-3.5 text-yellow-400 shrink-0 mt-0.5" /> ROE &lt; 10% — inefficient business</li>
                   <li className="flex items-start gap-2"><AlertTriangle className="w-3.5 h-3.5 text-yellow-400 shrink-0 mt-0.5" /> Declining revenue for 2+ years</li>
                   <li className="flex items-start gap-2"><AlertTriangle className="w-3.5 h-3.5 text-yellow-400 shrink-0 mt-0.5" /> P/E &gt; 50 with slowing growth</li>
-                  <li className="flex items-start gap-2"><AlertTriangle className="w-3.5 h-3.5 text-yellow-400 shrink-0 mt-0.5" /> Dividend yield &gt; 8% — may be unsustainable</li>
+                  <li className="flex items-start gap-2"><AlertTriangle className="w-3.5 h-3.5 text-yellow-400 shrink-0 mt-0.5" /> Dividend yield &gt; 8% with Payout Ratio &gt; 80% — yield trap</li>
                 </ul>
               </div>
             </div>
@@ -394,6 +406,7 @@ export default function MetricsGuide({ onBack }: MetricsGuideProps) {
             <p className="text-xs text-emerald-400 mb-4">Stable companies with reliable dividends</p>
             <ul className="space-y-1.5 text-xs text-[var(--color-text-secondary)]">
               <li>Dividend Yield &gt; 3%</li>
+              <li>Payout Ratio &lt; 60% (sustainable)</li>
               <li>FCF &gt; Dividend Payments (sustainable)</li>
               <li>Debt/Equity &lt; 1.0 (safety)</li>
               <li>Current Ratio &gt; 2.0</li>

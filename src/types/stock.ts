@@ -57,6 +57,7 @@ export interface StockSnapshot {
     price_to_book: number | null;
     quick_ratio: number | null;
     dividend_yield: number | null;
+    payout_ratio: number | null;
     balance_sheet_health: number | null;
   };
   as_of: string;

@@ -240,6 +240,19 @@ export default function StockCard({ snapshot, recommendation, methodology, hideC
                   <MetricRow label="Debt/Equity" value={sm.debt_to_equity != null ? `${sm.debt_to_equity.toFixed(2)}` : '—'} />
                   <MetricRow label="Quick Ratio" value={sm.quick_ratio != null ? `${sm.quick_ratio.toFixed(2)}x` : '—'} />
                   <MetricRow label="Div Yield" value={sm.dividend_yield != null ? `${(sm.dividend_yield * 100).toFixed(2)}%` : '—'} />
+                  <MetricRow
+                    label="Payout Ratio"
+                    value={sm.payout_ratio != null ? `${(sm.payout_ratio * 100).toFixed(0)}%` : '—'}
+                    sub={
+                      sm.payout_ratio == null
+                        ? undefined
+                        : sm.payout_ratio < 0.6
+                        ? 'Sustainable'
+                        : sm.payout_ratio <= 1.0
+                        ? 'Watch'
+                        : 'Unsustainable'
+                    }
+                  />
                   <MetricRow label="52W Range" value={`${formatPrice(s.panel.low_52w)} – ${formatPrice(s.panel.high_52w)}`} />
                 </div>
 
