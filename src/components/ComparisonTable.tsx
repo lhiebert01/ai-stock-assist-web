@@ -129,13 +129,18 @@ export default function ComparisonTable({ snapshots, comparativeAnalysis }: Comp
           </button>
 
           {showAnalysis && (
-            <div className="px-6 pb-6 text-sm leading-relaxed text-[var(--color-text-secondary)] prose prose-invert prose-sm max-w-none
-              prose-headings:text-[var(--color-text-primary)] prose-headings:font-bold
-              prose-strong:text-[var(--color-text-primary)]
-              prose-table:border-collapse prose-th:border prose-th:border-[var(--color-border)] prose-th:px-3 prose-th:py-2 prose-th:bg-[var(--color-surface-3)]
-              prose-td:border prose-td:border-[var(--color-border)] prose-td:px-3 prose-td:py-2
-            ">
-              <ReactMarkdown remarkPlugins={[remarkGfm]}>{comparativeAnalysis}</ReactMarkdown>
+            <div className="px-6 pb-6">
+              <div
+                className="comparative-analysis text-[var(--color-text-secondary)] prose prose-invert max-w-none
+                  prose-p:my-2 prose-p:leading-relaxed
+                  prose-headings:text-[var(--color-text-primary)] prose-headings:font-bold prose-headings:mt-5 prose-headings:mb-2
+                  prose-h3:text-base prose-h3:pb-1 prose-h3:border-b prose-h3:border-[var(--color-border)]
+                  prose-h4:text-sm prose-h4:text-[var(--color-accent)]
+                  prose-strong:text-[var(--color-text-primary)]
+                  prose-ul:my-2 prose-li:my-1 prose-li:marker:text-[var(--color-text-muted)]"
+              >
+                <ReactMarkdown remarkPlugins={[remarkGfm]}>{comparativeAnalysis}</ReactMarkdown>
+              </div>
             </div>
           )}
         </div>

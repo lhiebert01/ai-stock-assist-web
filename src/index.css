@@ -39,6 +39,44 @@ body {
 /* Selection */
 ::selection { background: var(--color-accent); color: var(--color-surface-0); }
 
+/* AI Comparative Analysis — markdown styling for tables, headings, lists */
+.comparative-analysis {
+  font-size: 0.9375rem;
+  line-height: 1.6;
+}
+.comparative-analysis table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0.75rem 0 1.25rem;
+  font-size: 0.875rem;
+  display: block;
+  overflow-x: auto;
+}
+.comparative-analysis thead {
+  background: var(--color-surface-3);
+}
+.comparative-analysis th,
+.comparative-analysis td {
+  border: 1px solid var(--color-border-light);
+  padding: 0.5rem 0.75rem;
+  text-align: left;
+  vertical-align: top;
+  white-space: nowrap;
+}
+.comparative-analysis th {
+  font-weight: 700;
+  color: var(--color-text-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-size: 0.75rem;
+}
+.comparative-analysis tbody tr:nth-child(even) {
+  background: rgba(255, 255, 255, 0.02);
+}
+.comparative-analysis tbody tr:hover {
+  background: rgba(34, 211, 238, 0.04);
+}
+
 /* Print styles */
 @media print {
   body { background: white !important; color: #1a1a2e !important; }
