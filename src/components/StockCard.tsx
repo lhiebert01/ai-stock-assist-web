@@ -9,6 +9,7 @@ import type { StockSnapshot, AIRecommendation, Methodology } from '../types/stoc
 import { formatPrice, humanMoney, pctFmt, changeColor, ratingColor } from '../lib/formatters';
 import PriceChart from './PriceChart';
 import RecommendationCard from './RecommendationCard';
+import VerdictReconciliation from './VerdictReconciliation';
 
 interface StockCardProps {
   snapshot: StockSnapshot;
@@ -17,11 +18,13 @@ interface StockCardProps {
   hideChart?: boolean;
 }
 
-function ratingAccentBorder(rating: string): string {
+function ratingAccentBorder(rating: string | undefined): string {
+  if (!rating) return 'border-l-[var(--color-border-light)]';
   const r = rating.toUpperCase();
-  if (r === 'BUY' || r === 'STRONG_BUY' || r === 'STRONG BUY') return 'border-l-emerald-500';
-  if (r === 'SELL' || r === 'STRONG_SELL' || r === 'STRONG SELL') return 'border-l-red-500';
-  return 'border-l-yellow-500';
+  if (r === 'BUY') return 'border-l-emerald-500';
+  if (r === 'SELL') return 'border-l-red-500';
+  if (r === 'HOLD') return 'border-l-yellow-500';
+  return 'border-l-[var(--color-border-light)]';
 }
 
 function MetricRow({ label, value, sub }: { label: string; value: string; sub?: string }) {
@@ -49,7 +52,7 @@ export default function StockCard({ snapshot, recommendation, methodology, hideC
     bsHealth == null ? '—' : bsHealth >= 80 ? 'A' : bsHealth >= 60 ? 'B' : bsHealth >= 40 ? 'C' : bsHealth >= 20 ? 'D' : 'F';
 
   return (
-    <div className={`bg-[var(--color-surface-2)] border border-[var(--color-border)] rounded-2xl overflow-hidden border-l-4 ${ratingAccentBorder(analystRating)}`}>
+    <div className={`bg-[var(--color-surface-2)] border border-[var(--color-border)] rounded-2xl overflow-hidden border-l-4 ${ratingAccentBorder(recommendation?.rating)}`}>
       {/* Header */}
       <div
         className="flex items-center justify-between px-6 py-5 cursor-pointer hover:bg-white/[0.02] transition-colors"
@@ -62,8 +65,13 @@ export default function StockCard({ snapshot, recommendation, methodology, hideC
           <div className="min-w-0">
             <div className="flex items-center gap-2">
               <h3 className="text-lg font-bold truncate">{s.ticker}</h3>
-              <span className={`px-2 py-0.5 rounded-md text-xs font-bold border ${ratingColor(analystRating)}`}>
-                {analystRating}
+              <span
+                className={`px-2 py-0.5 rounded-md text-xs font-bold border ${ratingColor(analystRating)}`}
+                title={`Wall Street analyst consensus${
+                  s.analyst.num_analysts ? ` from ${s.analyst.num_analysts} analysts` : ''
+                }. This reflects 12-month price targets and earnings momentum — separate from AI Stock Assist's verdict shown below.`}
+              >
+                Wall St: {analystRating}
               </span>
             </div>
             <p className="text-sm text-[var(--color-text-secondary)] truncate">{s.name}</p>
@@ -132,7 +140,12 @@ export default function StockCard({ snapshot, recommendation, methodology, hideC
               {/* Analyst Target */}
               {s.analyst.target_price != null && s.price != null && (
                 <div className="flex items-center gap-4 px-4 py-3 bg-[var(--color-surface-1)] rounded-xl border border-[var(--color-border)]/50">
-                  <div className="text-sm text-[var(--color-text-secondary)]">Analyst Target</div>
+                  <div
+                    className="text-sm text-[var(--color-text-secondary)]"
+                    title="12-month price target — the average of forecasts published by Wall Street equity analysts covering this stock."
+                  >
+                    Analyst Target
+                  </div>
                   <div className="font-bold font-mono">{formatPrice(s.analyst.target_price)}</div>
                   {(() => {
                     const upside = ((s.analyst.target_price! - s.price!) / s.price!) * 100;
@@ -147,6 +160,13 @@ export default function StockCard({ snapshot, recommendation, methodology, hideC
                   )}
                 </div>
               )}
+
+              {/* Verdict reconciliation — shown only when both ratings are available */}
+              <VerdictReconciliation
+                analystRaw={s.analyst.recommendation}
+                aiRating={recommendation?.rating}
+                methodology={methodology}
+              />
 
               {/* Chart */}
               {hideChart ? (
