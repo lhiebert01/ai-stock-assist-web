@@ -29,8 +29,8 @@
 | **Mon-Tue May 4-5** | as time allows | (prep) | — | Lindsay's elevation pass on Library piece (~45 min). Re-verify the 6 tickers (T·BMY·CNQ·HBM·APA·EGO) still show the disagreements; swap if any have flipped. Pre-stage social copy in Buffer / scheduling tool. |
 | **Tue May 5** | evening | (prep) | — | Schedule Substack for Wed 8am. Final check of LinkedIn / FB / X drafts. |
 | **Wed May 6** | 8:00 am | **Substack** | `LIBRARY_HERO.png` as header upload, body from .docx, four inline images per markdown markers | **PRIMARY DROP** |
-| Wed May 6 | 8:30 am | **LinkedIn** | LinkedIn variant from .md + `LIBRARY_PROMO_linkedin.png` (alternate composition for variety) + 11 hashtags + the P.S. invitation | One post; don't grind for likes |
-| Wed May 6 | 6:00 pm | **Facebook** | Facebook variant + 3 hashtags | One post |
+| Wed May 6 | 8:30 am | **LinkedIn — CAROUSEL** | 6-slide carousel (Hook · Problem · Engine · Proof · Differentiator · CTA) built in Canva using existing 5 images + new Slide 6 CTA. Caption ~150w from .md `## LinkedIn — Carousel post` section. **Substack URL in FIRST COMMENT (post 5 min after carousel goes live)** — preserves LinkedIn algorithm reach by keeping the link out of the post body. |
+| Wed May 6 | 6:00 pm | **Facebook — multi-image post** | Upload 5-6 images as single multi-photo post (auto-becomes swipeable gallery on mobile). Caption ~210w from .md `## Facebook — Multi-image post` section. **Link can go directly in the body** — Facebook does NOT penalize external links the way LinkedIn does. |
 | Wed May 6 | 9:00 pm | **X** | 7-tweet thread + `#Investing #AI #ValueInvesting` | One thread |
 | **Thu May 7** | 9:00 am | **Reddit r/investing** | Insight-led version (link in profile only) | **PRIMARY REDDIT DROP — block 2-6 hrs for replies** |
 | Thu May 7 | 9:00 am | **Medium** | Cross-post (passive — no engagement work needed) | |
@@ -77,7 +77,10 @@
 - [x] .docx export ready (`blog-the-library-is-now-an-app-v5.docx`)
 - [ ] Lindsay's elevation pass (Mon-Tue May 4-5)
 - [ ] Re-verify 6 tickers (Tue May 5)
+- [ ] Generate Slide 6 CTA image (`LIBRARY_CAROUSEL_slide-6-cta.png`) — prompt is in `blog-the-library-is-now-an-app.md` (~5 min)
+- [ ] Build the LinkedIn carousel in Canva using the 6 slide specs (5 existing images + new Slide 6) — export as PDF (~15 min)
 - [ ] Schedule Substack for Wed 8am ET (Tue May 5 evening)
+- [ ] Pre-stage LinkedIn carousel + caption + first-comment text in scheduling tool (or set Wed-morning reminder to post manually + drop the Substack URL as the first comment 5 min after)
 
 ### Episode 5 — ready to ship Mon May 11 (with one optional asset gap)
 

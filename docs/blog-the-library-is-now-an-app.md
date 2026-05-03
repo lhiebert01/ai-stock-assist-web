@@ -136,7 +136,89 @@ I read every comment and reply within 24 hours.
 
 # Channel Variants
 
-## LinkedIn (~290 words — close to verbatim, slight tightening)
+## LinkedIn — Carousel post (PRIMARY LinkedIn format for this piece)
+
+**Why carousel over single-image post:** LinkedIn carousels get 3-5× the reach of single-image posts because the algorithm rewards dwell time (every swipe is a positive engagement signal). People also save carousels for later, which boosts reach further.
+
+**The hybrid play:**
+1. **The carousel** does the visual heavy lifting (6 slides — see specs below)
+2. **The caption** below the carousel = the ~150-word version (delivers the lesson even without swiping)
+3. **First comment** = the Substack link (no link-out penalty in the post body — LinkedIn's algorithm does NOT penalize links in comments)
+
+### Carousel slides (6 total)
+
+Build in Canva using its "LinkedIn Carousel" template (1080 × 1080 px square, exports as multi-page PDF that LinkedIn ingests as a Document post).
+
+**SLIDE 1 — Hook**
+- Background: `LIBRARY_HERO.png` (slightly cropped/zoomed)
+- Headline overlay (top, large serif, cream on subtle navy ink-stamp): **"I read 600+ investing books."**
+- Subhead (below, smaller): *"Then I built the tool I wished existed."*
+- Bottom-right: "Swipe →"
+
+**SLIDE 2 — The Problem**
+- Background: `LIBRARY_INARTICLE_books-and-app.png`
+- Headline: **"The wisdom of Buffett, Graham, Munger exists in books."**
+- Body (smaller, below): *"The problem was never access. The problem was translation."*
+
+**SLIDE 3 — The Engine**
+- Background: `LIBRARY_INARTICLE_jargon-decryption.png`
+- Headline: **"AI Stock Assist turns Wall Street jargon into plain English."**
+- Body: *"P/FCF · OCF/NI · payout sustainability · cash conversion. Translated. Applied. In seconds."*
+
+**SLIDE 4 — The Proof**
+- Background: `LIBRARY_INARTICLE_business-vs-story-APA.png`
+- Headline: **"This week I tested 6 tickers."**
+- Body: *"The framework disagreed with Wall Street twice. Wall Street prices the **story.** The framework tests the **business.**"*
+
+**SLIDE 5 — The Differentiator**
+- Background: `LIBRARY_INARTICLE_greats-boardroom-CNQ.png`
+- Headline (single line, stacked words): **"Cash flow. Valuation. Quality. Risk. Discipline."**
+- Body: *"Built with the experience of the investing greats. Amplified by frontier AI. A framework that does not flinch."*
+
+**SLIDE 6 — CTA** (needs to be created — see prompt below)
+- Background: simple dark navy with subtle gold accents, AI Stock Assist diamond logo center
+- Headline (large, gold): **"3 free analyses."**
+- Subhead: *"No credit card. No signup gate."*
+- Footer: **→ aistockassist.com**
+- Small caption: *"Save & share if this resonated."*
+
+### LinkedIn caption text (~150 words — paste below the carousel)
+
+> 600+ investing books since 2008.
+>
+> One question kept coming back: *why doesn't every ordinary investor have this wisdom at their fingertips?*
+>
+> The problem was never access. The books exist. **The problem was translation.**
+>
+> So I built AI Stock Assist. Not a chatbot. Not another stock screener. A working analytical engine that applies the disciplined frameworks of Buffett, Graham, Munger, Lynch, Bogle, and Housel to real-time market data — and gives you back a verdict in plain English.
+>
+> This week I tested six tickers. The framework disagreed with Wall Street twice — strong cash flow on one, negative free cash flow on the other.
+>
+> **Wall Street prices the story. The framework tests the business.**
+>
+> Swipe through the slides ↑ for the visual story. Full longread on Substack — link in the first comment ↓
+>
+> #Investing #ValueInvesting #BenjaminGraham #WarrenBuffett #FintechAI #StockMarket #DividendInvesting
+
+### First-comment text (post 5 minutes after the carousel goes live)
+
+> Full version with all the references on Substack: [https://lindsayhiebert.substack.com/p/the-library-is-now-an-app] (replace with actual URL after Substack publishes).
+>
+> Try the tool — 3 free analyses, no credit card: aistockassist.com
+
+### Slide 6 CTA image prompt (to generate)
+
+**Save as:** `docs/images/library-is-now-an-app/LIBRARY_CAROUSEL_slide-6-cta.png`
+
+> A clean modern square graphic, 1080 × 1080 px. Deep navy background (#0F1A36) with subtle warm gold radial gradient from center. The AI Stock Assist diamond logo (gold/cream) prominently centered in the upper third — large, instantly recognizable. Below the logo, in elegant cream serif typography: large headline **"3 free analyses."** then below in smaller cream sans-serif **"No credit card. No signup gate."** Toward the bottom: a gold call-to-action band with the URL **→ aistockassist.com** in clean sans-serif. Very bottom: small subtle text *"Save & share if this resonated."*
+>
+> **Real-world graphic-design quality. Clean editorial vector aesthetic — Bloomberg / Stripe / Linear marketing style. NOT illustrated, NOT a 3D render, NOT photorealistic. Just clean modern brand graphic with crisp typography and pixel-perfect logo. The image must feel premium and intentional, not like a default Canva template.** 1080 × 1080 px square (LinkedIn carousel slide format).
+
+---
+
+## LinkedIn — Single-image extract post (FALLBACK / alternative)
+
+If you don't have time to build the carousel on Wednesday morning, fall back to this single-image variant. ~290 words — close to verbatim, slight tightening.
 
 **Title:** I read 600 investing books. Then I built the tool I always wished existed.
 
@@ -243,7 +325,40 @@ The library is now an app.
 
 ---
 
-## Facebook (~190 words, conversational)
+## Facebook — Multi-image post (PRIMARY Facebook format for this piece)
+
+**Why multi-image:** Facebook's organic algorithm rewards posts with higher dwell time too — multi-photo posts (Facebook auto-creates a swipeable gallery on mobile) get meaningfully better reach than single-image posts for personal/professional content. Less algorithm boost than LinkedIn carousels, but materially better than single-image.
+
+**The play:**
+1. **Upload all 6 images** as a single multi-image post (the same 6 carousel slides, OR if you want minimal effort just upload the 5 existing inline images: HERO + 4 inline + skip Slide 6 CTA since the URL goes in the caption anyway)
+2. **Caption** is conversational, story-led, with the link inline
+3. Facebook does not penalize external links the way LinkedIn does — link can go directly in the post body
+
+### Facebook caption (~210 words, conversational)
+
+> I want to share something I've been working on for years.
+>
+> Since 2008 I've read or listened to over 600 books on investing — Buffett, Graham, Munger, Lynch, Dalio, Bogle, Housel, all of them. And one question kept nagging at me: why doesn't every ordinary investor have this wisdom at their fingertips? The books exist. The problem was never access — it was **translation.**
+>
+> So I built it. AI Stock Assist. Not a chatbot, not another screener. A working analytical engine that applies the same disciplined frameworks the greats used — to real-time data — and turns finance jargon into a verdict you can understand in seconds.
+>
+> This week I tested six tickers: T, BMY, CNQ, HBM, APA, EGO. Sixty seconds later, AI Stock Assist disagreed with Wall Street twice. Not contrarian for fun. Just disciplined. The framework saw what consensus often misses — strong cash flow on one, weak cash generation on another.
+>
+> Wall Street prices the story. AI Stock Assist tests the business.
+>
+> 3 free analyses, no credit card. Try it: **aistockassist.com**
+>
+> #Investing #PersonalFinance #StockMarket
+
+---
+
+## Facebook — Single-image variant (FALLBACK)
+
+If you'd rather post a single image: same caption as above, but with `LIBRARY_HERO.png` as the only attached image. ~190 words version below preserved as the original alternative copy.
+
+---
+
+## Facebook (~190 words, conversational, single-image fallback)
 
 I want to share something I've been working on for years.
 
