@@ -1,14 +1,15 @@
 import { useState } from 'react';
 import { motion } from 'motion/react';
 import { Table2, Brain, ChevronDown, ChevronUp } from 'lucide-react';
-import ReactMarkdown from 'react-markdown';
-import remarkGfm from 'remark-gfm';
-import type { StockSnapshot } from '../types/stock';
+import type { StockSnapshot, AIRecommendation, Methodology } from '../types/stock';
 import { formatPrice, humanMoney, pctFmt, changeColor, ratingColor } from '../lib/formatters';
+import AnalysisCards from './AnalysisCards';
 
 interface ComparisonTableProps {
   snapshots: StockSnapshot[];
   comparativeAnalysis: string | null;
+  recommendations?: Record<string, AIRecommendation>;
+  methodology?: Methodology;
 }
 
 function bestInColumn(snapshots: StockSnapshot[], getter: (s: StockSnapshot) => number | null, mode: 'max' | 'min' = 'max'): string | null {
@@ -21,7 +22,12 @@ function bestInColumn(snapshots: StockSnapshot[], getter: (s: StockSnapshot) => 
   return best?.ticker ?? null;
 }
 
-export default function ComparisonTable({ snapshots, comparativeAnalysis }: ComparisonTableProps) {
+export default function ComparisonTable({
+  snapshots,
+  comparativeAnalysis,
+  recommendations,
+  methodology,
+}: ComparisonTableProps) {
   const [showAnalysis, setShowAnalysis] = useState(true);
 
   // Compute column bests
@@ -130,17 +136,12 @@ export default function ComparisonTable({ snapshots, comparativeAnalysis }: Comp
 
           {showAnalysis && (
             <div className="px-6 pb-6">
-              <div
-                className="comparative-analysis text-[var(--color-text-secondary)] prose prose-invert max-w-none
-                  prose-p:my-2 prose-p:leading-relaxed
-                  prose-headings:text-[var(--color-text-primary)] prose-headings:font-bold prose-headings:mt-5 prose-headings:mb-2
-                  prose-h3:text-base prose-h3:pb-1 prose-h3:border-b prose-h3:border-[var(--color-border)]
-                  prose-h4:text-sm prose-h4:text-[var(--color-accent)]
-                  prose-strong:text-[var(--color-text-primary)]
-                  prose-ul:my-2 prose-li:my-1 prose-li:marker:text-[var(--color-text-muted)]"
-              >
-                <ReactMarkdown remarkPlugins={[remarkGfm]}>{comparativeAnalysis}</ReactMarkdown>
-              </div>
+              <AnalysisCards
+                analysis={comparativeAnalysis}
+                snapshots={snapshots}
+                recommendations={recommendations}
+                methodology={methodology ?? 'Growth & Quality'}
+              />
             </div>
           )}
         </div>

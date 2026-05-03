@@ -254,6 +254,8 @@ export default function StockAnalyzer({ userId, userProfile, onCreditsUsed, onNe
           <ComparisonTable
             snapshots={snapshots}
             comparativeAnalysis={comparativeAnalysis}
+            recommendations={recommendations}
+            methodology={methodology}
           />
         )}
 

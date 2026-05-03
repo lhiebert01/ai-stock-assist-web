@@ -74,6 +74,8 @@ export default function SavedAnalysisView({ entry, onBack }: SavedAnalysisViewPr
           <ComparisonTable
             snapshots={snapshots}
             comparativeAnalysis={comparativeAnalysis}
+            recommendations={recommendations}
+            methodology={methodology}
           />
         )}
 
