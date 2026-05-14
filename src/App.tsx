@@ -36,7 +36,13 @@ export default function App() {
     // Don't await profile load inside onAuthStateChange — it causes deadlock
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       if (session?.user) {
-        const appUser: AppUser = { id: session.user.id, email: session.user.email || '' };
+        const meta = (session.user.user_metadata ?? {}) as Record<string, unknown>;
+        const appUser: AppUser = {
+          id: session.user.id,
+          email: session.user.email || '',
+          avatar_url: (meta.avatar_url as string) || (meta.picture as string) || null,
+          full_name: (meta.full_name as string) || (meta.name as string) || null,
+        };
         setUser(appUser);
 
         // PASSWORD_RECOVERY event → show "Set New Password" screen instead of auto-login
@@ -89,7 +95,7 @@ export default function App() {
         const { data: newProfile, error: insertError } = await supabase.from('user_profiles').insert({
           id: appUser.id,
           email: appUser.email,
-          username: appUser.email.split('@')[0],
+          username: appUser.full_name || appUser.email.split('@')[0],
           is_admin: isAdmin,
         }).select().single();
         console.log('[Profile] Insert result:', { newProfile, insertError });

@@ -102,8 +102,18 @@ export default function Navbar({ user, userProfile, view, onNavigate, onLogout }
                     onClick={() => setProfileOpen(!profileOpen)}
                     className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-[var(--color-text-secondary)] hover:text-white hover:bg-white/5 transition-all"
                   >
-                    <div className="w-7 h-7 rounded-full bg-[var(--color-accent)]/20 flex items-center justify-center text-xs font-bold text-[var(--color-accent)]">
-                      {getInitials()}
+                    <div className="w-7 h-7 rounded-full bg-[var(--color-accent)]/20 flex items-center justify-center text-xs font-bold text-[var(--color-accent)] overflow-hidden">
+                      {user?.avatar_url ? (
+                        <img
+                          src={user.avatar_url}
+                          alt={displayName}
+                          className="w-full h-full object-cover"
+                          referrerPolicy="no-referrer"
+                          onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
+                        />
+                      ) : (
+                        getInitials()
+                      )}
                     </div>
                     <span className="hidden sm:block text-sm font-medium text-[var(--color-text-primary)]">{displayName}</span>
                     <ChevronDown className={`w-4 h-4 transition-transform ${profileOpen ? 'rotate-180' : ''}`} />
