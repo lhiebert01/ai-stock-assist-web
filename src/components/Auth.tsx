@@ -1,7 +1,10 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Mail, Lock, User, Eye, EyeOff, ArrowRight, Loader2, AlertCircle, CheckCircle2, Chrome, TrendingUp } from 'lucide-react';
+import { Mail, Lock, User, Eye, EyeOff, ArrowRight, Loader2, AlertCircle, CheckCircle2, TrendingUp } from 'lucide-react';
+import { GoogleOAuthProvider, GoogleLogin, type CredentialResponse } from '@react-oauth/google';
 import { supabase } from '../supabase';
+
+const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID as string | undefined;
 
 type AuthMode = 'login' | 'signup' | 'reset';
 
@@ -20,17 +23,23 @@ export default function Auth({ onAuthSuccess, onBack }: AuthProps) {
   const [error, setError] = useState<string | null>(null);
   const [message, setMessage] = useState<string | null>(null);
 
-  const handleGoogleLogin = async () => {
+  const handleGoogleCredential = async (credentialResponse: CredentialResponse) => {
+    if (!credentialResponse.credential) {
+      setError('Google sign-in failed: no credential returned');
+      return;
+    }
     setLoading(true);
     setError(null);
     try {
-      const { error } = await supabase.auth.signInWithOAuth({
+      const { error } = await supabase.auth.signInWithIdToken({
         provider: 'google',
-        options: { redirectTo: `${window.location.origin}/` },
+        token: credentialResponse.credential,
       });
       if (error) throw error;
+      onAuthSuccess();
     } catch (err: any) {
       setError(err.message || 'Google login failed');
+    } finally {
       setLoading(false);
     }
   };
@@ -85,6 +94,7 @@ export default function Auth({ onAuthSuccess, onBack }: AuthProps) {
   };
 
   return (
+    <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID || ''}>
     <div className="min-h-screen flex items-center justify-center px-4 py-12">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -203,14 +213,24 @@ export default function Auth({ onAuthSuccess, onBack }: AuthProps) {
             </div>
           </div>
 
-          <button
-            onClick={handleGoogleLogin}
-            disabled={loading}
-            className="w-full bg-[var(--color-surface-1)] border border-[var(--color-border)] text-[var(--color-text-primary)] py-3 rounded-xl font-bold hover:bg-[var(--color-surface-3)] transition-all flex items-center justify-center gap-3"
-          >
-            <Chrome className="w-5 h-5" />
-            Google Account
-          </button>
+          {GOOGLE_CLIENT_ID ? (
+            <div className="flex justify-center [color-scheme:light]">
+              <GoogleLogin
+                onSuccess={handleGoogleCredential}
+                onError={() => setError('Google sign-in was cancelled or failed')}
+                theme="filled_black"
+                shape="pill"
+                size="large"
+                text="continue_with"
+                logo_alignment="left"
+                width="320"
+              />
+            </div>
+          ) : (
+            <div className="text-center text-xs text-[var(--color-text-muted)]">
+              Google sign-in is not configured. Set <code>VITE_GOOGLE_CLIENT_ID</code> in your environment.
+            </div>
+          )}
 
           {/* Toggle */}
           <div className="mt-6 pt-6 border-t border-[var(--color-border)] text-center">
@@ -247,5 +267,6 @@ export default function Auth({ onAuthSuccess, onBack }: AuthProps) {
         </div>
       </motion.div>
     </div>
+    </GoogleOAuthProvider>
   );
 }
