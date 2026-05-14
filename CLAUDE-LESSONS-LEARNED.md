@@ -1007,5 +1007,134 @@ a78c5be  Add password reset flow with Set New Password screen
 
 ---
 
-*Last updated: 2026-03-29 by Claude Code (Opus 4.6)*
+## 22. Google Sign-In Polish: GIS Popup + Profile Sync (2026-05-14)
+
+**Problem.** Supabase's standard `signInWithOAuth({ provider: 'google' })` does a full-page redirect through `https://<project-ref>.supabase.co/auth/v1/callback`. Google's 2024-era simplified consent screen shows the **raw redirect-URI hostname** ("Sign in to gcuvtpccyotujnuufxod.supabase.co"), which is unbranded, looks like phishing, and tanks conversion.
+
+**Solution.** Switch to **Google Identity Services (GIS)** popup flow with `signInWithIdToken`. Browser-side GIS gets an ID token directly from Google → handed to Supabase → no Supabase domain ever exposed in the user-facing flow. Google's popup uses your OAuth client's branding (app name + logo) instead of a hostname.
+
+### Setup Playbook (Reusable Across Apps)
+
+This is the order that minimizes back-and-forth. Each step has a hard dependency on the previous one.
+
+**Phase 1 — GCP**
+1. Pick (or create) a GCP project for the app. Reuse the production project; don't create one per surface.
+2. **APIs & Services → OAuth consent screen** (or new **Google Auth Platform**) → Get started.
+   - User type: External
+   - App name: the human-readable product name (NOT the GCP project ID)
+   - User support email + Developer contact
+   - Authorized domains: your apex domain (e.g., `aistockassist.com`) + the Supabase host (e.g., `supabase.co`)
+3. **Branding** → upload a 120×120 PNG logo. Convert from your existing favicon.svg via cloudconvert if needed.
+4. **Audience** → **Publish App**. Non-sensitive scopes (`openid`, `email`, `profile`) need no Google verification — publishing is instant.
+5. **Clients** → **Create Client** → **Web application**:
+   - Authorized JavaScript origins: `https://www.<domain>`, `https://<domain>`, `http://localhost:5173`
+   - Authorized redirect URIs: `https://<supabase-ref>.supabase.co/auth/v1/callback` (exact, no trailing slash)
+6. Copy Client ID + Client Secret. The Client ID is the public Web client ID — safe to bundle. The secret is only needed for the redirect-flow fallback path.
+
+**Phase 2 — Supabase**
+1. **Authentication → Providers → Google** → enable → paste Client ID + Client Secret → Save.
+2. **Authentication → URL Configuration**:
+   - Site URL: `https://www.<domain>`
+   - Redirect URLs allowlist: `https://www.<domain>/**`, `https://<domain>/**`, `http://localhost:5173/**`
+
+**Phase 3 — Code (React/Vite SPA pattern used here)**
+1. `npm install @react-oauth/google`
+2. Add `VITE_GOOGLE_CLIENT_ID` to `.env.example` AND Vercel env vars (Production + Preview + Development).
+3. In `Auth.tsx`:
+   ```tsx
+   import { GoogleOAuthProvider, GoogleLogin, type CredentialResponse } from '@react-oauth/google';
+   const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID;
+
+   const handleGoogleCredential = async (resp: CredentialResponse) => {
+     if (!resp.credential) return;
+     const { error } = await supabase.auth.signInWithIdToken({
+       provider: 'google',
+       token: resp.credential,
+     });
+     if (!error) onAuthSuccess();
+   };
+
+   <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
+     <GoogleLogin
+       onSuccess={handleGoogleCredential}
+       onError={() => setError('Google sign-in failed')}
+       theme="filled_black" shape="pill" size="large"
+       text="continue_with" width="320"
+     />
+   </GoogleOAuthProvider>
+   ```
+4. In auth-state listener (`App.tsx`), extract Google profile from `user_metadata`:
+   ```ts
+   const meta = (session.user.user_metadata ?? {}) as Record<string, unknown>;
+   const appUser = {
+     id: session.user.id,
+     email: session.user.email || '',
+     avatar_url: (meta.avatar_url as string) || (meta.picture as string) || null,
+     full_name: (meta.full_name as string) || (meta.name as string) || null,
+   };
+   ```
+5. In auto-profile-create logic, prefer `full_name` over `email.split('@')[0]` for username.
+6. In Navbar/avatar, render `<img src={user.avatar_url} referrerPolicy="no-referrer">` with `onError` fallback to initials. `referrerPolicy="no-referrer"` is critical — `lh3.googleusercontent.com` rejects requests with the wrong Referer.
+
+**Phase 4 — Order of deploys matters**
+1. Add env var to Vercel FIRST. Vercel only injects `VITE_*` vars at build time. Pushing code before the env var means the first deploy ships with `undefined` → button shows "not configured" fallback.
+2. Then git push to main → Vercel auto-deploys.
+3. Hard-refresh in incognito to test. Browser caching is the #1 source of "it didn't work" reports after a deploy.
+
+### Gotchas We Hit
+
+- **AUTH-NEW-001: Browser cache after deploy.** Sign-out/sign-in changes auth state but doesn't reload the JS bundle. Users see the old code with the new auth state. Forced-refresh fixes it. For internal testing: Ctrl+Shift+R or browser restart.
+- **AUTH-NEW-002: Client secret leakage.** OAuth client secrets pasted into chat / git / logs are compromised the moment they're written. Rotation flow: GCP **Clients → secret panel** → **+ Add Secret** (keeps old alive) → update Supabase → verify → **Delete old secret**.
+- **AUTH-NEW-003: Google Auth Platform URL-field whitespace.** The new GCP form rejects URLs with leading/trailing spaces with the unhelpful error "Invalid domain: cannot contain whitespace." Clear the field and re-type.
+- **AUTH-NEW-004: Origins vs Redirect URIs are different sections.** Authorized JavaScript origins accept scheme+host only (no path). Authorized redirect URIs require the full path (`/auth/v1/callback`). The Supabase callback belongs in redirect URIs ONLY. Pasting it into origins triggers "URIs must not contain a path or end with '/'".
+- **AUTH-NEW-005: user_profiles.username is set once.** The auto-create fallback only fires when a profile row is missing. If a row was created under the old "email-prefix" logic, the new "Google full_name" logic won't retroactively update it. Use a SQL backfill:
+  ```sql
+  update public.user_profiles up
+  set username = au.raw_user_meta_data->>'full_name'
+  from auth.users au
+  where au.id = up.id
+    and au.raw_user_meta_data->>'full_name' is not null
+    and au.raw_user_meta_data->>'full_name' != ''
+    and up.username = split_part(up.email, '@', 1);
+  ```
+- **AUTH-NEW-006: Google avatar requires `referrerPolicy="no-referrer"`.** Without it, Chrome sends the page's Referer header to `lh3.googleusercontent.com`, which returns a redirect that fails CORS. Image silently doesn't render. With it, the photo loads.
+- **AUTH-NEW-007: Avatar should NOT be stored in user_profiles.** Read it live from `user_metadata` on every auth state change. Pros: always-current photo when the user updates their Google avatar. Cons: zero — there's no perf cost, the data is already in the JWT.
+- **AUTH-NEW-008: Rate-limiting from rapid testing.** Signing in/out 10+ times in an hour triggers Google's anti-abuse system. The picker degrades (frozen inputs, no "Add account" flow). Wait 1-2 hours or test from a different network/account. Not a real bug.
+- **AUTH-NEW-009: Throwaway Google accounts look like data bugs.** Test Gmail accounts often have `name` equal to the email prefix and no profile photo set. The code is reading correctly; the data is just thin. Test with a real account to validate.
+- **AUTH-NEW-010: New simplified consent UI ignores app branding.** Google's late-2024 consent screen shows only the domain ("Sign in to aistockassist.com"), not the app name or logo. The branding form still matters — it appears on the GIS popup itself, just not on this minimal final screen. Don't chase a fix; the new UI is intentional.
+
+### What's Different vs. Standard Supabase OAuth
+
+| Aspect | Standard `signInWithOAuth` | GIS Popup `signInWithIdToken` |
+|---|---|---|
+| Flow | Full-page redirect | In-page popup |
+| Consent screen domain | Supabase callback host | Your app's domain |
+| Branding | Lost in redirect chain | App name + logo visible in popup |
+| Code complexity | Lower (~5 lines) | Higher (~15 lines + library) |
+| Fallback for non-Google providers (Apple, GitHub) | Single flow handles all | Need separate flow per provider |
+| Best for | Internal tools / MVP | Consumer products with marketing |
+
+### Verification Checklist
+
+- [ ] GCP OAuth Client created (Web application type)
+- [ ] Supabase callback URL added to redirect URIs (exact, no trailing slash)
+- [ ] Google provider toggled ON in Supabase with valid Client ID + Secret
+- [ ] `VITE_GOOGLE_CLIENT_ID` set in Vercel for Production / Preview / Development
+- [ ] `.env.example` updated with placeholder
+- [ ] App rebuilt + deployed (verify bundle hash matches latest)
+- [ ] Audience published (otherwise non-listed Gmail users get "access_denied")
+- [ ] Test: first-time user from a real Google account lands in dashboard with starter credits
+- [ ] Test: returning user sees one-tap "Continue as <Name>" button
+- [ ] Test: avatar renders in navbar (`referrerPolicy="no-referrer"` is present)
+- [ ] Backfill SQL run for existing users with email-prefix usernames
+
+### Git Commits (May 2026 Session)
+```
+33971e2  Switch Google sign-in to GIS popup (signInWithIdToken)
+fd588ae  Use Google profile name + avatar for OAuth users
+```
+
+---
+
+*Last updated: 2026-05-14 by Claude Code (Opus 4.7)*
 *This document should be read by Claude before making any changes to this codebase.*
