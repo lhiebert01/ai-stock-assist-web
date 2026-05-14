@@ -241,7 +241,7 @@ You don't have to become a financial expert. You have to read what's in front of
 
 **Remember:** A 12% yield you'll never collect is worse than a 3% yield you'll get for decades.
 
-→ **[aistockassist.com](https://aistockassist.com)** · 3 free analyses, no credit card
+→ **[aistockassist.com](https://aistockassist.com)** · 3 free analyses, no credit card · sign in with Google in one click, or use email
 
 ---
 
@@ -293,7 +293,7 @@ Pair it with Dividend Yield and Free Cash Flow Yield from the same panel for the
 
 ## Try the Tool
 
-→ **AI Stock Assist** — 3 free AI stock analyses, no credit card required: [aistockassist.com](https://aistockassist.com)
+→ **AI Stock Assist** — 3 free AI stock analyses, no credit card required: [aistockassist.com](https://aistockassist.com) · one-click Google sign-in or email — no friction, no traps.
 
 ---
 
