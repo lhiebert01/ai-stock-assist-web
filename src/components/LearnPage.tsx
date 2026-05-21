@@ -6,6 +6,14 @@ import type { UserProfile } from '../types/user';
 
 const featuredArticles = [
   {
+    emoji: '📚',
+    title: 'The Library Is Now an App',
+    hook: 'After 600 books on investing, I built the tool I always wished existed — Graham, Buffett, and Munger in your pocket, ready to test any stock in 30 seconds.',
+    url: 'https://lindsayhiebert.substack.com/p/the-library-is-now-an-app',
+    date: 'May 21, 2026',
+    tag: 'Latest',
+  },
+  {
     emoji: '🌍',
     title: 'The New Investing Reality: Why Better Stock Intelligence Matters More Than Ever',
     hook: 'Markets now swing on politics, oil shocks, inflation fears, and sentiment faster than investors can react. Learn why disciplined, AI-powered analysis is no longer optional — it\'s essential.',

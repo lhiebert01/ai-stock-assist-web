@@ -197,14 +197,14 @@ Elena slid her laptop over.
 
 ## The Math
 
-> **💰 THE MATH**
->
-> - Cost of one dividend-quality check on AI Stock Assist: **~$5**
-> - Time to result: **~30 seconds**
-> - Cost of Jamie's "free" Reddit tip: **$0**
-> - Cost of the 70% dividend cut + 42% stock crash on his $50K: **~$21,000**
->
-> *Penny-wise. Pound-foolish.*
+**💰 The math:**
+
+- Cost of one dividend-quality check on AI Stock Assist: **~$5**
+- Time to result: **~30 seconds**
+- Cost of Jamie's "free" Reddit tip: **$0**
+- Cost of the 70% dividend cut + 42% stock crash on his $50K: **~$21,000**
+
+*Penny-wise. Pound-foolish.*
 
 A 12% yield you'll never collect is worse than a 3% yield you'll get for decades. The goose matters more than the egg.
 
