@@ -3,7 +3,7 @@ import { motion } from 'motion/react';
 import { Search, Loader2, BarChart3, BookOpen, Sparkles, X, AlertCircle } from 'lucide-react';
 import type { StockSnapshot, AIRecommendation, Methodology } from '../types/stock';
 import type { UserProfile } from '../types/user';
-import { analyzeStocks, getRecommendation, getComparativeAnalysis } from '../services/stockApi';
+import { analyzeStocks, getRecommendation, getComparativeAnalysis, friendlyErrorMessage } from '../services/stockApi';
 import { supabase } from '../supabase';
 import StockCard from './StockCard';
 import ComparisonTable from './ComparisonTable';
@@ -108,8 +108,8 @@ export default function StockAnalyzer({ userId, userProfile, onCreditsUsed, onNe
       } catch (histErr) {
         console.warn('[History] Failed to save:', histErr);
       }
-    } catch (err: any) {
-      setErrors([err.message || 'Analysis failed']);
+    } catch (err) {
+      setErrors([friendlyErrorMessage(err, 'Analysis failed', tickers)]);
     } finally {
       setLoading(false);
       setLoadingStep('');

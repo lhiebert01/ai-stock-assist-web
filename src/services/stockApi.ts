@@ -122,3 +122,42 @@ export async function healthCheck(): Promise<boolean> {
     return false;
   }
 }
+
+/**
+ * Turn a thrown error into a user-friendly message.
+ *
+ * Two kinds of "looks like a network error" cases get reassuring messages:
+ *   1. Fetch-level TypeError ("Load failed" on Safari, "Failed to fetch" on
+ *      Chrome, "NetworkError" on Firefox) — the request never reached us.
+ *   2. Generic 5xx with no useful detail — backend may have hung on a
+ *      ticker yfinance couldn't resolve.
+ * In both cases no credits are charged (credits only deduct after a
+ * successful snapshot returns).
+ *
+ * Pass `attemptedTickers` so users see which symbols to double-check.
+ */
+export function friendlyErrorMessage(
+  err: unknown,
+  fallback = 'Something went wrong',
+  attemptedTickers?: string[],
+): string {
+  const msg = (err as { message?: string })?.message ?? '';
+  const isFetchLevelError =
+    err instanceof TypeError ||
+    /load failed|failed to fetch|networkerror|network error/i.test(msg);
+  const isVagueServerError = /^api error 5\d\d$/i.test(msg.trim());
+
+  if (isFetchLevelError || isVagueServerError) {
+    const tickerHint =
+      attemptedTickers && attemptedTickers.length > 0
+        ? ` for ${attemptedTickers.join(', ')}`
+        : '';
+    return (
+      `Couldn't complete the analysis${tickerHint} — no credits were used. ` +
+      `This is usually a brief network blip; please refresh and try again. ` +
+      `If it keeps failing, double-check that every ticker is a valid US-listed symbol ` +
+      `(rare, OTC, or delisted tickers sometimes can't be analyzed), or sign out and sign back in.`
+    );
+  }
+  return msg || fallback;
+}
