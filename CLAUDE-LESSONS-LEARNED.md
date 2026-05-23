@@ -1136,5 +1136,147 @@ fd588ae  Use Google profile name + avatar for OAuth users
 
 ---
 
-*Last updated: 2026-05-14 by Claude Code (Opus 4.7)*
+*Last updated: 2026-05-22 by Claude Code (Opus 4.7)*
 *This document should be read by Claude before making any changes to this codebase.*
+
+---
+
+## 20. The MCHP Incident (May 22, 2026) — Four cross-project lessons
+
+A user-reported "Failed to fetch" on Microchip Technology (MCHP) turned into a 90-minute debugging session that surfaced four patterns worth remembering. Each generalizes beyond AI Stock Assist.
+
+### 20.1 yfinance returns NaN for missing fields — and NaN crashes `json.dumps`
+
+**Pattern:** any Python service that returns yfinance data over JSON is one ticker-with-unusual-financials away from a 500.
+
+**The failure chain:**
+1. User submits a batch (e.g., `AAPL, MCHP`).
+2. yfinance returns NaN for fields on MCHP that AAPL had real values for (TTM revenue, FCF, earningsGrowth — fields that depend on data yfinance can't always retrieve for tickers in unusual states like near-zero earnings or recently restructured companies).
+3. `compute_snapshot()` returns a dict with NaN inside. The per-ticker try/except *accepts this* because no exception was raised.
+4. FastAPI's response handler calls `json.dumps()` on `{"snapshots": [...]}` — and `json.dumps` rejects NaN with `ValueError: Out of range float values are not JSON compliant: nan`.
+5. The 500 happens *after* per-ticker error handling — so a single bad ticker takes down the whole batch even for valid tickers in the same request.
+
+**The fix pattern** — recursive JSON-safe sanitizer:
+```python
+import math
+
+def _to_json_safe(value):
+    """Coerce NaN/inf → None and numpy scalars → Python primitives."""
+    if value is None: return None
+    if isinstance(value, bool): return value         # must come before int check
+    if isinstance(value, (int, str)): return value
+    if isinstance(value, float):
+        if math.isnan(value) or math.isinf(value):
+            return None
+        return value
+    if isinstance(value, dict):
+        return {k: _to_json_safe(v) for k, v in value.items()}
+    if isinstance(value, (list, tuple)):
+        return [_to_json_safe(v) for v in value]
+    if hasattr(value, "item") and callable(value.item):    # numpy scalar
+        try: return _to_json_safe(value.item())
+        except: return None
+    if hasattr(value, "isoformat"):                         # pandas Timestamp etc
+        try: return value.isoformat()
+        except: return None
+    try: return str(value)
+    except: return None
+```
+
+Apply at the boundary between data-fetch code and JSON-serializing response handlers. Never trust that "the per-ticker try/except will catch it" — JSON serialization happens *after* that handler returns.
+
+**Where this generalizes:** any service consuming yfinance, pandas DataFrames, numpy arrays, or upstream APIs that return float NaN for missing data. Apply to: stock-data apps, ML inference pipelines, analytics endpoints, scientific-compute services.
+
+### 20.2 Browser-specific fetch errors lose meaning — translate them at the catch boundary
+
+`fetch()` failures look different across browsers:
+- **Safari:** `TypeError: Load failed`
+- **Chrome / Edge:** `TypeError: Failed to fetch`
+- **Firefox:** `TypeError: NetworkError when attempting to fetch resource`
+
+Showing the raw browser message to users is unfriendly and inconsistent. The pattern:
+
+```typescript
+export function friendlyErrorMessage(err: unknown, fallback = 'Something went wrong'): string {
+  const msg = (err as { message?: string })?.message ?? '';
+  const isFetchLevelError =
+    err instanceof TypeError ||
+    /load failed|failed to fetch|networkerror|network error/i.test(msg);
+  const isVagueServerError = /^api error 5\d\d$/i.test(msg.trim());
+
+  if (isFetchLevelError || isVagueServerError) {
+    return 'Network error — no credits were used. Please refresh, or sign out and back in.';
+  }
+  return msg || fallback;  // Real API errors (401, 4xx with detail) pass through unchanged
+}
+```
+
+**Key properties:**
+- Catches both *true* network failures (TypeError from fetch) AND *vague* 5xx (where the server gave no useful detail)
+- Lets *informative* 4xx errors pass through unchanged so users still see "Token expired" or "Invalid input"
+- Reassures users about side effects (no credits charged) when the failure happened before billing logic ran
+
+**Where this generalizes:** any React / browser-based app that calls a backend API. Especially valuable for any monetized service where users worry about being charged for failures.
+
+### 20.3 `render.yaml` ≠ live Render service
+
+**The trap:** a Render Blueprint (`render.yaml`) defines services by name. Earlier deploys may have created services *outside* the Blueprint, or via the Render UI, with different names. Both can be running simultaneously from the same Git repo. DNS / custom domains may point at one while the Blueprint points at another.
+
+In this codebase: `render.yaml` defines `ai-stock-assist-api`, but `api.aistockassist.com` actually points at `ai-stock-render-api` — a separate Render service from the same repo. Code pushes deploy to *both*, but env-var changes apply to only the one you edit.
+
+**How to avoid the confusion:**
+
+1. **Single source of truth for which Render service serves which domain.** Document it in the README. For this project, that's the architecture diagram in `README.md`.
+2. **Verify the live mapping before any env-var or service-level change** with a one-liner:
+   ```bash
+   dig +short api.aistockassist.com CNAME
+   # → ai-stock-render-api.onrender.com.   (the live one)
+   ```
+3. **Probe headers if DNS is ambiguous:**
+   ```bash
+   curl -sI https://api.aistockassist.com/health | grep -i "x-render"
+   # → x-render-origin-server: uvicorn       (confirms FastAPI)
+   ```
+4. **When debugging "the env var didn't take effect"** → check you're editing env vars on the service the DNS points at, not the service the Blueprint defines.
+
+**Where this generalizes:** any project using Render (or any cloud) with multiple services per repo, or where a Blueprint / IaC file diverged from actual deployed state. Common after refactors / repo renames / experimental redeploys.
+
+### 20.4 Build cache can mask deploy success — confirm content, not just status
+
+Vercel (and other build platforms) cache build outputs aggressively. When source code hashes happen to not change much, you can see:
+- Build log shows "Restored build cache from previous deployment"
+- Deploy status: ✅ Ready
+- Output bundle name: **identical hash to the previous deploy**
+- ...yet the new code IS in the bundle (just with a coincidentally matching content hash, or the cache was for *intermediate* compile artifacts, not the final output)
+
+**How to verify a deploy actually shipped the new code:**
+
+Don't trust the bundle hash. Don't trust the status badge. Grep the served bundle for a unique string that only exists in the new code:
+
+```bash
+# Get the bundle path from index.html
+curl -sL https://your-domain.com | grep -oE 'src="/assets/[^"]+\.js"' | head -1
+
+# Fetch the bundle (with --compressed for gzip handling and -L for redirects)
+# and search for a unique marker from your new code
+curl -sL --compressed "https://your-domain.com/assets/index-XXX.js" \
+  | grep -c "your unique new string"
+# Expected: ≥ 1
+```
+
+Pick a string distinctive to your change — a long error-message phrase, a new exported function name, or a comment. Short strings can produce false matches.
+
+**Where this generalizes:** any CDN-fronted bundled-asset deployment (Vercel, Netlify, Cloudflare Pages, AWS Amplify). Worth doing whenever a user reports "the fix didn't deploy" — confirms whether it's a build issue or a cache issue.
+
+### 20.5 Bonus — production debugging style
+
+When in an active production incident:
+- **Probe before asking.** Users can paste logs faster than you can ask which logs to fetch.
+- **One clarifying question max** during an incident, and only at genuine forks.
+- **Lead with concrete evidence**, not hypotheses. "I just ran curl against /health and got 200 — backend is up" beats "Possible causes include...".
+- **Trust the user's domain knowledge.** When they say "MCHP is a valid ticker, why is this happening?" they're answering a hypothesis you should drop and pivot.
+
+---
+
+*MCHP incident lessons by Claude Code (Opus 4.7), May 22, 2026.*
+*All four patterns also saved as memory entries under `~/.claude/projects/-mnt-c-src-ai-stock-assist-web/memory/` for cross-session recall.*
