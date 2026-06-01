@@ -17,7 +17,7 @@ Full React/TypeScript SPA replacing the Streamlit Python frontend, while keeping
 
 ### Backend API (ai-stock-render/api/)
 - **Tech:** FastAPI, Python 3.11+
-- **AI:** Gemini 3.1 Pro (primary) + Groq Llama 3.3 70B (free fallback)
+- **AI:** Gemini 3.5 Flash (primary) + Groq Llama 3.3 70B (free fallback)
 - **Data:** yfinance for real-time stock data
 - **Hosting:** Render at api.aistockassist.com
 - **Repo:** github.com/lhiebert01/ai-stock-render (api/ directory)
