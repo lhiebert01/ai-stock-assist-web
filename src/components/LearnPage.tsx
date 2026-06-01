@@ -118,6 +118,27 @@ export default function LearnPage({ userProfile, onNavigateMetrics }: LearnPageP
         </p>
       </div>
 
+      {/* Powered by Gemini 3.5 Flash — capability + value blurb */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="mb-12 bg-gradient-to-r from-[var(--color-accent)]/10 to-purple-500/10 border border-[var(--color-accent)]/25 rounded-2xl p-6 sm:p-8"
+      >
+        <div className="flex items-start gap-4">
+          <div className="w-12 h-12 shrink-0 rounded-xl bg-[var(--color-accent)]/15 flex items-center justify-center">
+            <Sparkles className="w-6 h-6 text-[var(--color-accent)]" />
+          </div>
+          <div>
+            <h2 className="text-lg font-bold mb-2">
+              Powered by Google&rsquo;s latest <span className="text-[var(--color-accent)]">Gemini 3.5 Flash</span>
+            </h2>
+            <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed">
+              Frontier-level intelligence aimed at the unglamorous part of investing: the research. Every stock runs through two time-tested frameworks side by side — <span className="font-semibold text-[var(--color-text-primary)]">Graham Value</span> and <span className="font-semibold text-[var(--color-text-primary)]">Growth &amp; Quality</span> — cross-checking valuation, cash-flow quality, and earnings integrity, then reconciled against the Wall Street view so you see both maps at once. Work that takes a careful investor dozens of hours — and hundreds across a full portfolio — now takes seconds, checked and correlated to sharpen decisions for value- <em>and</em> growth-minded investors. Through our series, <span className="font-semibold text-[var(--color-text-primary)]">Investing in the Intelligence Era</span>, we keep teaching the <em>why</em> behind every number — so novice and veteran investors alike grow <span className="font-semibold text-[var(--color-text-primary)]">wealthier and wiser</span>.
+            </p>
+          </div>
+        </div>
+      </motion.div>
+
       {/* Premium Metrics Guide CTA */}
       {hasPaidAccess && onNavigateMetrics && (
         <motion.div
