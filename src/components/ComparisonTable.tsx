@@ -59,7 +59,7 @@ export default function ComparisonTable({
               <tr className="border-b border-[var(--color-border)]">
                 <th className="text-left px-4 py-3 font-medium text-[var(--color-text-muted)] text-xs uppercase tracking-wider sticky left-0 bg-[var(--color-surface-2)] z-10">Ticker</th>
                 <th className="text-right px-4 py-3 font-medium text-[var(--color-text-muted)] text-xs uppercase tracking-wider">Price</th>
-                <th className="text-center px-4 py-3 font-medium text-[var(--color-text-muted)] text-xs uppercase tracking-wider">Rating</th>
+                <th className="text-center px-4 py-3 font-medium text-[var(--color-text-muted)] text-xs uppercase tracking-wider whitespace-nowrap">Wall St Rating</th>
                 <th className="text-right px-4 py-3 font-medium text-[var(--color-text-muted)] text-xs uppercase tracking-wider">Daily</th>
                 <th className="text-right px-4 py-3 font-medium text-[var(--color-text-muted)] text-xs uppercase tracking-wider">YTD</th>
                 <th className="text-right px-4 py-3 font-medium text-[var(--color-text-muted)] text-xs uppercase tracking-wider">1Y</th>
