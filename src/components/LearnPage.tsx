@@ -4,24 +4,25 @@ import {
 } from 'lucide-react';
 import type { UserProfile } from '../types/user';
 
-const featuredArticles = [
-  {
-    emoji: '📚',
-    title: 'The Library Is Now an App',
-    hook: 'After 600 books on investing, I built the tool I always wished existed — Graham, Buffett, and Munger in your pocket, ready to test any stock in 30 seconds.',
-    url: 'https://lindsayhiebert.substack.com/p/the-library-is-now-an-app',
-    date: 'May 21, 2026',
-    tag: 'Latest',
-  },
-  {
-    emoji: '🌍',
-    title: 'The New Investing Reality: Why Better Stock Intelligence Matters More Than Ever',
-    hook: 'Markets now swing on politics, oil shocks, inflation fears, and sentiment faster than investors can react. Learn why disciplined, AI-powered analysis is no longer optional — it\'s essential.',
-    url: 'https://lindsayhiebert.substack.com/p/the-new-investing-reality-why-better',
-    date: 'Mar 29, 2026',
-    tag: 'Featured',
-  },
-];
+// The evergreen "why now" entry point — read this first.
+const startHere = {
+  emoji: '🌍',
+  title: 'The New Investing Reality: Why Better Stock Intelligence Matters More Than Ever',
+  hook: 'Markets now swing on politics, oil shocks, inflation fears, and sentiment faster than investors can react. Learn why disciplined, AI-powered analysis is no longer optional — it\'s essential.',
+  url: 'https://lindsayhiebert.substack.com/p/the-new-investing-reality-why-better',
+  date: 'Mar 29, 2026',
+  tag: 'Start Here',
+};
+
+// The relaunch announcement — the segue from "600 books" to "one app."
+const segueArticle = {
+  emoji: '📚',
+  title: 'The Library Is Now an App',
+  hook: 'After 600 books on investing, I built the tool I always wished existed — Graham, Buffett, and Munger in your pocket, ready to test any stock in 30 seconds.',
+  url: 'https://lindsayhiebert.substack.com/p/the-library-is-now-an-app',
+  date: 'May 21, 2026',
+  tag: 'Relaunch',
+};
 
 const blogEpisodes = [
   { ep: 0, emoji: '💎', title: 'The Diamond in the Brook', hook: 'The "acres of diamonds" parable — investment opportunities are already in public markets.', url: 'https://lindsayhiebert.substack.com/p/episode-0-the-diamond-in-the-brook' },
@@ -29,6 +30,7 @@ const blogEpisodes = [
   { ep: 2, emoji: '💰', title: 'Cash Doesn\'t Lie', hook: 'How a 35% earnings surprise fooled millions — and why cash flow saves your financial future.', url: 'https://lindsayhiebert.substack.com/p/episode-2-cash-doesnt-lie' },
   { ep: 3, emoji: '🚗', title: 'The $100 Honda', hook: 'Share price means nothing alone — learn why Price-to-Free-Cash-Flow reveals true value.', url: 'https://lindsayhiebert.substack.com/p/episode-3-the-100-honda' },
   { ep: 4, emoji: '🐺', title: 'The Boy Who Cried Wolf', hook: '22% earnings growth sounds amazing — until you check the OCF/NI ratio. Spot creative accounting.', url: 'https://lindsayhiebert.substack.com/p/22-earnings-growth-so-why-didnt-the' },
+  { ep: 5, emoji: '🪤', title: 'The Trap', hook: 'A 12% dividend looks like a golden goose — until you check the payout ratio. Tell a real Dividend King from a doomed imposter.', url: 'https://lindsayhiebert.substack.com/p/episode-5-the-trap' },
 ];
 
 const grahamMetrics = [
@@ -57,6 +59,42 @@ const ecosystem = [
 interface LearnPageProps {
   userProfile?: UserProfile | null;
   onNavigateMetrics?: () => void;
+}
+
+// Full-width article card shared by the "Start Here" and segue sections.
+function FeatureCard({ article }: { article: typeof startHere }) {
+  return (
+    <motion.a
+      href={article.url}
+      target="_blank"
+      rel="noopener noreferrer"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      whileHover={{ y: -2 }}
+      className="group block bg-gradient-to-r from-[var(--color-surface-2)] to-[var(--color-surface-1)] border border-[var(--color-accent)]/20 rounded-2xl p-6 sm:p-8 hover:border-[var(--color-accent)]/40 transition-all"
+    >
+      <div className="flex items-start gap-4">
+        <span className="text-3xl shrink-0">{article.emoji}</span>
+        <div className="min-w-0">
+          <div className="flex items-center gap-2 mb-2 flex-wrap">
+            <span className="px-2 py-0.5 bg-[var(--color-accent)]/15 border border-[var(--color-accent)]/25 rounded text-[10px] font-bold text-[var(--color-accent)] uppercase tracking-wider">
+              {article.tag}
+            </span>
+            <span className="text-xs text-[var(--color-text-muted)]">{article.date}</span>
+          </div>
+          <h3 className="text-lg font-bold mb-2 group-hover:text-[var(--color-accent)] transition-colors leading-snug">
+            {article.title}
+          </h3>
+          <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed mb-3">
+            {article.hook}
+          </p>
+          <div className="flex items-center gap-1 text-xs text-[var(--color-accent)] font-medium">
+            Read on Substack <ExternalLink className="w-3 h-3" />
+          </div>
+        </div>
+      </div>
+    </motion.a>
+  );
 }
 
 export default function LearnPage({ userProfile, onNavigateMetrics }: LearnPageProps) {
@@ -114,51 +152,23 @@ export default function LearnPage({ userProfile, onNavigateMetrics }: LearnPageP
         </motion.div>
       )}
 
-      {/* Featured Articles */}
+      {/* Start Here — the "why now" entry point */}
       <section className="mb-16">
         <h2 className="text-xl font-bold mb-6 flex items-center gap-2">
           <Newspaper className="w-5 h-5 text-[var(--color-accent)]" />
-          Featured Insights
+          Start Here
         </h2>
-        {featuredArticles.map((article, i) => (
-          <motion.a
-            key={article.title}
-            href={article.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: i * 0.06 }}
-            whileHover={{ y: -2 }}
-            className="group block bg-gradient-to-r from-[var(--color-surface-2)] to-[var(--color-surface-1)] border border-[var(--color-accent)]/20 rounded-2xl p-6 sm:p-8 hover:border-[var(--color-accent)]/40 transition-all"
-          >
-            <div className="flex items-start gap-4">
-              <span className="text-3xl shrink-0">{article.emoji}</span>
-              <div className="min-w-0">
-                <div className="flex items-center gap-2 mb-2 flex-wrap">
-                  <span className="px-2 py-0.5 bg-[var(--color-accent)]/15 border border-[var(--color-accent)]/25 rounded text-[10px] font-bold text-[var(--color-accent)] uppercase tracking-wider">
-                    {article.tag}
-                  </span>
-                  <span className="text-xs text-[var(--color-text-muted)]">{article.date}</span>
-                </div>
-                <h3 className="text-lg font-bold mb-2 group-hover:text-[var(--color-accent)] transition-colors leading-snug">
-                  {article.title}
-                </h3>
-                <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed mb-3">
-                  {article.hook}
-                </p>
-                <div className="flex items-center gap-1 text-xs text-[var(--color-accent)] font-medium">
-                  Read on Substack <ExternalLink className="w-3 h-3" />
-                </div>
-              </div>
-            </div>
-          </motion.a>
-        ))}
+        <FeatureCard article={startHere} />
       </section>
 
-      {/* Blog Episodes */}
+      {/* Blog Episodes — the story-driven teaching arc */}
       <section className="mb-16">
-        <h2 className="text-xl font-bold mb-6">Substack Series</h2>
+        <div className="mb-6">
+          <h2 className="text-xl font-bold mb-1">Learning to Invest in the Intelligence Era</h2>
+          <p className="text-[var(--color-text-secondary)] text-sm">
+            A story-driven, six-part series — best read in order, starting with Episode 0.
+          </p>
+        </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {blogEpisodes.map((ep, i) => (
             <motion.a
@@ -196,6 +206,14 @@ export default function LearnPage({ userProfile, onNavigateMetrics }: LearnPageP
             <ExternalLink className="w-4 h-4" />
           </a>
         </div>
+      </section>
+
+      {/* Segue: the series leads into the app itself */}
+      <section className="mb-16">
+        <p className="text-center text-sm text-[var(--color-text-muted)] mb-6">
+          Where six episodes of theory meet the tool that puts it in your pocket.
+        </p>
+        <FeatureCard article={segueArticle} />
       </section>
 
       {/* Methodology Deep-Dive */}
