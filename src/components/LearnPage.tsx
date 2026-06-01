@@ -31,6 +31,7 @@ const blogEpisodes = [
   { ep: 3, emoji: '🚗', title: 'The $100 Honda', hook: 'Share price means nothing alone — learn why Price-to-Free-Cash-Flow reveals true value.', url: 'https://lindsayhiebert.substack.com/p/episode-3-the-100-honda' },
   { ep: 4, emoji: '🐺', title: 'The Boy Who Cried Wolf', hook: '22% earnings growth sounds amazing — until you check the OCF/NI ratio. Spot creative accounting.', url: 'https://lindsayhiebert.substack.com/p/22-earnings-growth-so-why-didnt-the' },
   { ep: 5, emoji: '🪤', title: 'The Trap', hook: 'A 12% dividend looks like a golden goose — until you check the payout ratio. Tell a real Dividend King from a doomed imposter.', url: 'https://lindsayhiebert.substack.com/p/episode-5-the-trap' },
+  { ep: 6, emoji: '🗺️', title: 'The Two Maps', hook: 'Wall Street says STRONG BUY, the value lens says SELL — and both can be right. Learn to read both maps and pick the one for your time horizon.', url: 'https://lindsayhiebert.substack.com/p/episode-6-the-two-maps' },
 ];
 
 const grahamMetrics = [
@@ -187,7 +188,7 @@ export default function LearnPage({ userProfile, onNavigateMetrics }: LearnPageP
         <div className="mb-6">
           <h2 className="text-xl font-bold mb-1">Learning to Invest in the Intelligence Era</h2>
           <p className="text-[var(--color-text-secondary)] text-sm">
-            A story-driven, six-part series — best read in order, starting with Episode 0.
+            A story-driven series — best read in order, starting with Episode 0.
           </p>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -232,7 +233,7 @@ export default function LearnPage({ userProfile, onNavigateMetrics }: LearnPageP
       {/* Segue: the series leads into the app itself */}
       <section className="mb-16">
         <p className="text-center text-sm text-[var(--color-text-muted)] mb-6">
-          Where six episodes of theory meet the tool that puts it in your pocket.
+          Where the series' lessons meet the tool that puts it in your pocket.
         </p>
         <FeatureCard article={segueArticle} />
       </section>
