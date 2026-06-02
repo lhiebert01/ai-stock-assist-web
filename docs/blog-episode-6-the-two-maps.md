@@ -220,7 +220,7 @@ NVDA at 91x P/FCF is the textbook reason a Graham-style framework says "Sell" wh
 - [Episode 2: Cash Doesn't Lie](https://lindsayhiebert.substack.com/p/episode-2-cash-doesnt-lie)
 - [Episode 3: The $100 Honda](https://lindsayhiebert.substack.com/p/episode-3-the-100-honda)
 - [Episode 4: The Honest Company](https://lindsayhiebert.substack.com/p/22-earnings-growth-so-why-didnt-the)
-- Episode 5: The Trap *(coming soon)*
+- [Episode 5: The Trap](https://lindsayhiebert.substack.com/p/episode-5-the-trap)
 
 ---
 
@@ -271,9 +271,70 @@ Episode 6 of the Intelligence Era series is live.
 
 The door is open.
 
+**Hashtags:** `#Investing #ValueInvesting #AI #StockMarket #AIForGood`
+
+> ⚠️ Pre-publish elevation note: For Ep 5, Lindsay replaced the "AI for Good mission" sentence with: *"This series exists for one reason: to help everyday investors make sharper decisions in the Intelligence Era."* Consider applying the same elevation here, or write a parallel mission line. Also consider the staccato voice (one sentence per paragraph) used in the Ep 5 final — see `docs/blog-episode-5-the-trap.md` "LinkedIn — FINAL PUBLISHED" section for the published template.
+
 ---
 
-## X / Twitter thread (6 tweets)
+## X / Twitter — single tweet (Option A, recommended)
+
+> Per [[feedback-x-thread-length]] — single tweet + promo image is the default. Attach the Ep 6 promo / two-maps graphic.
+
+```
+47 Wall Street analysts rate NVDA a BUY.
+Benjamin Graham's framework rates the same stock a SELL.
+
+Same stock. Same week. Opposite calls.
+
+Both are right.
+
+They're maps drawn for different journeys — and most investors never know which one is theirs.
+
+https://lindsayhiebert.substack.com/p/episode-6-the-two-maps
+
+#Investing #ValueInvesting #AI #NVDA
+```
+
+---
+
+## X / Twitter — 2-tweet thread (Option B)
+
+**Tweet 1/2:**
+```
+47 Wall Street analysts rate NVDA a BUY.
+Benjamin Graham's framework rates the same stock a SELL.
+
+Same stock. Same week. Opposite calls.
+
+Most people freeze. Cash stays parked.
+
+🧵
+```
+
+**Tweet 2/2:**
+```
+Both calls are right.
+
+Wall Street draws for 12-month price targets. Graham's framework draws for long-term value.
+
+Different journeys. Different maps.
+
+The question isn't which expert is right. It's which map is YOURS.
+
+📖 https://lindsayhiebert.substack.com/p/episode-6-the-two-maps
+
+#Investing #ValueInvesting #AI #NVDA
+```
+
+Attach the Ep 6 promo / two-maps graphic to tweet 1.
+
+---
+
+### Original 6-tweet thread (preserved for reference — superseded by 1-2 tweet versions above)
+
+<details>
+<summary>Click to expand original 6-tweet draft</summary>
 
 **1/**
 A traveler holds two maps. Both drawn by experts. Both lead to the same city. One says left. One says right.
@@ -329,6 +390,8 @@ Episode 6 of the Intelligence Era series is live.
 
 → aistockassist.com · 3 analyses free · no credit card
 
+</details>
+
 ---
 
 ## Facebook (~210 words, conversational)
@@ -348,6 +411,8 @@ If you're a trader, Wall Street's map is yours. If you're compounding for a deca
 This is what AI Stock Assist's Two-Lenses panel does. Both maps, side by side, with the journey each was drawn for spelled out in plain English.
 
 3 free analyses. No credit card. Read the full piece: aistockassist.com.
+
+**Hashtags (use sparingly on FB — 1-2 max):** `#Investing #AIForGood`
 
 ---
 
@@ -369,6 +434,12 @@ The most expensive thing in investing isn't picking the wrong stock. It's the ye
 
 ---
 
+## Substack tags (for the post settings)
+
+`investing` · `value-investing` · `stock-market` · `ai` · `personal-finance` · `financial-education` · `warren-buffett` · `benjamin-graham` · `nvidia`
+
+---
+
 ## Hero Image Brief
 
 - Vintage map illustration: a single traveler at a forked road, holding two scrolls
@@ -385,11 +456,39 @@ The most expensive thing in investing isn't picking the wrong stock. It's the ye
 
 ## Pre-publish checklist
 
-- [ ] Lindsay's elevation pass (personal voice tweaks; verify NVDA target/analyst count is current at publish time, swap if stale)
-- [ ] Hero image generated to spec
-- [ ] Substack scheduled Monday 8am ET
-- [ ] LinkedIn copy ready (post 30 min after Substack)
-- [ ] X thread queued (post 2 hrs after Substack)
-- [ ] Facebook copy ready (end of day)
-- [ ] Reddit r/investing first; r/stocks 24h later
+### Critical fact-checks (must do at publish time — these numbers are time-sensitive)
+
+- [ ] **NVDA analyst count** (currently in draft: "47 Wall Street analysts rate it a Buy") — verify on Yahoo Finance / TipRanks; swap if drift > ±5
+- [ ] **NVDA average price target** (currently: "$215") — verify; this changes weekly
+- [ ] **NVDA current price** (currently: "$180") — re-pull at publish-day morning; affects the "19% upside" math
+- [ ] **NVDA P/FCF multiple** (currently: "91x" in Metric Spotlight) — verify; this is the load-bearing number for the framework-Sell argument
+- [ ] **Two-Lenses screenshot accuracy** — verify the `EPISODE_06_IMAGE_02_two-lenses-screenshot.png` matches what the app currently renders (VerdictReconciliation component in StockCard). If app has changed, regenerate the screenshot before publish.
+
+### Content readiness
+
+- [x] Catch Up on the Series updated with live Ep 5 URL
+- [x] Substack tags added
+- [x] X collapsed from 6 tweets to 1-2 (Option A + B drafted)
+- [x] Per-channel hashtags added to LinkedIn / FB variants
+- [ ] **Lindsay's elevation pass on LinkedIn variant** — apply staccato voice + replace/refine AI for Good mission line (see note in LinkedIn section). Reference: `docs/blog-episode-5-the-trap.md` "LinkedIn — FINAL PUBLISHED" template
+- [ ] **Lindsay's elevation pass on Facebook variant** — match the narrative tone used for Ep 5 FB
+- [ ] **Lindsay's elevation pass on X tweet** — finalize between Option A and B
+
+### Asset readiness (Day 2)
+
+- [ ] Triage 20+ unsorted ChatGPT/Gemini images in `docs/images/` — any Ep 6 candidates?
+- [ ] Generate hero image to spec (per Hero Image Brief below) → save as `docs/images/episode-6/EPISODE_06_HERO_two-maps.png`
+- [ ] Generate inline image 1 (Sarah at coffee shop, phone on table) → `EPISODE_06_IMAGE_01_opening-scene.png`
+- [ ] Generate inline image 2 (two-lenses panel screenshot from app) → `EPISODE_06_IMAGE_02_two-lenses-screenshot.png`
+- [ ] Optional: inline images 3-4 (parable visuals: crossroads with two maps; resolution scene)
+- [ ] Generate editorial social promos (LinkedIn + Facebook variants — "THE TWO MAPS" headline + subhead + diagnostic pills — same v2 style as Ep 5)
+
+### Launch (Day 4 — Mon Jun 1 if on plan, or revised date)
+
+- [ ] Substack scheduled for Monday 8am ET
+- [ ] LinkedIn copy ready (link in first comment)
+- [ ] X single tweet queued (~2 hrs after Substack)
+- [ ] Facebook copy ready, link in first comment (per [[feedback-link-placement]])
+- [ ] Reddit r/investing first; r/stocks + r/SecurityAnalysis 24-48h staggered
+- [ ] Medium cross-post (Import a Story flow)
 - [ ] Update `docs/PUBLISHED-CONTENT-TRACKER.md` once live
