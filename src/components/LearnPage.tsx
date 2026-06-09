@@ -32,6 +32,7 @@ const blogEpisodes = [
   { ep: 4, emoji: '🐺', title: 'The Boy Who Cried Wolf', hook: '22% earnings growth sounds amazing — until you check the OCF/NI ratio. Spot creative accounting.', url: 'https://lindsayhiebert.substack.com/p/22-earnings-growth-so-why-didnt-the' },
   { ep: 5, emoji: '🪤', title: 'The Trap', hook: 'A 12% dividend looks like a golden goose — until you check the payout ratio. Tell a real Dividend King from a doomed imposter.', url: 'https://lindsayhiebert.substack.com/p/episode-5-the-trap' },
   { ep: 6, emoji: '🗺️', title: 'The Two Maps', hook: 'Wall Street says STRONG BUY, the value lens says SELL — and both can be right. Learn to read both maps and pick the one for your time horizon.', url: 'https://lindsayhiebert.substack.com/p/episode-6-the-two-maps' },
+  { ep: 7, emoji: '🍎', title: 'The Three Apple Stands', hook: 'Three stocks look identical on price — until you check which one\'s earnings are actually backed by cash. A spreadsheet gives data; OCF/NI picks the winner.', url: 'https://lindsayhiebert.substack.com/p/episode-7-the-three-apple-stands' },
 ];
 
 const grahamMetrics = [
