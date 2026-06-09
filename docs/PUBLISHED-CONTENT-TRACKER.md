@@ -230,3 +230,44 @@ The original draft is in `docs/blog-executive-summary-pdf-history.md`. Lindsay e
 ### Website cross-link
 
 - `src/components/LearnPage.tsx` → ✅ Ep 6 card added to the series grid (🗺️ The Two Maps), commit `21c81dd` (Jun 1, 2026). Dropped hardcoded episode counts from the section copy.
+
+---
+
+## Campaign: Episode 7 "The Three Apple Stands" (June 9, 2026)
+
+**Theme:** "I'll just compare them in a spreadsheet" — building a spreadsheet ≠ making a judgment. Three look-alike stocks (similar P/E band, all rated BUY) that only the hidden cash-flow-quality dimension (OCF/NI) separates. Parable: three apple stands ("Best/Freshest/Cheapest") with identical-looking apples. Persona: Marcus (skeptical saver deploying into "real" energy/commodity names). Takeaway: data ≠ judgment; cash backs the winner.
+
+**Trio (real, June-9 data, illustrative not advice):** CVE (Top Pick: P/E 15.96x, OCF/NI 2.31x), BKR (20.72x / 1.37x), AA (18.83x / **0.83x** — the weak-cash-conversion "mealy apple"). Reframed from the original NVDA/AMD/AVGO draft, whose premise had inverted.
+
+**Features:** Comparative analysis + Top Pick hero (AnalysisCards). Metric spotlight: OCF/NI.
+
+### Substack (Flagship Article)
+
+**Title:** Episode 7: The Three Apple Stands
+
+- Article (canonical): https://lindsayhiebert.substack.com/p/episode-7-the-three-apple-stands
+- Share link: https://open.substack.com/pub/lindsayhiebert/p/episode-7-the-three-apple-stands?r=qw3u&utm_campaign=post&utm_medium=web&showWelcomeOnShare=true
+- Hero image (first inline, under subtitle): `docs/images/episode-7/Blog-7-hero-apple-stands.png`
+- Inline images: `Blog-7-marcus-spreadsheet.png`, `Blog-7-top-pick-screenshot.png`
+- Source .md + Word: `docs/blog-episode-7-the-three-apple-stands-PUBLISH-READY.md`, `docs/exports/blog-episode-7-the-three-apple-stands-SUBSTACK-FINAL.docx`
+- Image prompts: `docs/episode-7-the-three-apple-stands-image-prompts.md`
+- Published: Tue Jun 9, 2026
+
+### Medium
+
+- Article: https://medium.com/@lindsay.hiebert/episode-7-the-three-apple-stands-754316aab9cb
+- Tags (best-performing): Data Science, Investing, Stock Market, Finance, Artificial Intelligence — see [[reference-medium-tags]]
+- Canonical → Substack
+- Published: Tue Jun 9, 2026
+
+### LinkedIn / Facebook / X
+
+- Drafted (number-free durable voice, Substack link in post + hero image); first comments ready. _Pending post-confirmation URLs._
+
+### Reddit (staggered)
+
+- r/ValueInvesting / r/investing — _pending_ (text/self-post, insight-first, NO link in body)
+
+### Website cross-link
+
+- `src/components/LearnPage.tsx` → ✅ Ep 7 card added (🍎 The Three Apple Stands), commit `10e39af` (Jun 9, 2026).
