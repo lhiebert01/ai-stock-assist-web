@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import {
   TrendingUp, TrendingDown, Globe, Building2, Factory,
   DollarSign, BarChart3, Activity, ChevronDown, ChevronUp,
-  ExternalLink,
+  ExternalLink, AlertTriangle,
 } from 'lucide-react';
 import type { StockSnapshot, AIRecommendation, Methodology } from '../types/stock';
 import { formatPrice, humanMoney, pctFmt, changeColor, ratingColor } from '../lib/formatters';
@@ -205,7 +205,11 @@ export default function StockCard({ snapshot, recommendation, methodology, hideC
                   </div>
                   <MetricRow label="Market Cap" value={humanMoney(s.market_cap)} />
                   <MetricRow label="Revenue" value={humanMoney(s.latest_revenue)} />
-                  <MetricRow label="P/E Ratio" value={s.trailing_pe != null ? `${s.trailing_pe.toFixed(2)}x` : '—'} />
+                  <MetricRow
+                    label="P/E Ratio"
+                    value={s.trailing_pe != null && s.trailing_pe > 0 ? `${s.trailing_pe.toFixed(2)}x` : 'N/A'}
+                    sub={s.trailing_pe != null && s.trailing_pe > 0 ? undefined : (cf.net_income != null && cf.net_income <= 0 ? 'No TTM profit' : 'Unavailable')}
+                  />
                   <MetricRow label="P/B Ratio" value={sm.price_to_book != null ? `${sm.price_to_book.toFixed(2)}x` : '—'} />
                   <MetricRow label="ROE" value={sm.return_on_equity != null ? `${(sm.return_on_equity * 100).toFixed(1)}%` : '—'} />
                   <MetricRow label="Profit Margin" value={sm.profit_margin != null ? `${(sm.profit_margin * 100).toFixed(1)}%` : '—'} />
@@ -271,6 +275,21 @@ export default function StockCard({ snapshot, recommendation, methodology, hideC
                   </div>
                 )}
               </div>
+
+              {/* P/E advisory — shown when valuation lacks a usable P/E (flows into PDF/print capture) */}
+              {recommendation && (s.trailing_pe == null || s.trailing_pe <= 0) && (
+                <div className="mt-4 flex items-start gap-2 rounded-lg border border-amber-500/40 bg-amber-500/10 p-3 text-xs leading-relaxed text-[var(--color-text-secondary)]">
+                  <AlertTriangle className="w-4 h-4 text-amber-500 shrink-0 mt-0.5" />
+                  <span>
+                    <span className="font-semibold text-[var(--color-text-primary)]">P/E not available</span>
+                    {' — '}
+                    {cf.net_income != null && cf.net_income <= 0
+                      ? `${s.ticker} is not profitable on a trailing-12-month basis (negative earnings)`
+                      : 'this metric is unavailable from the data source'}
+                    . This rating relies on cash-flow metrics (FCF yield, P/FCF, OCF/NI); interpret the valuation accordingly.
+                  </span>
+                </div>
+              )}
 
               {/* AI Recommendation */}
               {recommendation && (
