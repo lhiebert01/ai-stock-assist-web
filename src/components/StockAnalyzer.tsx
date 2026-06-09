@@ -42,6 +42,19 @@ export default function StockAnalyzer({ userId, userProfile, onCreditsUsed, onNe
       .slice(0, 10);
 
     if (tickers.length === 0) return;
+
+    // Pre-flight: catch obviously-invalid tickers in-browser (no server call, no
+    // credits spent) so the user can fix the input. U.S. tickers are letter-based.
+    const isLikelyTicker = (t: string) => /^[A-Z][A-Z0-9.\-]{0,9}$/.test(t);
+    const badTickers = tickers.filter((t) => !isLikelyTicker(t));
+    if (badTickers.length > 0) {
+      setErrors([
+        `These don't look like valid ticker symbols: ${badTickers.join(', ')}. ` +
+        `Tickers are letter-based (for example AAPL, MSFT, BRK.B). Please check your input and try again.`,
+      ]);
+      return;
+    }
+
     if (credits < tickers.length) {
       onNeedCredits();
       return;
