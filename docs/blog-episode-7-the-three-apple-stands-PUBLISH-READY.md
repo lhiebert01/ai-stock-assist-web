@@ -14,6 +14,11 @@ Marcus spent six hours building a spreadsheet to compare three "boring, real" co
 
 ————————————————————————
 
+[ Image: Blog-7-hero-apple-stands.png ]
+Caption: Three apples. Same red. How do you choose?
+
+————————————————————————
+
 The Story So Far…
 
 Our friends have learned to spot opportunity, separate investing from gambling, trust cash over earnings, see past cheap-looking share prices, expose dishonest accounting, dodge yield traps — and last week, that two analysts can rate the same stock BUY and SELL and both be right.
