@@ -275,9 +275,11 @@ Posted into targeted value/stock investing groups (number-free durable post + he
 - Facebook (feed): https://www.facebook.com/share/p/1BgFQzXPbN/
 - _Pending admin approval:_ Value Investing (319K), The Intelligent Investor (12K), ISVI (6K), Value Investing Academy (4.6K), Value Investing Canada, Value Investing Dividend Stocks Forever (7.8K). SKIP for this episode: the real-estate/multifamily groups (Multifamily Investing, Real Estate Investor Group USA, Multifamily Investor Network) — off-theme for stock content. See `docs/DISTRIBUTION-GROUPS.md`.
 
-### X
+### X (Twitter)
 
-- Drafted (single tweet, link in post + hero). _Pending post-confirmation URL._
+- Tweet: https://x.com/Lindsay_Hiebert/status/2064439756109353063
+- Format: single tweet + hero image, Substack link in tweet. Hashtags: `#Investing #ValueInvesting`
+- Published: Tue Jun 9, 2026
 
 ### Reddit (staggered)
 
