@@ -1,8 +1,32 @@
 import type { Methodology } from '../types/stock';
 
+// Printer-friendly LIGHT theme applied ONLY to the cloned DOM during PDF capture
+// (the live app stays dark). Root cause of the "invisible text" bug: html2canvas
+// drops inherited CSS-variable colors, so nodes without an explicit color class
+// (ticker symbols, prices) defaulted to black and vanished on the dark background.
+// A white background makes black-default text visible, and remapping the design
+// tokens to high-contrast values keeps every value + chart/table readable in print.
+// Color palette kept to a few high-contrast hues: deep red, dark green, dark amber,
+// dark teal — all clearly visible on white and printer-safe.
+const PDF_LIGHT_THEME_CSS = `
+  .pdf-light-root {
+    --color-surface-0: #ffffff; --color-surface-1: #ffffff; --color-surface-2: #ffffff;
+    --color-surface-3: #f1f5f9; --color-border: #cbd5e1; --color-border-light: #94a3b8;
+    --color-text-primary: #0f172a; --color-text-secondary: #334155; --color-text-muted: #475569;
+    --color-accent: #0e7490; --color-accent-dim: #155e75;
+    --color-buy: #15803d; --color-sell: #b91c1c; --color-hold: #a16207;
+    background: #ffffff !important; color: #0f172a !important;
+  }
+  /* Neutralise any explicit dark fills that don't flow through the tokens */
+  .pdf-light-root [class*="bg-black"],
+  .pdf-light-root [class*="bg-slate-9"],
+  .pdf-light-root [class*="bg-gray-9"] { background-color: #ffffff !important; }
+`;
+
 /**
  * Captures a DOM element as a multi-page PDF using html2canvas + jspdf.
  * Elements with class `.no-print` are hidden during capture.
+ * Capture uses a white, high-contrast print theme (see PDF_LIGHT_THEME_CSS).
  */
 export async function exportPdf(
   element: HTMLElement,
@@ -19,11 +43,17 @@ export async function exportPdf(
   noPrintEls.forEach((el) => (el.style.display = 'none'));
 
   const canvas = await html2canvas(element, {
-    backgroundColor: '#0a0e1a',
+    backgroundColor: '#ffffff',
     scale: 2,
     useCORS: true,
     logging: false,
     windowWidth: 1200,
+    onclone: (clonedDoc: Document, clonedEl: HTMLElement) => {
+      clonedEl.classList.add('pdf-light-root');
+      const style = clonedDoc.createElement('style');
+      style.textContent = PDF_LIGHT_THEME_CSS;
+      clonedDoc.head.appendChild(style);
+    },
   });
 
   // Restore hidden elements
@@ -54,10 +84,10 @@ export async function exportPdf(
 
     // Header
     pdf.setFontSize(8);
-    pdf.setTextColor(150, 160, 180);
+    pdf.setTextColor(51, 65, 85); // slate-700 — readable on the white page
     pdf.text(`AI Stock Assist — Analysis Report`, margin, margin + 4);
     pdf.text(`${tickerStr} · ${methodology} · ${dateStr}`, pageWidth - margin, margin + 4, { align: 'right' });
-    pdf.setDrawColor(30, 41, 59);
+    pdf.setDrawColor(203, 213, 225); // light rule
     pdf.line(margin, margin + headerHeight - 2, pageWidth - margin, margin + headerHeight - 2);
 
     // Content slice
