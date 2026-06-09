@@ -283,7 +283,7 @@ Posted into targeted value/stock investing groups (number-free durable post + he
 
 ### Reddit (staggered)
 
-- r/ValueInvesting / r/investing — _pending_ (text/self-post, insight-first, NO link in body)
+- **r/ValueInvesting** — ✅ posted Mon Jun 9, 2026: https://www.reddit.com/r/ValueInvesting/comments/1u1gn7m/the_metric_a_spreadsheet_leaves_out_why_two/ (text/self-post, insight-first, NO link in body — OCF/NI $0.83 vs $2.31 cash-quality example, closes with "what's your hidden metric?" discussion question)
 
 ### Website cross-link
 
