@@ -72,8 +72,39 @@ export async function exportPdf(
   const contentWidth = pageWidth - margin * 2;
   const contentHeight = pageHeight - margin * 2 - headerHeight - footerHeight;
 
-  const scaledImgHeight = (imgHeight * contentWidth) / imgWidth;
-  const totalPages = Math.ceil(scaledImgHeight / contentHeight);
+  // Source-pixels per full content page.
+  const pageSrcHeight = contentHeight * (imgWidth / contentWidth);
+
+  // Compute page-break rows, snapping each up to the nearest whitespace gap so a
+  // line of text is never sliced in half across a page boundary. Falls back to
+  // fixed slicing if the canvas can't be read (e.g. tainted by cross-origin img).
+  const fullCtx = canvas.getContext('2d');
+  const breaks: number[] = [0];
+  const scanWindow = Math.round(pageSrcHeight * 0.1);
+  let cursor = 0;
+  while (cursor < imgHeight) {
+    const target = cursor + pageSrcHeight;
+    if (target >= imgHeight) { breaks.push(imgHeight); break; }
+    let breakY = Math.floor(target);
+    try {
+      if (fullCtx) {
+        const scanTop = Math.max(cursor + 1, Math.floor(target) - scanWindow);
+        const strip = fullCtx.getImageData(0, scanTop, imgWidth, Math.floor(target) - scanTop);
+        for (let ry = strip.height - 1; ry >= 0; ry--) {
+          let isWhite = true;
+          const base = ry * imgWidth * 4;
+          for (let x = 0; x < imgWidth; x += 4) {
+            const i = base + x * 4;
+            if (strip.data[i] < 245 || strip.data[i + 1] < 245 || strip.data[i + 2] < 245) { isWhite = false; break; }
+          }
+          if (isWhite) { breakY = scanTop + ry; break; }
+        }
+      }
+    } catch { /* tainted canvas — keep the fixed break */ }
+    breaks.push(breakY);
+    cursor = breakY;
+  }
+  const totalPages = breaks.length - 1;
 
   const pdf = new jsPDF('p', 'mm', 'a4');
   const dateStr = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
@@ -90,9 +121,9 @@ export async function exportPdf(
     pdf.setDrawColor(203, 213, 225); // light rule
     pdf.line(margin, margin + headerHeight - 2, pageWidth - margin, margin + headerHeight - 2);
 
-    // Content slice
-    const srcY = page * contentHeight * (imgWidth / contentWidth);
-    const srcH = Math.min(contentHeight * (imgWidth / contentWidth), imgHeight - srcY);
+    // Content slice — boundaries snapped to whitespace (see breaks[])
+    const srcY = breaks[page];
+    const srcH = breaks[page + 1] - srcY;
     const destH = srcH * (contentWidth / imgWidth);
 
     // Create a temporary canvas for this page's slice
