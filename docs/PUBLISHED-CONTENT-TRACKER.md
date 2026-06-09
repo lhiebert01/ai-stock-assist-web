@@ -269,9 +269,15 @@ Posted into targeted value/stock investing groups (number-free durable post + he
 
 **Target groups (value/stock investing):** Value Investor Group – Undervalued Stocks (5K, best thematic fit), Market Slayers (74K), US Stock Market | Trading & Investing (6K), Stock Market Investing | Personal Finance (2K). NOTE: **skip ESG Investing (193K) for this episode** — the CVE/BKR/AA trio is oil/energy/aluminum, not ESG-aligned; reserve ESG-friendly episodes for that group. Space group posts out + vary the opener slightly to avoid LinkedIn spam flags.
 
-### Facebook / X
+### Facebook (group syndication)
 
-- Drafted (number-free voice, link in post + hero). _Pending post-confirmation URLs._
+- Value-investing group (~600): https://www.facebook.com/share/p/1HbDhacMAz/
+- Facebook (feed): https://www.facebook.com/share/p/1BgFQzXPbN/
+- _Pending admin approval:_ Value Investing (319K), The Intelligent Investor (12K), ISVI (6K), Value Investing Academy (4.6K), Value Investing Canada, Value Investing Dividend Stocks Forever (7.8K). SKIP for this episode: the real-estate/multifamily groups (Multifamily Investing, Real Estate Investor Group USA, Multifamily Investor Network) — off-theme for stock content. See `docs/DISTRIBUTION-GROUPS.md`.
+
+### X
+
+- Drafted (single tweet, link in post + hero). _Pending post-confirmation URL._
 
 ### Reddit (staggered)
 
