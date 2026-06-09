@@ -42,9 +42,14 @@ export async function exportPdf(
   const noPrintEls = element.querySelectorAll<HTMLElement>('.no-print');
   noPrintEls.forEach((el) => (el.style.display = 'none'));
 
+  // Cap scale so the rendered canvas stays under the browser's max canvas height
+  // (~16,384px in Chrome/Safari). Tall multi-stock reports otherwise overflow that
+  // limit and html2canvas returns a blank/transparent canvas.
+  const MAX_CANVAS_PX = 14000;
+  const captureScale = Math.min(2, MAX_CANVAS_PX / Math.max(1, element.scrollHeight));
   const canvas = await html2canvas(element, {
     backgroundColor: '#ffffff',
-    scale: 2,
+    scale: captureScale,
     useCORS: true,
     logging: false,
     windowWidth: 1200,
@@ -59,9 +64,22 @@ export async function exportPdf(
   // Restore hidden elements
   noPrintEls.forEach((el) => (el.style.display = ''));
 
-  const imgData = canvas.toDataURL('image/png');
   const imgWidth = canvas.width;
   const imgHeight = canvas.height;
+
+  // Flatten onto an OPAQUE white canvas. html2canvas can return a transparent
+  // canvas (its backgroundColor doesn't always stick, especially on large
+  // captures), which exports as black-RGB + alpha and renders as a blank page.
+  // Compositing onto white guarantees opaque output and a reliable whitespace scan.
+  const flat = document.createElement('canvas');
+  flat.width = imgWidth;
+  flat.height = imgHeight;
+  const flatCtx = flat.getContext('2d');
+  if (flatCtx) {
+    flatCtx.fillStyle = '#ffffff';
+    flatCtx.fillRect(0, 0, imgWidth, imgHeight);
+    flatCtx.drawImage(canvas, 0, 0);
+  }
 
   // A4 dimensions in mm
   const pageWidth = 210;
@@ -78,7 +96,7 @@ export async function exportPdf(
   // Compute page-break rows, snapping each up to the nearest whitespace gap so a
   // line of text is never sliced in half across a page boundary. Falls back to
   // fixed slicing if the canvas can't be read (e.g. tainted by cross-origin img).
-  const fullCtx = canvas.getContext('2d');
+  const fullCtx = flatCtx;
   const breaks: number[] = [0];
   const scanWindow = Math.round(pageSrcHeight * 0.1);
   let cursor = 0;
@@ -132,9 +150,11 @@ export async function exportPdf(
     pageCanvas.height = srcH;
     const ctx = pageCanvas.getContext('2d');
     if (ctx) {
-      ctx.drawImage(canvas, 0, srcY, imgWidth, srcH, 0, 0, imgWidth, srcH);
-      const pageImg = pageCanvas.toDataURL('image/png');
-      pdf.addImage(pageImg, 'PNG', margin, margin + headerHeight, contentWidth, destH);
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, imgWidth, srcH);
+      ctx.drawImage(flat, 0, srcY, imgWidth, srcH, 0, 0, imgWidth, srcH);
+      const pageImg = pageCanvas.toDataURL('image/jpeg', 0.85); // JPEG: far smaller than PNG
+      pdf.addImage(pageImg, 'JPEG', margin, margin + headerHeight, contentWidth, destH);
     }
 
     // Footer
