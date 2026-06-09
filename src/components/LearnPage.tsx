@@ -1,8 +1,57 @@
+import { useState } from 'react';
 import { motion } from 'motion/react';
 import {
-  BookOpen, ExternalLink, Shield, TrendingUp, CheckCircle2, Sparkles, Newspaper,
+  BookOpen, ExternalLink, Shield, TrendingUp, CheckCircle2, Sparkles, Newspaper, Mail,
 } from 'lucide-react';
 import type { UserProfile } from '../types/user';
+
+// In-place Substack email capture — pre-fills the address on Substack's subscribe page
+// so the reader lands one click from confirmation instead of bouncing to a cold homepage.
+function SubstackSubscribe() {
+  const [email, setEmail] = useState('');
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const base = 'https://lindsayhiebert.substack.com/subscribe';
+    const url = email.trim()
+      ? `${base}?email=${encodeURIComponent(email.trim())}`
+      : base;
+    window.open(url, '_blank', 'noopener,noreferrer');
+  };
+  return (
+    <div className="max-w-xl mx-auto bg-[var(--color-surface-2)] border border-[var(--color-border)] rounded-2xl p-6 sm:p-8 text-center">
+      <div className="flex items-center justify-center gap-2 mb-2">
+        <BookOpen className="w-5 h-5 text-[var(--color-accent)]" />
+        <h3 className="text-lg font-bold">Get every episode in your inbox</h3>
+      </div>
+      <p className="text-sm text-[var(--color-text-secondary)] mb-5">
+        Free. New lessons in the <span className="font-semibold">Investing in the Intelligence Era</span> series, plus the why behind every number.
+      </p>
+      <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3">
+        <div className="relative flex-1">
+          <Mail className="w-4 h-4 text-[var(--color-text-muted)] absolute left-3 top-1/2 -translate-y-1/2" />
+          <input
+            type="email"
+            required
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="you@email.com"
+            className="w-full pl-9 pr-3 py-3 rounded-xl bg-[var(--color-surface-3)] border border-[var(--color-border)] text-[var(--color-text-primary)] placeholder:text-[var(--color-text-muted)] focus:outline-none focus:border-[var(--color-accent)]/50"
+          />
+        </div>
+        <button
+          type="submit"
+          className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-[var(--color-accent)] text-black font-bold rounded-xl hover:opacity-90 transition-all whitespace-nowrap"
+        >
+          Subscribe Free
+          <ExternalLink className="w-4 h-4" />
+        </button>
+      </form>
+      <p className="text-xs text-[var(--color-text-muted)] mt-3">
+        No spam. Unsubscribe anytime. Opens Substack to confirm.
+      </p>
+    </div>
+  );
+}
 
 // The evergreen "why now" entry point — read this first.
 const startHere = {
@@ -217,17 +266,8 @@ export default function LearnPage({ userProfile, onNavigateMetrics }: LearnPageP
             </motion.a>
           ))}
         </div>
-        <div className="text-center mt-8">
-          <a
-            href="https://lindsayhiebert.substack.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-[var(--color-surface-3)] border border-[var(--color-border)] text-white font-bold rounded-xl hover:bg-[var(--color-border-light)] transition-all"
-          >
-            <BookOpen className="w-4 h-4" />
-            Subscribe on Substack
-            <ExternalLink className="w-4 h-4" />
-          </a>
+        <div className="mt-10">
+          <SubstackSubscribe />
         </div>
       </section>
 
