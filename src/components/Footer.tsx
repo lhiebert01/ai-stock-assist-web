@@ -1,9 +1,52 @@
-import { TrendingUp, Heart, ExternalLink } from 'lucide-react';
+import { useState } from 'react';
+import { TrendingUp, Heart, ExternalLink, Mail } from 'lucide-react';
 
 type View = 'landing' | 'analyzer' | 'discovery' | 'history' | 'payments' | 'admin' | 'auth' | 'learn' | 'metrics' | 'privacy' | 'terms' | 'reset-password';
 
 interface FooterProps {
   onNavigate: (view: View) => void;
+}
+
+// Compact newsletter capture shown on every page — pre-fills the address on
+// Substack's subscribe page so the reader lands one click from confirmation.
+function FooterSubscribe() {
+  const [email, setEmail] = useState('');
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const base = 'https://lindsayhiebert.substack.com/subscribe';
+    const url = email.trim() ? `${base}?email=${encodeURIComponent(email.trim())}` : base;
+    window.open(url, '_blank', 'noopener,noreferrer');
+  };
+  return (
+    <div className="flex flex-col md:flex-row md:items-center justify-between gap-5 pb-10 mb-10 border-b border-[var(--color-border)]">
+      <div className="max-w-md">
+        <h4 className="text-base font-bold mb-1">Invest wealthier and wiser</h4>
+        <p className="text-sm text-[var(--color-text-secondary)]">
+          Free, story-driven investing lessons in your inbox — the <span className="font-semibold">Intelligence Era</span> series.
+        </p>
+      </div>
+      <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 md:min-w-[380px]">
+        <div className="relative flex-1">
+          <Mail className="w-4 h-4 text-[var(--color-text-muted)] absolute left-3 top-1/2 -translate-y-1/2" />
+          <input
+            type="email"
+            required
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="you@email.com"
+            className="w-full pl-9 pr-3 py-2.5 rounded-xl bg-[var(--color-surface-3)] border border-[var(--color-border)] text-[var(--color-text-primary)] placeholder:text-[var(--color-text-muted)] focus:outline-none focus:border-[var(--color-accent)]/50"
+          />
+        </div>
+        <button
+          type="submit"
+          className="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-[var(--color-accent)] text-black font-bold rounded-xl hover:opacity-90 transition-all whitespace-nowrap"
+        >
+          Subscribe Free
+          <ExternalLink className="w-4 h-4" />
+        </button>
+      </form>
+    </div>
+  );
 }
 
 const ecosystem = [
@@ -17,6 +60,9 @@ export default function Footer({ onNavigate }: FooterProps) {
   return (
     <footer className="border-t border-[var(--color-border)] mt-20">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12">
+        {/* Newsletter capture — every page */}
+        <FooterSubscribe />
+
         {/* 3-column layout */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-10 mb-10">
           {/* Product */}
