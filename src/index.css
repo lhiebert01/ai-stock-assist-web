@@ -77,9 +77,21 @@ body {
   background: rgba(34, 211, 238, 0.04);
 }
 
-/* Print styles */
+/* Print styles — same white, high-contrast theme as the PDF export so browser
+   Print / Print-to-PDF matches. Remaps the design tokens to printer-safe values
+   (near-black text, dark teal accent, dark green buy, deep red sell, dark amber
+   hold) only within @media print; the on-screen app stays dark. */
 @media print {
-  body { background: white !important; color: #1a1a2e !important; }
+  :root {
+    --color-surface-0: #ffffff; --color-surface-1: #ffffff; --color-surface-2: #ffffff;
+    --color-surface-3: #f1f5f9; --color-border: #cbd5e1; --color-border-light: #94a3b8;
+    --color-text-primary: #0f172a; --color-text-secondary: #334155; --color-text-muted: #475569;
+    --color-accent: #0e7490; --color-accent-dim: #155e75;
+    --color-buy: #15803d; --color-sell: #b91c1c; --color-hold: #a16207;
+  }
+  body { background: #ffffff !important; color: #0f172a !important; }
+  /* Neutralise explicit dark fills that don't flow through the tokens */
+  [class*="bg-black"], [class*="bg-slate-9"], [class*="bg-gray-9"] { background-color: #ffffff !important; }
   .no-print { display: none !important; }
   nav, footer, header { display: none !important; }
 
