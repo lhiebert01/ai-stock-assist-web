@@ -228,7 +228,7 @@ export default function MarketingLanding({ onGetStarted }: LandingProps) {
         </div>
         <div className="text-center mt-10">
           <a
-            href="https://lindsayhiebert.substack.com"
+            href="https://lindsayhiebert.substack.com/s/investing-in-the-intelligence-era"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 px-6 py-3 bg-[var(--color-surface-3)] border border-[var(--color-border)] text-white font-bold rounded-xl hover:bg-[var(--color-border-light)] transition-all"

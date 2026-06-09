@@ -82,7 +82,7 @@ export default function Footer({ onNavigate }: FooterProps) {
             <h4 className="text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)] mb-4">Learn</h4>
             <ul className="space-y-2.5 text-sm">
               <li>
-                <a href="https://lindsayhiebert.substack.com" target="_blank" rel="noopener noreferrer" className="text-[var(--color-text-secondary)] hover:text-white transition-colors inline-flex items-center gap-1">
+                <a href="https://lindsayhiebert.substack.com/s/investing-in-the-intelligence-era" target="_blank" rel="noopener noreferrer" className="text-[var(--color-text-secondary)] hover:text-white transition-colors inline-flex items-center gap-1">
                   Substack Blog <ExternalLink className="w-3 h-3" />
                 </a>
               </li>
