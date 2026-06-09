@@ -51,6 +51,7 @@ function FooterSubscribe() {
 
 const ecosystem = [
   { name: 'AI Stock Assist', url: 'https://aistockassist.com' },
+  { name: 'MacroLens', url: 'https://www.getmacrolens.com' },
   { name: 'Neo-Aesop', url: 'https://neoaesop.com' },
   { name: 'HeroicVerse', url: 'https://heroicverse.app' },
   { name: 'iAppreciateYou', url: 'https://affirm.neoaesop.com' },
