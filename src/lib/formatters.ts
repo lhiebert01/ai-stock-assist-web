@@ -1,3 +1,12 @@
+/**
+ * True only when v is a usable finite number. Guards against backend values that
+ * arrive as the strings "Infinity"/"NaN" (e.g. P/E for near-zero-earnings tickers),
+ * which would otherwise crash `.toFixed()` and blank the whole report.
+ */
+export function isFiniteNum(v: unknown): v is number {
+  return typeof v === 'number' && Number.isFinite(v);
+}
+
 /** Format number as human-readable money: $1.5B, $230M, etc. */
 export function humanMoney(x: number | null | undefined, digits = 2): string {
   if (x == null || !isFinite(x)) return '—';

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { motion } from 'motion/react';
 import { Table2, Brain, ChevronDown, ChevronUp } from 'lucide-react';
 import type { StockSnapshot, AIRecommendation, Methodology } from '../types/stock';
-import { formatPrice, humanMoney, pctFmt, changeColor, ratingColor } from '../lib/formatters';
+import { formatPrice, humanMoney, pctFmt, changeColor, ratingColor, isFiniteNum } from '../lib/formatters';
 import AnalysisCards from './AnalysisCards';
 
 interface ComparisonTableProps {
@@ -33,7 +33,7 @@ export default function ComparisonTable({
   // Compute column bests
   const bestYtd = bestInColumn(snapshots, (s) => s.changes.ytd_pct, 'max');
   const bestY1 = bestInColumn(snapshots, (s) => s.changes.y1_pct, 'max');
-  const bestPe = bestInColumn(snapshots, (s) => (s.trailing_pe != null && s.trailing_pe > 0 ? s.trailing_pe : null), 'min');
+  const bestPe = bestInColumn(snapshots, (s) => (isFiniteNum(s.trailing_pe) && s.trailing_pe > 0 ? s.trailing_pe : null), 'min');
   const bestFcf = bestInColumn(snapshots, (s) => s.cash_flow.fcf_yield, 'max');
   const bestUpside = bestInColumn(snapshots, (s) => {
     if (s.analyst.target_price == null || s.price == null || s.price === 0) return null;
@@ -97,7 +97,7 @@ export default function ComparisonTable({
                       {pctFmt(s.changes.y1_pct)}
                     </td>
                     <td className={`text-right px-4 py-3 font-mono hidden lg:table-cell ${highlightClass(s.ticker, bestPe)}`}>
-                      {s.trailing_pe != null ? `${s.trailing_pe.toFixed(1)}x` : '—'}
+                      {isFiniteNum(s.trailing_pe) ? `${s.trailing_pe.toFixed(1)}x` : '—'}
                     </td>
                     <td className={`text-right px-4 py-3 font-mono hidden lg:table-cell ${highlightClass(s.ticker, bestFcf)}`}>
                       {s.cash_flow.fcf_yield != null ? `${s.cash_flow.fcf_yield.toFixed(2)}%` : '—'}

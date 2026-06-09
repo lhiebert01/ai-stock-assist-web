@@ -6,7 +6,7 @@ import {
   ExternalLink, AlertTriangle,
 } from 'lucide-react';
 import type { StockSnapshot, AIRecommendation, Methodology } from '../types/stock';
-import { formatPrice, humanMoney, pctFmt, changeColor, ratingColor } from '../lib/formatters';
+import { formatPrice, humanMoney, pctFmt, changeColor, ratingColor, isFiniteNum } from '../lib/formatters';
 import PriceChart from './PriceChart';
 import RecommendationCard from './RecommendationCard';
 import VerdictReconciliation from './VerdictReconciliation';
@@ -42,6 +42,8 @@ function MetricRow({ label, value, sub }: { label: string; value: string; sub?: 
 export default function StockCard({ snapshot, recommendation, methodology, hideChart }: StockCardProps) {
   const [expanded, setExpanded] = useState(true);
   const s = snapshot;
+  // Guard against non-finite P/E that can arrive as the string "Infinity" (crashes .toFixed)
+  const peNum = isFiniteNum(s.trailing_pe) && s.trailing_pe > 0 ? s.trailing_pe : null;
   const ch = s.changes;
   const cf = s.cash_flow;
   const sm = s.screening_metrics;
@@ -207,8 +209,8 @@ export default function StockCard({ snapshot, recommendation, methodology, hideC
                   <MetricRow label="Revenue" value={humanMoney(s.latest_revenue)} />
                   <MetricRow
                     label="P/E Ratio"
-                    value={s.trailing_pe != null && s.trailing_pe > 0 ? `${s.trailing_pe.toFixed(2)}x` : 'N/A'}
-                    sub={s.trailing_pe != null && s.trailing_pe > 0 ? undefined : (cf.net_income != null && cf.net_income <= 0 ? 'No TTM profit' : 'Unavailable')}
+                    value={peNum != null ? `${peNum.toFixed(2)}x` : 'N/A'}
+                    sub={peNum != null ? undefined : (cf.net_income != null && cf.net_income <= 0 ? 'No TTM profit' : 'Unavailable')}
                   />
                   <MetricRow label="P/B Ratio" value={sm.price_to_book != null ? `${sm.price_to_book.toFixed(2)}x` : '—'} />
                   <MetricRow label="ROE" value={sm.return_on_equity != null ? `${(sm.return_on_equity * 100).toFixed(1)}%` : '—'} />
@@ -277,7 +279,7 @@ export default function StockCard({ snapshot, recommendation, methodology, hideC
               </div>
 
               {/* P/E advisory — shown when valuation lacks a usable P/E (flows into PDF/print capture) */}
-              {recommendation && (s.trailing_pe == null || s.trailing_pe <= 0) && (
+              {recommendation && peNum == null && (
                 <div className="mt-4 flex items-start gap-2 rounded-lg border border-amber-500/40 bg-amber-500/10 p-3 text-xs leading-relaxed text-[var(--color-text-secondary)]">
                   <AlertTriangle className="w-4 h-4 text-amber-500 shrink-0 mt-0.5" />
                   <span>
