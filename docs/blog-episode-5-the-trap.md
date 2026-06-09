@@ -199,7 +199,7 @@ Elena slid her laptop over.
 
 **💰 The math:**
 
-- Cost of one dividend-quality check on AI Stock Assist: **~$5**
+- Cost of one dividend-quality check on AI Stock Assist: **~25¢** (one analysis — your first three are free)
 - Time to result: **~30 seconds**
 - Cost of Jamie's "free" Reddit tip: **$0**
 - Cost of the 70% dividend cut + 42% stock crash on his $50K: **~$21,000**
@@ -310,33 +310,78 @@ Pair it with Dividend Yield and Free Cash Flow Yield from the same panel for the
 
 # Channel Variants
 
-## LinkedIn (~310 words)
+## LinkedIn — FINAL PUBLISHED (Wed May 28, 2026)
+
+> Live post: https://www.linkedin.com/posts/lindsayhiebert_dividendinvesting-passiveincome-yieldtrap-activity-7465617293503393793-F9Qu
+> Image used: `EPISODE_05_PROMO_linkedin-v2.png` · Link placement: first comment
+> Editorial pattern for future episodes: short staccato lines (~1 sentence per paragraph), three arrow-bulleted diagnostics, "boring/sustainable/exciting" cadence, single-sentence mission line at the close.
+
+A 12% dividend can look like passive income.
+
+But sometimes it is really a warning sign.
+
+In Episode 5 of my Learning to Invest in the Intelligence Era series, Jamie puts $50,000 into a stock because it pays a 12% dividend.
+
+"Six grand a year just for holding it," he says.
+
+But he does not check the three numbers that matter most:
+
+→ Payout ratio: 162%
+
+For every $1 the company earns, it is paying out $1.62 in dividends.
+
+→ Free cash flow: -$89M
+
+The company is not generating cash. It is burning it.
+
+→ Dividend history: Cut 3 times in the last 10 years
+
+That is not a one-time problem. That is a pattern.
+
+Six weeks later, the company cuts its dividend by 70%.
+The stock falls 42%.
+
+Jamie's $50,000 becomes $29,000.
+
+The dividend he was counting on is mostly gone.
+
+That is a yield trap.
+
+The number is designed to attract. It is high enough to override skepticism.
+
+But the real question is not:
+
+"How big is the dividend?"
+
+The real question is:
+
+"Can this company actually afford to keep paying it?"
+
+A boring 3% dividend from a healthy company can be far better than an exciting 12% dividend from a sick one.
+
+Boring is sustainable.
+
+Sustainable builds wealth.
+
+Exciting often destroys it.
+
+That is why AI Stock Assist now includes a dividend quality check: payout ratio, free cash flow, dividend history, and a simple verdict on whether the goose is healthy or sick.
+
+Episode 5 is live: The Trap
+
+This series exists for one reason: to help everyday investors make sharper decisions in the Intelligence Era.
+
+Link to the full article is in the first comment.
+
+#DividendInvesting #PassiveIncome #YieldTrap #Investing #AIForGood
+
+---
+
+### Earlier draft (pre-elevation — kept for reference)
 
 **Title:** A 12% dividend yield isn't a golden goose. It's a sick one.
 
-A friend of mine put $50,000 into a stock last month because it paid a 12% dividend. "Six grand a year just for holding it," he told me, grinning.
-
-He didn't check the payout ratio. He didn't check the free cash flow. He didn't check the dividend history.
-
-Here's what those three numbers said:
-
-- **Payout ratio: 162%.** For every dollar the company earned, it was paying out $1.62 in dividends. The other 62 cents was borrowed.
-- **Free cash flow: -$89 million.** They weren't generating cash — they were burning it.
-- **Dividend history: cut 3 times in the last 10 years.**
-
-Six weeks after he bought it, the company announced a 70% dividend cut. Stock crashed 42% in a day. His $50K was worth $29K. The dividend he was counting on? Mostly gone. Total damage: about $21,000.
-
-This is what's called a *yield trap.* The number is engineered to attract — high enough to override your skepticism. It only works if you don't check the three numbers above.
-
-A boring 3% dividend from Johnson & Johnson, with a 44% payout ratio and positive cash flow, has beaten the average 12% high-yielder by **over 100 percentage points** in total return over the last decade. Boring is sustainable. Sustainable builds wealth. Exciting destroys it.
-
-This is what AI Stock Assist's dividend quality check shows you in 30 seconds — the payout ratio, the cash flow, the cut history, and a verdict on whether the goose is healthy or sick.
-
-Episode 5 of the Intelligence Era series is live — *"The Trap."*
-
-This is part of our **AI for Good** mission: make ordinary investors **wealthy AND wise.** Try it free at aistockassist.com — 3 analyses, no credit card.
-
-The door is open.
+A friend of mine put $50,000 into a stock last month because it paid a 12% dividend. "Six grand a year just for holding it," he told me, grinning. He didn't check the payout ratio. He didn't check the free cash flow. He didn't check the dividend history. *[Earlier dense paragraph form — superseded by the published staccato version above. Key difference: Lindsay's published version uses one-sentence paragraphs throughout, which dramatically increases mobile readability and stop-the-scroll cadence on LinkedIn.]*
 
 ---
 
@@ -393,7 +438,7 @@ That's a healthy goose. It'll lay eggs for decades.
 **6/**
 AI Stock Assist's dividend quality check shows all four in 30 seconds.
 
-Cost: ~$5
+Cost: ~25¢
 Cost of skipping it: $21,000 (in my friend's case)
 
 Penny-wise. Pound-foolish.

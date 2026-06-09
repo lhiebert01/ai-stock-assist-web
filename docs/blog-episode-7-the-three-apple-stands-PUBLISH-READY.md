@@ -125,19 +125,19 @@ Elena: "Two years to learn. Hours to apply."
 
 Alex tapped the screen.
 
-"Five dollars. Thirty seconds."
+"Twenty-five cents a stock. Thirty seconds."
 
 ————————————————————————
 
 💰 THE MATH
 
-• One comparative analysis on AI Stock Assist: ~$5, about 30 seconds
+• Comparing the three on AI Stock Assist: about 25¢ a stock — under a dollar for all three — in 30 seconds (and your first three analyses are free)
 • Marcus's spreadsheet: 6 hours of a Saturday — call it $300 of his time
-• What the $5 caught that the 6 hours didn't: AA reports $1 of profit backed by just $0.83 of cash (OCF/NI 0.83x); CVE's is backed by $2.31. Same-looking valuations, opposite cash quality.
+• What that under-a-dollar check caught that the six hours didn't: AA reports $1 of profit backed by just $0.83 of cash (OCF/NI 0.83x); CVE's is backed by $2.31. Same-looking valuations, opposite cash quality.
 
 Penny-wise. Pound-foolish.
 
-Marcus didn't almost-pick the weaker company because he was lazy. He almost picked it because he confused building a spreadsheet with making a judgment. They are not the same thing — and one of them is now five dollars and thirty seconds away.
+Marcus didn't almost-pick the weaker company because he was lazy. He almost picked it because he confused building a spreadsheet with making a judgment. They are not the same thing — and one of them is now about twenty-five cents and thirty seconds away.
 
 ————————————————————————
 
