@@ -260,9 +260,18 @@ The original draft is in `docs/blog-executive-summary-pdf-history.md`. Lindsay e
 - Canonical → Substack
 - Published: Tue Jun 9, 2026
 
-### LinkedIn / Facebook / X
+### LinkedIn (group syndication)
 
-- Drafted (number-free durable voice, Substack link in post + hero image); first comments ready. _Pending post-confirmation URLs._
+Posted into targeted value/stock investing groups (number-free durable post + hero image, Substack link in post):
+- Group post: https://www.linkedin.com/feed/update/urn:li:groupPost:12274630-7470198302613962753/
+- Activity: https://www.linkedin.com/feed/update/urn:li:activity:7470198304144846849
+- Market Slayers group: https://www.linkedin.com/feed/update/urn:li:activity:7470197009157681152
+
+**Target groups (value/stock investing):** Value Investor Group – Undervalued Stocks (5K, best thematic fit), Market Slayers (74K), US Stock Market | Trading & Investing (6K), Stock Market Investing | Personal Finance (2K). NOTE: **skip ESG Investing (193K) for this episode** — the CVE/BKR/AA trio is oil/energy/aluminum, not ESG-aligned; reserve ESG-friendly episodes for that group. Space group posts out + vary the opener slightly to avoid LinkedIn spam flags.
+
+### Facebook / X
+
+- Drafted (number-free voice, link in post + hero). _Pending post-confirmation URLs._
 
 ### Reddit (staggered)
 
