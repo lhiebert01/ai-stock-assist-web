@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { FileDown, FileText, Printer, Loader2 } from 'lucide-react';
 import type { StockSnapshot, Methodology } from '../types/stock';
 import { exportWord } from '../services/stockApi';
-import { exportPdf } from '../services/pdfExportService';
 
 interface ReportActionsProps {
   snapshots: StockSnapshot[];
@@ -12,22 +11,18 @@ interface ReportActionsProps {
 }
 
 export default function ReportActions({ snapshots, methodology, comparativeAnalysis, resultsRef }: ReportActionsProps) {
-  const [pdfLoading, setPdfLoading] = useState(false);
   const [wordLoading, setWordLoading] = useState(false);
 
   const tickers = snapshots.map((s) => s.ticker);
   const windowLabel = new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
 
-  const handlePdf = async () => {
-    if (!resultsRef.current || pdfLoading) return;
-    setPdfLoading(true);
-    try {
-      await exportPdf(resultsRef.current, methodology, tickers);
-    } catch (err) {
-      console.error('PDF export failed:', err);
-    } finally {
-      setPdfLoading(false);
-    }
+  const handlePdf = () => {
+    // Native browser print → "Save as PDF" / "Microsoft Print to PDF". Renders the
+    // REAL page — the lightweight-charts canvas and sharp vector text — exactly as
+    // shown, via the @media print theme. html2canvas could not capture this app's
+    // dark CSS-variable theme AND the chart canvas together (black-on-black text or
+    // blank graphs), so we use the browser's own engine instead.
+    window.print();
   };
 
   const handleWord = async () => {
@@ -58,10 +53,9 @@ export default function ReportActions({ snapshots, methodology, comparativeAnaly
     <div className="no-print flex items-center justify-center gap-2 mb-6 flex-wrap">
       <button
         onClick={handlePdf}
-        disabled={pdfLoading}
-        className="flex items-center gap-2 px-4 py-2 bg-[var(--color-surface-2)] border border-[var(--color-border)] rounded-lg text-sm font-medium text-[var(--color-text-secondary)] hover:text-[var(--color-accent)] hover:border-[var(--color-accent)]/30 transition-all disabled:opacity-50"
+        className="flex items-center gap-2 px-4 py-2 bg-[var(--color-surface-2)] border border-[var(--color-border)] rounded-lg text-sm font-medium text-[var(--color-text-secondary)] hover:text-[var(--color-accent)] hover:border-[var(--color-accent)]/30 transition-all"
       >
-        {pdfLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <FileDown className="w-4 h-4" />}
+        <FileDown className="w-4 h-4" />
         Download PDF
       </button>
       <button
