@@ -138,7 +138,7 @@ export default function MarketingLanding({ onGetStarted }: LandingProps) {
             >
               <img
                 src="/hero-showcase.jpg"
-                alt="AI Stock Assist — AI-Powered Deep Stock Research & Thinking"
+                alt="AI Stock Assist — one clear BUY/HOLD/SELL verdict with the math behind it"
                 className="w-full h-auto"
               />
             </motion.div>
