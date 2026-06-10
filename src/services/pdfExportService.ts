@@ -23,10 +23,37 @@ const PDF_LIGHT_THEME_CSS = `
   .pdf-light-root [class*="bg-gray-9"] { background-color: #ffffff !important; }
 `;
 
+// Stay safely under the browser's ~16,384px max canvas dimension (Chrome/Safari).
+const SAFE_MAX_PX = 16000;
+// Target capture density. scale 2 over a 1200px layout → ~2400px across the 190mm
+// content area → ~320 DPI in the final PDF (sharp, readable small text).
+const TARGET_SCALE = 2;
+const JPEG_QUALITY = 0.92;
+
+/** Composite a (possibly transparent) capture onto opaque white so pages never
+ *  export as black-RGB + alpha (which renders blank). */
+function flattenOpaque(src: HTMLCanvasElement): HTMLCanvasElement {
+  const flat = document.createElement('canvas');
+  flat.width = src.width;
+  flat.height = src.height;
+  const ctx = flat.getContext('2d');
+  if (ctx) {
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(0, 0, src.width, src.height);
+    ctx.drawImage(src, 0, 0);
+  }
+  return flat;
+}
+
 /**
  * Captures a DOM element as a multi-page PDF using html2canvas + jspdf.
  * Elements with class `.no-print` are hidden during capture.
  * Capture uses a white, high-contrast print theme (see PDF_LIGHT_THEME_CSS).
+ *
+ * Resolution: the report is captured in vertical chunks at TARGET_SCALE (~320 DPI)
+ * so tall multi-stock reports stay sharp. A single chunk that fails the browser's
+ * canvas limit (or any capture error) falls back to one full-page capture at the
+ * best single-canvas scale — identical to the prior behavior — so export never breaks.
  */
 export async function exportPdf(
   element: HTMLElement,
@@ -42,44 +69,97 @@ export async function exportPdf(
   const noPrintEls = element.querySelectorAll<HTMLElement>('.no-print');
   noPrintEls.forEach((el) => (el.style.display = 'none'));
 
-  // Cap scale so the rendered canvas stays under the browser's max canvas height
-  // (~16,384px in Chrome/Safari). Tall multi-stock reports otherwise overflow that
-  // limit and html2canvas returns a blank/transparent canvas.
-  const MAX_CANVAS_PX = 14000;
-  const captureScale = Math.min(2, MAX_CANVAS_PX / Math.max(1, element.scrollHeight));
-  const canvas = await html2canvas(element, {
+  const onclone = (clonedDoc: Document, clonedEl: HTMLElement) => {
+    clonedEl.classList.add('pdf-light-root');
+    const style = clonedDoc.createElement('style');
+    style.textContent = PDF_LIGHT_THEME_CSS;
+    clonedDoc.head.appendChild(style);
+  };
+  const commonOpts = {
     backgroundColor: '#ffffff',
-    scale: captureScale,
     useCORS: true,
     logging: false,
     windowWidth: 1200,
-    onclone: (clonedDoc: Document, clonedEl: HTMLElement) => {
-      clonedEl.classList.add('pdf-light-root');
-      const style = clonedDoc.createElement('style');
-      style.textContent = PDF_LIGHT_THEME_CSS;
-      clonedDoc.head.appendChild(style);
-    },
-  });
+    onclone,
+  };
+
+  const totalSrcHeight = Math.max(1, element.scrollHeight);
+
+  // Each chunk is a slice of the full-resolution "virtual" capture. We track each
+  // chunk's top edge in device pixels so the page assembler can read/draw across
+  // chunk boundaries as if it were one tall image.
+  type Chunk = { devTop: number; canvas: HTMLCanvasElement };
+  let chunks: Chunk[] = [];
+  let imgWidth = 0;
+
+  try {
+    // High-res path: capture in vertical bands at TARGET_SCALE so no single canvas
+    // exceeds the browser limit (band height in CSS px * scale ≤ SAFE_MAX_PX).
+    const chunkSrcH = Math.floor(SAFE_MAX_PX / TARGET_SCALE);
+    for (let y = 0; y < totalSrcHeight; y += chunkSrcH) {
+      const h = Math.min(chunkSrcH, totalSrcHeight - y);
+      const c = await html2canvas(element, {
+        ...commonOpts,
+        scale: TARGET_SCALE,
+        y,
+        height: h,
+        windowHeight: totalSrcHeight,
+      });
+      // If cropping was ignored (canvas far larger/smaller than the band), bail to
+      // the safe single-capture path rather than emit a misaligned PDF.
+      if (!c.width || Math.abs(c.height - h * TARGET_SCALE) > TARGET_SCALE * 8) {
+        throw new Error('chunk capture size mismatch');
+      }
+      chunks.push({ devTop: Math.round(y * TARGET_SCALE), canvas: flattenOpaque(c) });
+    }
+    if (!chunks.length) throw new Error('no chunks captured');
+    imgWidth = chunks[0].canvas.width;
+  } catch {
+    // Fallback: original single-canvas capture at the best height-limited scale.
+    chunks = [];
+    const scale = Math.min(TARGET_SCALE, SAFE_MAX_PX / totalSrcHeight);
+    const c = await html2canvas(element, { ...commonOpts, scale });
+    chunks = [{ devTop: 0, canvas: flattenOpaque(c) }];
+    imgWidth = c.width;
+  }
 
   // Restore hidden elements
   noPrintEls.forEach((el) => (el.style.display = ''));
 
-  const imgWidth = canvas.width;
-  const imgHeight = canvas.height;
+  const imgHeight = chunks.reduce((m, ch) => Math.max(m, ch.devTop + ch.canvas.height), 0);
 
-  // Flatten onto an OPAQUE white canvas. html2canvas can return a transparent
-  // canvas (its backgroundColor doesn't always stick, especially on large
-  // captures), which exports as black-RGB + alpha and renders as a blank page.
-  // Compositing onto white guarantees opaque output and a reliable whitespace scan.
-  const flat = document.createElement('canvas');
-  flat.width = imgWidth;
-  flat.height = imgHeight;
-  const flatCtx = flat.getContext('2d');
-  if (flatCtx) {
-    flatCtx.fillStyle = '#ffffff';
-    flatCtx.fillRect(0, 0, imgWidth, imgHeight);
-    flatCtx.drawImage(canvas, 0, 0);
-  }
+  // Draw virtual device-pixel rows [sy, sy+sh) into destCtx at destY, sourcing from
+  // whichever chunk(s) overlap that range.
+  const copyRegion = (destCtx: CanvasRenderingContext2D, destY: number, sy: number, sh: number) => {
+    for (const ch of chunks) {
+      const top = Math.max(sy, ch.devTop);
+      const bot = Math.min(sy + sh, ch.devTop + ch.canvas.height);
+      if (bot <= top) continue;
+      destCtx.drawImage(
+        ch.canvas,
+        0, top - ch.devTop, imgWidth, bot - top,
+        0, destY + (top - sy), imgWidth, bot - top,
+      );
+    }
+  };
+
+  // Read a horizontal strip of the virtual image as ImageData (for whitespace scan).
+  const stripData = (sy: number, sh: number): ImageData | null => {
+    if (sh <= 0) return null;
+    const t = document.createElement('canvas');
+    t.width = imgWidth;
+    t.height = sh;
+    const tc = t.getContext('2d');
+    if (!tc) return null;
+    tc.fillStyle = '#ffffff';
+    tc.fillRect(0, 0, imgWidth, sh);
+    copyRegion(tc, 0, sy, sh);
+    try {
+      return tc.getImageData(0, 0, imgWidth, sh);
+    } catch {
+      return null;
+    }
+  };
 
   // A4 dimensions in mm
   const pageWidth = 210;
@@ -94,9 +174,7 @@ export async function exportPdf(
   const pageSrcHeight = contentHeight * (imgWidth / contentWidth);
 
   // Compute page-break rows, snapping each up to the nearest whitespace gap so a
-  // line of text is never sliced in half across a page boundary. Falls back to
-  // fixed slicing if the canvas can't be read (e.g. tainted by cross-origin img).
-  const fullCtx = flatCtx;
+  // line of text is never sliced in half across a page boundary.
   const breaks: number[] = [0];
   const scanWindow = Math.round(pageSrcHeight * 0.1);
   let cursor = 0;
@@ -104,21 +182,19 @@ export async function exportPdf(
     const target = cursor + pageSrcHeight;
     if (target >= imgHeight) { breaks.push(imgHeight); break; }
     let breakY = Math.floor(target);
-    try {
-      if (fullCtx) {
-        const scanTop = Math.max(cursor + 1, Math.floor(target) - scanWindow);
-        const strip = fullCtx.getImageData(0, scanTop, imgWidth, Math.floor(target) - scanTop);
-        for (let ry = strip.height - 1; ry >= 0; ry--) {
-          let isWhite = true;
-          const base = ry * imgWidth * 4;
-          for (let x = 0; x < imgWidth; x += 4) {
-            const i = base + x * 4;
-            if (strip.data[i] < 245 || strip.data[i + 1] < 245 || strip.data[i + 2] < 245) { isWhite = false; break; }
-          }
-          if (isWhite) { breakY = scanTop + ry; break; }
+    const scanTop = Math.max(cursor + 1, Math.floor(target) - scanWindow);
+    const strip = stripData(scanTop, Math.floor(target) - scanTop);
+    if (strip) {
+      for (let ry = strip.height - 1; ry >= 0; ry--) {
+        let isWhite = true;
+        const base = ry * imgWidth * 4;
+        for (let x = 0; x < imgWidth; x += 4) {
+          const i = base + x * 4;
+          if (strip.data[i] < 245 || strip.data[i + 1] < 245 || strip.data[i + 2] < 245) { isWhite = false; break; }
         }
+        if (isWhite) { breakY = scanTop + ry; break; }
       }
-    } catch { /* tainted canvas — keep the fixed break */ }
+    }
     breaks.push(breakY);
     cursor = breakY;
   }
@@ -144,7 +220,6 @@ export async function exportPdf(
     const srcH = breaks[page + 1] - srcY;
     const destH = srcH * (contentWidth / imgWidth);
 
-    // Create a temporary canvas for this page's slice
     const pageCanvas = document.createElement('canvas');
     pageCanvas.width = imgWidth;
     pageCanvas.height = srcH;
@@ -152,8 +227,8 @@ export async function exportPdf(
     if (ctx) {
       ctx.fillStyle = '#ffffff';
       ctx.fillRect(0, 0, imgWidth, srcH);
-      ctx.drawImage(flat, 0, srcY, imgWidth, srcH, 0, 0, imgWidth, srcH);
-      const pageImg = pageCanvas.toDataURL('image/jpeg', 0.85); // JPEG: far smaller than PNG
+      copyRegion(ctx, 0, srcY, srcH);
+      const pageImg = pageCanvas.toDataURL('image/jpeg', JPEG_QUALITY);
       pdf.addImage(pageImg, 'JPEG', margin, margin + headerHeight, contentWidth, destH);
     }
 
