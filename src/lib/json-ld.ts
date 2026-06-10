@@ -6,7 +6,7 @@ export function getOrganizationJsonLd() {
     '@type': 'Organization',
     name: 'AI Stock Assist',
     url: SITE_URL,
-    logo: `${SITE_URL}/og-image.jpg`,
+    logo: `${SITE_URL}/icons/icon-512.png`,
     description: 'AI-powered stock analysis using Google Gemini for professional fundamental analysis.',
     contactPoint: {
       '@type': 'ContactPoint',
