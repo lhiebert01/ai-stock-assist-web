@@ -153,7 +153,7 @@ export async function exportPdf(
       ctx.fillStyle = '#ffffff';
       ctx.fillRect(0, 0, imgWidth, srcH);
       ctx.drawImage(flat, 0, srcY, imgWidth, srcH, 0, 0, imgWidth, srcH);
-      const pageImg = pageCanvas.toDataURL('image/jpeg', 0.85); // JPEG: far smaller than PNG
+      const pageImg = pageCanvas.toDataURL('image/jpeg', 0.95); // high quality: minimise text artifacts (still far smaller than PNG)
       pdf.addImage(pageImg, 'JPEG', margin, margin + headerHeight, contentWidth, destH);
     }
 
