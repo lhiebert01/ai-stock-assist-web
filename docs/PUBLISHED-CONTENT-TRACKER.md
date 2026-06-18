@@ -288,3 +288,38 @@ Posted into targeted value/stock investing groups (number-free durable post + he
 ### Website cross-link
 
 - `src/components/LearnPage.tsx` → ✅ Ep 7 card added (🍎 The Three Apple Stands), commit `10e39af` (Jun 9, 2026).
+
+---
+
+## Campaign: Episode 8 "The Sealed Envelope" (PUBLISHED — Jun 18, 2026)
+
+**Status:** ✅ Published to Substack + Medium Jun 18, 2026 (prepared after the storm/power-outage gap; shipped ahead of the Mon Jun 22 target). NOTE: published slug is `/p/the-sealed-envelope` (NOT the predicted `/p/episode-8-...`). Remaining social syndication (LinkedIn/FB/X/Reddit) pending — copy ready in the publish kit.
+
+### Substack (Flagship Article)
+- Article (canonical): https://lindsayhiebert.substack.com/p/the-sealed-envelope
+- Share link: https://open.substack.com/pub/lindsayhiebert/p/the-sealed-envelope?r=qw3u&utm_campaign=post&utm_medium=web&showWelcomeOnShare=true
+
+### Medium (cross-post)
+- Article: https://medium.com/@lindsay.hiebert/the-sealed-envelope-0e229fa266cb
+- Tags (5, canonical): Data Science, Investing, Stock Market, Finance, Artificial Intelligence — see [[reference-medium-tags]]
+- Canonical → Substack (no SEO duplicate-content penalty)
+- Published: Jun 18, 2026
+
+**Theme:** Jamie (relapse from the Ep 5 dividend trap) put $8K into a stock on a tip from his cousin. Six months later his wife asks "What's your thesis?" — and he can't remember why he bought it. Lesson: memory is the most confident liar; record your thesis the day you buy so future-you can tell a bad plan from bad luck. Parable: a captain who seals his reasoning in an envelope ("Open in six months") before he sails. Persona: Jamie Park (set up explicitly by the Ep 7 "Next Week" teaser). Objection demolished: "I remember why I bought my stocks."
+
+**Features highlighted:** Executive Summary (verdict + confidence + key highlights, written for you) + one-click **Download PDF** = the "sealed envelope" (dated, reopenable thesis). Verified live in `src/components/ExecutiveSummary.tsx`, `src/components/ReportActions.tsx`, `src/services/pdfExportService.ts`.
+
+**Metric spotlight:** FCF Yield (Free Cash Flow Yield) — `>5%` very good / `3–5%` good / `<0%` burning cash. Confirmed in `src/components/MetricsGuide.tsx`. (Prior spotlights: Payout Ratio Ep5, P/FCF Ep6, OCF/NI Ep7.)
+
+**Deliverables (ready to publish):**
+- Publish-ready article (paste-safe, links printed beneath each item): `docs/blog-episode-8-the-sealed-envelope-PUBLISH-READY.md`
+- One-file Word publish kit (article + PUBLISHING KIT appendix): `docs/exports/blog-episode-8-the-sealed-envelope-PUBLISH-KIT.docx`
+- Image prompt pack: `docs/episode-8-the-sealed-envelope-image-prompts.md`
+- Hero (first inline, under subtitle): `docs/images/episode-8/Blog-8-hero-sealed-envelope.png` — ✅ saved (16:9, 1672x941) + `Blog-8-hero-sealed-envelope-OG-1200x630.jpg` for the social link card
+- Inline: `Blog-8-jamie-blank-stare.png` (opening scene) — ✅ saved; `Blog-8-executive-summary-screenshot.png` (TSLA HOLD mockup) — ✅ saved. Alternates also in `docs/images/episode-8/` (`-alt-castB`, `-alt-3x2`, `-alt-chart`). All ChatGPT-generated Jun 18 from the one-shot prompts (landscape, not squished).
+
+**Channel posts prepared (Substack link IN post this round):** LinkedIn (~280w), X (single + optional 2-tweet), Facebook (~200w), Reddit r/investing or r/stocks (text post, NO link in body). First comments prepared for LinkedIn / Facebook / X (tool link in first comment per convention).
+
+**Canonical URL (live):** https://lindsayhiebert.substack.com/p/the-sealed-envelope
+
+**Pre-publish to-dos:** (1) ✅ images generated & saved (Jun 18); (2) optional — re-run TSLA the morning of publish and reconcile the live verdict + FCF Yield with the article text + mockup (current mockup = HOLD / FCF Yield ~1.8% / P/E ~75x, illustrative); (3) add Ep 8 card to `src/components/LearnPage.tsx`; (4) after publishing, fill the real Substack/LinkedIn/FB/X/Reddit URLs above.
