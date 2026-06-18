@@ -19,19 +19,25 @@ export default function SetNewPassword({ onSuccess }: SetNewPasswordProps) {
     e.preventDefault();
     setError(null);
 
-    if (password.length < 6) {
+    // Read from the form so a password-manager autofill that didn't fire React's
+    // onChange still submits the real values; fall back to React state.
+    const fd = new FormData(e.currentTarget as HTMLFormElement);
+    const passwordValue = String(fd.get('new-password') ?? password);
+    const confirmValue = String(fd.get('confirm-new-password') ?? confirmPassword);
+
+    if (passwordValue.length < 6) {
       setError('Password must be at least 6 characters.');
       return;
     }
 
-    if (password !== confirmPassword) {
+    if (passwordValue !== confirmValue) {
       setError('Passwords do not match.');
       return;
     }
 
     setLoading(true);
     try {
-      const { error: updateError } = await supabase.auth.updateUser({ password });
+      const { error: updateError } = await supabase.auth.updateUser({ password: passwordValue });
       if (updateError) throw updateError;
 
       setSuccess(true);
@@ -90,6 +96,8 @@ export default function SetNewPassword({ onSuccess }: SetNewPasswordProps) {
                   <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--color-text-muted)]" />
                   <input
                     type={showPassword ? 'text' : 'password'}
+                    name="new-password"
+                    autoComplete="new-password"
                     placeholder="Enter new password"
                     className="w-full pl-10 pr-12 py-3 bg-[var(--color-surface-1)] border border-[var(--color-border)] rounded-xl text-[var(--color-text-primary)] placeholder:text-[var(--color-text-muted)] focus:ring-2 focus:ring-[var(--color-accent)]/30 focus:border-[var(--color-accent)] transition-all outline-none"
                     value={password}
@@ -115,6 +123,8 @@ export default function SetNewPassword({ onSuccess }: SetNewPasswordProps) {
                   <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--color-text-muted)]" />
                   <input
                     type={showPassword ? 'text' : 'password'}
+                    name="confirm-new-password"
+                    autoComplete="new-password"
                     placeholder="Confirm new password"
                     className="w-full pl-10 pr-12 py-3 bg-[var(--color-surface-1)] border border-[var(--color-border)] rounded-xl text-[var(--color-text-primary)] placeholder:text-[var(--color-text-muted)] focus:ring-2 focus:ring-[var(--color-accent)]/30 focus:border-[var(--color-accent)] transition-all outline-none"
                     value={confirmPassword}

@@ -50,20 +50,29 @@ export default function Auth({ onAuthSuccess, onBack }: AuthProps) {
     setError(null);
     setMessage(null);
 
+    // Read straight from the form element so a password-manager autofill (1Password,
+    // esp. on iOS) that doesn't fire React's onChange still submits the REAL values;
+    // fall back to React state. Trim the email — autofill can append a trailing space,
+    // which causes "Invalid login credentials" on an otherwise-correct saved password.
+    const fd = new FormData(e.currentTarget as HTMLFormElement);
+    const cleanEmail = String(fd.get('email') ?? email).trim();
+    const passwordValue = String(fd.get('password') ?? password);
+    const displayNameValue = String(fd.get('name') ?? displayName);
+
     try {
       if (mode === 'signup') {
         const { data, error: signUpError } = await supabase.auth.signUp({
-          email,
-          password,
-          options: { data: { display_name: displayName || email.split('@')[0] } },
+          email: cleanEmail,
+          password: passwordValue,
+          options: { data: { display_name: displayNameValue || cleanEmail.split('@')[0] } },
         });
         if (signUpError) throw signUpError;
         if (data.user) {
-          const isAdmin = email.toLowerCase() === 'lindsay.hiebert@gmail.com';
+          const isAdmin = cleanEmail.toLowerCase() === 'lindsay.hiebert@gmail.com';
           await supabase.from('user_profiles').insert({
             id: data.user.id,
             email: data.user.email,
-            username: displayName || email.split('@')[0],
+            username: displayNameValue || cleanEmail.split('@')[0],
             is_admin: isAdmin,
           });
         }
@@ -74,12 +83,12 @@ export default function Auth({ onAuthSuccess, onBack }: AuthProps) {
           setMode('login');
         }
       } else if (mode === 'login') {
-        const { error: signInError } = await supabase.auth.signInWithPassword({ email, password });
+        const { error: signInError } = await supabase.auth.signInWithPassword({ email: cleanEmail, password: passwordValue });
         if (signInError) throw signInError;
         onAuthSuccess();
       } else {
         const appUrl = import.meta.env.VITE_APP_URL || window.location.origin;
-        const { error: resetError } = await supabase.auth.resetPasswordForEmail(email, {
+        const { error: resetError } = await supabase.auth.resetPasswordForEmail(cleanEmail, {
           redirectTo: `${appUrl}/`,
         });
         if (resetError) throw resetError;
@@ -129,6 +138,8 @@ export default function Auth({ onAuthSuccess, onBack }: AuthProps) {
                   <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--color-text-muted)]" />
                   <input
                     type="text"
+                    name="name"
+                    autoComplete="name"
                     placeholder="John Doe"
                     className="w-full pl-10 pr-4 py-3 bg-[var(--color-surface-1)] border border-[var(--color-border)] rounded-xl text-[var(--color-text-primary)] placeholder:text-[var(--color-text-muted)] focus:ring-2 focus:ring-[var(--color-accent)]/30 focus:border-[var(--color-accent)] transition-all outline-none"
                     value={displayName}
@@ -145,6 +156,12 @@ export default function Auth({ onAuthSuccess, onBack }: AuthProps) {
                 <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--color-text-muted)]" />
                 <input
                   type="email"
+                  name="email"
+                  autoComplete="username"
+                  inputMode="email"
+                  autoCapitalize="none"
+                  autoCorrect="off"
+                  spellCheck={false}
                   placeholder="you@example.com"
                   className="w-full pl-10 pr-4 py-3 bg-[var(--color-surface-1)] border border-[var(--color-border)] rounded-xl text-[var(--color-text-primary)] placeholder:text-[var(--color-text-muted)] focus:ring-2 focus:ring-[var(--color-accent)]/30 focus:border-[var(--color-accent)] transition-all outline-none"
                   value={email}
@@ -168,6 +185,8 @@ export default function Auth({ onAuthSuccess, onBack }: AuthProps) {
                   <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--color-text-muted)]" />
                   <input
                     type={showPassword ? 'text' : 'password'}
+                    name="password"
+                    autoComplete={mode === 'login' ? 'current-password' : 'new-password'}
                     placeholder="••••••••"
                     className="w-full pl-10 pr-12 py-3 bg-[var(--color-surface-1)] border border-[var(--color-border)] rounded-xl text-[var(--color-text-primary)] placeholder:text-[var(--color-text-muted)] focus:ring-2 focus:ring-[var(--color-accent)]/30 focus:border-[var(--color-accent)] transition-all outline-none"
                     value={password}
