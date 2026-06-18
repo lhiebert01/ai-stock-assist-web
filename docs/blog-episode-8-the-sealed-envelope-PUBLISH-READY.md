@@ -258,10 +258,14 @@ Lindsay is the creator of AI Stock Assist, a series of intelligence tools design
 
 
 ========================================================================
-CHANNEL VARIANTS (post-publish; put the Substack link IN the post this round)
+CHANNEL POSTS — workflow per platform: (1) THE POST  ·  (2) IMAGE TO USE  ·  (3) FIRST COMMENT
+Put the Substack link IN the post body this round. Post the FIRST COMMENT immediately after publishing.
 ========================================================================
 
---- LinkedIn (~280w; link in post) ---
+
+════════ LINKEDIN ════════
+
+▸ (1) THE POST  (~280w; Substack link in the post body):
 
 "What's your thesis on this one?"
 
@@ -289,36 +293,21 @@ https://lindsayhiebert.substack.com/p/the-sealed-envelope
 
 #Investing #StockMarket #FinancialLiteracy #IntelligenceEra #AIForGood
 
+▸ (2) IMAGE TO ATTACH:  Blog-8-promo-linkedin-fb.png  (1.91:1, headline baked in — best for the feed)
+Alt: Blog-8-hero-sealed-envelope.png (plain hero, no text).  Folder: docs/images/episode-8/
 
---- X / Twitter (single tweet + sealed-envelope image; link in tweet) ---
+▸ (3) FIRST COMMENT  (post immediately after):
+Quick gut-check 👇 take the stock you've owned the longest — can you say, in one sentence, the real reason you bought it?
 
-"What's your thesis on this one?"
+If you can't, that's exactly what the Executive Summary is for: it writes the thesis for you — verdict, confidence, and the numbers behind it — and one click saves it as a dated PDF you can reopen in six months.
 
-His wife asked it about a stock he'd owned for 6 months. He froze — he couldn't remember why he bought it.
-
-That's not a memory problem. It's how every brain works. The cure is a dated record, not better recall.
-
-Episode 8 — "The Sealed Envelope":
-https://lindsayhiebert.substack.com/p/the-sealed-envelope
-
-#Investing #FinancialLiteracy
+Try it free (3 analyses, no card): https://aistockassist.com
+New here? Catch up on the whole series: https://aistockassist.com/?view=learn
 
 
---- X / Twitter (optional 2-tweet version) ---
+════════ FACEBOOK ════════
 
-Tweet 1:
-A captain seals his reasons in an envelope before he sails. Six months later, blown off course, he opens it and asks: was I wrong about the winds, or did the winds change?
-
-The captain who wrote nothing down only knows he's lost.
-
-Tweet 2:
-Most investors are the second captain. Six months after a buy, you remember a feeling, not a reason — and your brain rewrites the reason to fit the price.
-
-AI Stock Assist writes the verdict for you. One click seals it, dated. Episode 8:
-https://lindsayhiebert.substack.com/p/the-sealed-envelope
-
-
---- Facebook (~200w; link in post) ---
+▸ (1) THE POST  (~200w; Substack link in the post body):
 
 Here's a question that quietly ruins a lot of investors: "Why did you buy that stock?"
 
@@ -334,9 +323,45 @@ In this episode, Alex shows him the fix: run the stock through AI Stock Assist, 
 
 https://lindsayhiebert.substack.com/p/the-sealed-envelope
 
+▸ (2) IMAGE TO ATTACH:  Blog-8-promo-linkedin-fb.png  (1.91:1, headline baked in)
+Alt: Blog-8-hero-sealed-envelope-OG-1200x630.jpg (clean 1200x630).  Folder: docs/images/episode-8/
 
---- Reddit (r/investing primary, r/stocks alt; TEXT post, NO link, NO product mention) ---
+▸ (3) FIRST COMMENT  (post immediately after):
+Want to seal your own envelope? Type a stock you already own into AI Stock Assist, read the Executive Summary, and hit Download PDF — a dated thesis you can reopen in six months.
 
+3 free analyses, no card → https://aistockassist.com
+New to the series? Start at Episode 0 and catch up on all eight → https://aistockassist.com/?view=learn
+
+
+════════ X / TWITTER ════════
+
+▸ (1) THE POST  (Lindsay is X Premium → ONE consolidated post; no thread, no first comment, no 2-tweet version):
+
+"What's your thesis on this one?"
+
+His wife asked it about a stock he'd owned for six months. He froze — he genuinely couldn't remember why he bought it.
+
+That's not a memory problem. It's how every brain works: six months later you keep the feeling and lose the reasoning, and your mind quietly rewrites the reason to fit the price. Up? "I knew it." Down? "I was never sure." Both are fiction.
+
+The cure is ink — a dated record, not better recall. Write your thesis the day you buy, and later you can tell the only two things that matter apart: was my reasoning wrong, or did the world change?
+
+That's what AI Stock Assist's Executive Summary does — type a ticker, get a verdict in plain English with the numbers behind it, and one click seals it as a dated PDF. 3 free, no card.
+
+Episode 8 — "The Sealed Envelope":
+https://lindsayhiebert.substack.com/p/the-sealed-envelope
+
+Try it → https://aistockassist.com
+
+#Investing #StockMarket #FinancialLiteracy
+
+▸ (2) IMAGE TO ATTACH:  Blog-8-hero-sealed-envelope.png  (16:9).  Folder: docs/images/episode-8/
+
+(ALT consolidated post — captain-parable framing, if you prefer it: "A captain seals his reasons in an envelope before he sails. Six months later, blown off course, he opens it and asks: was I wrong about the winds, or did the winds change? The captain who wrote nothing down only knows he's lost. Most investors are the second captain — six months after a buy you remember a feeling, not a reason, and your brain rewrites the reason to fit the price. AI Stock Assist writes the verdict for you and one click seals it, dated. Episode 8 — 'The Sealed Envelope': https://lindsayhiebert.substack.com/p/the-sealed-envelope  ·  Try it → https://aistockassist.com  #Investing #StockMarket #FinancialLiteracy")
+
+
+════════ REDDIT  (r/investing primary, r/stocks alt) ════════
+
+▸ (1) THE POST  (TEXT self-post; NO link, NO product mention; no image):
 NOTE: honest discussion-first format — no fabricated "a friend" anecdote (the blog parable is illustrative, and Reddit punishes inauthentic personal stories). Lead with a genuine thought-experiment + real questions. Reply to comments in your own voice; do not drop the link.
 
 Title: Do you keep a written, dated thesis for the stocks you buy — and has it actually changed your results?
@@ -351,36 +376,32 @@ I've started keeping a one-paragraph dated thesis for each buy — the verdict, 
 - What framework do you lean on — Graham, Buffett, Bogle, Lynch, Dalio, your own blend, something else?
 - Has actually writing it down and rereading it later changed a decision you'd otherwise have made on feel?
 
+▸ (2) IMAGE:  none — a text self-post performs best here.
 
-========================================================================
-FIRST COMMENTS (post immediately after, to drive the funnel + early engagement)
-========================================================================
-
---- LinkedIn first comment ---
-Quick gut-check: pick the stock you've owned the longest — can you state, in one sentence, the real reason you bought it?
-
-If you can't, that's exactly what the Executive Summary is for: it writes the thesis for you and you save it as a dated PDF. 3 free analyses, no credit card:
-https://aistockassist.com
-
---- Facebook first comment ---
-If you want to seal your own envelope: type a ticker you own into AI Stock Assist, read the Executive Summary, and hit Download PDF to save a dated thesis you can reopen in six months. 3 free, no card → https://aistockassist.com
-
---- X first comment (reply to your own tweet) ---
-The fix is a dated record, not better memory. AI Stock Assist writes the verdict + the numbers behind it, and one click saves the PDF. 3 free, no card →
-https://aistockassist.com
+▸ (3) FIRST COMMENT:  none — reply to commenters in your own voice; never drop the link.
 
 
 ========================================================================
 IMAGE ASSETS — ✅ GENERATED & SAVED in docs/images/episode-8/
 ========================================================================
-(prompts: docs/episode-8-the-sealed-envelope-image-prompts.md · all canonical files are 16:9 landscape, 1672x941)
+(prompts: docs/episode-8-the-sealed-envelope-image-prompts.md · all files are landscape — never square/portrait)
+
+WHICH IMAGE TO USE PER PLATFORM (the hero / attached image):
+• Substack — header + first inline image: Blog-8-hero-sealed-envelope.png (16:9)
+• Medium — featured image: Blog-8-hero-sealed-envelope.png (16:9)
+• LinkedIn — attach: Blog-8-promo-linkedin-fb.png (1.91:1, headline baked in) — or the plain hero if you want no text
+• Facebook — attach: Blog-8-promo-linkedin-fb.png (1.91:1) — or Blog-8-hero-sealed-envelope-OG-1200x630.jpg
+• X / Twitter — in-tweet image: Blog-8-hero-sealed-envelope.png (16:9)
 
 CANONICAL (use these in the article, in this order):
 • docs/images/episode-8/Blog-8-hero-sealed-envelope.png — HERO / Substack header + social (the parable: wax-sealed envelope, "Open in Six Months"). Add overlay tagline "What did you believe the day you bought?" + diamond watermark at design time.
 • docs/images/episode-8/Blog-8-jamie-blank-stare.png — opening scene (Jamie + phone showing the "What's your thesis?" text, coffee shop, full cast)
 • docs/images/episode-8/Blog-8-executive-summary-screenshot.png — Executive Summary panel: TSLA HOLD, FCF Yield ~1.8%, Download PDF button (clean mockup)
 
-SOCIAL LINK CARD (OG — for LinkedIn/Facebook URL unfurl):
+SOCIAL PROMO CARD (headline baked in — best for LinkedIn + Facebook feed):
+• docs/images/episode-8/Blog-8-promo-linkedin-fb.png — 1.91:1 (1734x907). Sealed-envelope still-life + headline "WHAT DID YOU BELIEVE THE DAY YOU BOUGHT?" / "If you didn't write it down, you don't actually know." + diamond logo.
+
+SOCIAL LINK CARD (OG — for LinkedIn/Facebook URL unfurl when the link is in the body):
 • docs/images/episode-8/Blog-8-hero-sealed-envelope-OG-1200x630.jpg — 1200x630 crop of the hero
 
 ALTERNATES (swap in if you prefer — same folder):

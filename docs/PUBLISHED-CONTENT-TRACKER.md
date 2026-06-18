@@ -293,7 +293,7 @@ Posted into targeted value/stock investing groups (number-free durable post + he
 
 ## Campaign: Episode 8 "The Sealed Envelope" (PUBLISHED — Jun 18, 2026)
 
-**Status:** ✅ Published to Substack + Medium Jun 18, 2026 (prepared after the storm/power-outage gap; shipped ahead of the Mon Jun 22 target). NOTE: published slug is `/p/the-sealed-envelope` (NOT the predicted `/p/episode-8-...`). Remaining social syndication (LinkedIn/FB/X/Reddit) pending — copy ready in the publish kit.
+**Status:** ✅ Published to Substack + Medium + LinkedIn (2 posts) Jun 18, 2026 (prepared after the storm/power-outage gap; shipped ahead of the Mon Jun 22 target). NOTE: published slug is `/p/the-sealed-envelope` (NOT the predicted `/p/episode-8-...`). Remaining: Reddit — copy ready in the publish kit.
 
 ### Substack (Flagship Article)
 - Article (canonical): https://lindsayhiebert.substack.com/p/the-sealed-envelope
@@ -303,6 +303,39 @@ Posted into targeted value/stock investing groups (number-free durable post + he
 - Article: https://medium.com/@lindsay.hiebert/the-sealed-envelope-0e229fa266cb
 - Tags (5, canonical): Data Science, Investing, Stock Market, Finance, Artificial Intelligence — see [[reference-medium-tags]]
 - Canonical → Substack (no SEO duplicate-content penalty)
+- Published: Jun 18, 2026
+
+### LinkedIn
+**Post 1 — the Episode 8 article (story/episode, ~280w → links to the blog/Substack post)**
+- Post: https://www.linkedin.com/posts/lindsayhiebert_investing-stockmarket-financialliteracy-share-7473416583370129408-faU4/?utm_source=share&utm_medium=member_desktop&rcm=ACoAAAAcoswBPlYEscD6ecz-0eDDU-pc_Fd4r20
+- Format: ~280w post + `Blog-8-promo-linkedin-fb.png` (headline promo card); Substack article link in post. Hashtags: #Investing #StockMarket #FinancialLiteracy #IntelligenceEra #AIForGood
+- First comment: tool link (aistockassist.com) + series catch-up (aistockassist.com/?view=learn)
+- Published: Jun 18, 2026
+
+**Post 2 — the full 10-part series ("catch up" intro → links to the whole series / Learn page)**
+- Post: https://www.linkedin.com/posts/lindsayhiebert_ai-stock-assist-ai-powered-stock-analysis-share-7473425643985137664-SxmB/?utm_source=share&utm_medium=member_desktop&rcm=ACoAAAAcoswBPlYEscD6ecz-0eDDU-pc_Fd4r20
+- Angle: series introduction / start-at-Episode-0 catch-up (the Acres-of-Diamonds-style intro); drives to the Learn page (aistockassist.com/?view=learn) / series
+- Published: Jun 18, 2026
+
+**Group syndication:** also posted to one LinkedIn investor group — _pending admin approval_ (Jun 18). See `docs/DISTRIBUTION-GROUPS.md`.
+
+### Facebook
+**Post 1 — the Episode 8 article (story/episode → links to the blog/Substack post)**
+- Post: https://www.facebook.com/share/p/18rPhUTRb6/
+- Format: ~200w conversational post + `Blog-8-promo-linkedin-fb.png` (or OG card); Substack article link in post. First comment: tool link + series catch-up (aistockassist.com/?view=learn)
+- Published: Jun 18, 2026
+
+**Post 2 — the full 10-part series ("catch up" intro → links to the whole series / Learn page)**
+- Post: _pending link_
+- Angle: series introduction / start-at-Episode-0 catch-up; drives to the Learn page (aistockassist.com/?view=learn)
+- Published: Jun 18, 2026
+
+**Group syndication:** also posted to a couple of Facebook groups — _pending admin approval_ (Jun 18). See `docs/DISTRIBUTION-GROUPS.md`.
+
+### X / Twitter
+- Post: https://x.com/Lindsay_Hiebert/status/2067667932482601149?s=20
+- Format: ONE consolidated post (Lindsay is X Premium — everything in a single post, no thread/first-comment) + `Blog-8-hero-sealed-envelope.png`; Substack + tool links in post. Hashtags: #Investing #StockMarket #FinancialLiteracy
+- 💲 **Boosted: $25 for 1 day** (Jun 18), X-estimated reach ~25K impressions — first paid promotion on the series. Check X analytics next day for ACTUAL impressions + link clicks (impressions ≠ clicks); judge ROI by clicks to Substack/tool, not impressions alone.
 - Published: Jun 18, 2026
 
 **Theme:** Jamie (relapse from the Ep 5 dividend trap) put $8K into a stock on a tip from his cousin. Six months later his wife asks "What's your thesis?" — and he can't remember why he bought it. Lesson: memory is the most confident liar; record your thesis the day you buy so future-you can tell a bad plan from bad luck. Parable: a captain who seals his reasoning in an envelope ("Open in six months") before he sails. Persona: Jamie Park (set up explicitly by the Ep 7 "Next Week" teaser). Objection demolished: "I remember why I bought my stocks."
