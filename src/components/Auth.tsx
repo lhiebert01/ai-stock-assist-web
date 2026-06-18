@@ -22,6 +22,23 @@ export default function Auth({ onAuthSuccess, onBack }: AuthProps) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [message, setMessage] = useState<string | null>(null);
+  const [needsVerification, setNeedsVerification] = useState<string | null>(null);
+
+  const handleResendVerification = async () => {
+    if (!needsVerification) return;
+    setLoading(true);
+    setError(null);
+    setMessage(null);
+    try {
+      const { error: resendError } = await supabase.auth.resend({ type: 'signup', email: needsVerification });
+      if (resendError) throw resendError;
+      setMessage(`Verification email re-sent to ${needsVerification}. Check your inbox (and spam folder), open the link, then sign in.`);
+    } catch (err: any) {
+      setError(err.message || 'Could not resend the verification email. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleGoogleCredential = async (credentialResponse: CredentialResponse) => {
     if (!credentialResponse.credential) {
@@ -49,6 +66,7 @@ export default function Auth({ onAuthSuccess, onBack }: AuthProps) {
     setLoading(true);
     setError(null);
     setMessage(null);
+    setNeedsVerification(null);
 
     // Read straight from the form element so a password-manager autofill (1Password,
     // esp. on iOS) that doesn't fire React's onChange still submits the REAL values;
@@ -84,7 +102,15 @@ export default function Auth({ onAuthSuccess, onBack }: AuthProps) {
         }
       } else if (mode === 'login') {
         const { error: signInError } = await supabase.auth.signInWithPassword({ email: cleanEmail, password: passwordValue });
-        if (signInError) throw signInError;
+        if (signInError) {
+          // Unverified email → show a clear notice + a one-tap "resend verification" option
+          const code = (signInError as any).code;
+          if (code === 'email_not_confirmed' || /not\s*confirmed|email not confirmed|not been confirmed|verify/i.test(signInError.message || '')) {
+            setNeedsVerification(cleanEmail);
+            return;
+          }
+          throw signInError;
+        }
         onAuthSuccess();
       } else {
         const appUrl = import.meta.env.VITE_APP_URL || window.location.origin;
@@ -256,13 +282,40 @@ export default function Auth({ onAuthSuccess, onBack }: AuthProps) {
             <p className="text-[var(--color-text-secondary)] text-sm">
               {mode === 'login' ? "Don't have an account?" : 'Already have an account?'}
               <button
-                onClick={() => { setMode(mode === 'login' ? 'signup' : 'login'); setError(null); setMessage(null); }}
+                onClick={() => { setMode(mode === 'login' ? 'signup' : 'login'); setError(null); setMessage(null); setNeedsVerification(null); }}
                 className="ml-2 font-bold text-[var(--color-accent)] hover:underline"
               >
                 {mode === 'login' ? 'Sign Up' : 'Sign In'}
               </button>
             </p>
           </div>
+
+          {/* Email-not-verified notice + resend */}
+          <AnimatePresence>
+            {needsVerification && (
+              <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
+                className="mt-4 p-4 bg-amber-500/10 border border-amber-500/30 rounded-xl text-amber-300 text-sm space-y-2"
+              >
+                <div className="flex items-center gap-2 font-bold text-amber-200">
+                  <AlertCircle className="w-4 h-4 shrink-0" />
+                  Verify your email to sign in
+                </div>
+                <p className="leading-relaxed">
+                  Your email <span className="font-semibold break-all">{needsVerification}</span> hasn’t been verified yet.
+                  We sent a verification link when you signed up — please open it, then sign in. Didn’t get it?
+                </p>
+                <button
+                  type="button"
+                  onClick={handleResendVerification}
+                  disabled={loading}
+                  className="w-full bg-amber-500/20 hover:bg-amber-500/30 border border-amber-500/40 text-amber-100 py-2.5 rounded-lg font-bold transition-all flex items-center justify-center gap-2 disabled:opacity-50"
+                >
+                  {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Mail className="w-4 h-4" />}
+                  Resend verification email
+                </button>
+              </motion.div>
+            )}
+          </AnimatePresence>
 
           {/* Error / Success */}
           <AnimatePresence>
