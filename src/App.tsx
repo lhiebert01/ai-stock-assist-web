@@ -183,6 +183,16 @@ export default function App() {
     }
   }, [user]);
 
+  // ── Deep-link: open a public view directly from ?view= (e.g. /?view=learn) ──
+  // Lets us share one URL straight to the Learn page / series or the Metrics Guide.
+  useEffect(() => {
+    const requested = new URLSearchParams(window.location.search).get('view');
+    const deepLinkable: View[] = ['learn', 'metrics', 'privacy', 'terms'];
+    if (requested && deepLinkable.includes(requested as View)) {
+      setView(requested as View);
+    }
+  }, []);
+
   // ── Loading ────────────────────────────────────────────────
   if (!isAuthReady) {
     return (
