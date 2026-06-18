@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Lock, Eye, EyeOff, ArrowRight, Loader2, AlertCircle, CheckCircle2, TrendingUp, ShieldCheck } from 'lucide-react';
 import { supabase } from '../supabase';
@@ -14,16 +14,17 @@ export default function SetNewPassword({ onSuccess }: SetNewPasswordProps) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
+  const passwordRef = useRef<HTMLInputElement>(null);
+  const confirmRef = useRef<HTMLInputElement>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
 
-    // Read from the form so a password-manager autofill that didn't fire React's
-    // onChange still submits the real values; fall back to React state.
-    const fd = new FormData(e.currentTarget as HTMLFormElement);
-    const passwordValue = String(fd.get('new-password') ?? password);
-    const confirmValue = String(fd.get('confirm-new-password') ?? confirmPassword);
+    // Read the live input values (covers password-manager autofill that didn't fire
+    // React's onChange); fall back to React state.
+    const passwordValue = passwordRef.current?.value ?? password;
+    const confirmValue = confirmRef.current?.value ?? confirmPassword;
 
     if (passwordValue.length < 6) {
       setError('Password must be at least 6 characters.');
@@ -95,9 +96,8 @@ export default function SetNewPassword({ onSuccess }: SetNewPasswordProps) {
                 <div className="relative">
                   <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--color-text-muted)]" />
                   <input
+                    ref={passwordRef}
                     type={showPassword ? 'text' : 'password'}
-                    name="new-password"
-                    autoComplete="new-password"
                     placeholder="Enter new password"
                     className="w-full pl-10 pr-12 py-3 bg-[var(--color-surface-1)] border border-[var(--color-border)] rounded-xl text-[var(--color-text-primary)] placeholder:text-[var(--color-text-muted)] focus:ring-2 focus:ring-[var(--color-accent)]/30 focus:border-[var(--color-accent)] transition-all outline-none"
                     value={password}
@@ -122,9 +122,8 @@ export default function SetNewPassword({ onSuccess }: SetNewPasswordProps) {
                 <div className="relative">
                   <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--color-text-muted)]" />
                   <input
+                    ref={confirmRef}
                     type={showPassword ? 'text' : 'password'}
-                    name="confirm-new-password"
-                    autoComplete="new-password"
                     placeholder="Confirm new password"
                     className="w-full pl-10 pr-12 py-3 bg-[var(--color-surface-1)] border border-[var(--color-border)] rounded-xl text-[var(--color-text-primary)] placeholder:text-[var(--color-text-muted)] focus:ring-2 focus:ring-[var(--color-accent)]/30 focus:border-[var(--color-accent)] transition-all outline-none"
                     value={confirmPassword}

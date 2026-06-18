@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Mail, Lock, User, Eye, EyeOff, ArrowRight, Loader2, AlertCircle, CheckCircle2, TrendingUp } from 'lucide-react';
 import { GoogleOAuthProvider, GoogleLogin, type CredentialResponse } from '@react-oauth/google';
@@ -23,6 +23,9 @@ export default function Auth({ onAuthSuccess, onBack }: AuthProps) {
   const [error, setError] = useState<string | null>(null);
   const [message, setMessage] = useState<string | null>(null);
   const [needsVerification, setNeedsVerification] = useState<string | null>(null);
+  const emailRef = useRef<HTMLInputElement>(null);
+  const passwordRef = useRef<HTMLInputElement>(null);
+  const displayNameRef = useRef<HTMLInputElement>(null);
 
   const handleResendVerification = async () => {
     if (!needsVerification) return;
@@ -72,10 +75,9 @@ export default function Auth({ onAuthSuccess, onBack }: AuthProps) {
     // esp. on iOS) that doesn't fire React's onChange still submits the REAL values;
     // fall back to React state. Trim the email — autofill can append a trailing space,
     // which causes "Invalid login credentials" on an otherwise-correct saved password.
-    const fd = new FormData(e.currentTarget as HTMLFormElement);
-    const cleanEmail = String(fd.get('email') ?? email).trim();
-    const passwordValue = String(fd.get('password') ?? password);
-    const displayNameValue = String(fd.get('name') ?? displayName);
+    const cleanEmail = (emailRef.current?.value ?? email).trim();
+    const passwordValue = passwordRef.current?.value ?? password;
+    const displayNameValue = displayNameRef.current?.value ?? displayName;
 
     try {
       if (mode === 'signup') {
@@ -163,9 +165,8 @@ export default function Auth({ onAuthSuccess, onBack }: AuthProps) {
                 <div className="relative">
                   <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--color-text-muted)]" />
                   <input
+                    ref={displayNameRef}
                     type="text"
-                    name="name"
-                    autoComplete="name"
                     placeholder="John Doe"
                     className="w-full pl-10 pr-4 py-3 bg-[var(--color-surface-1)] border border-[var(--color-border)] rounded-xl text-[var(--color-text-primary)] placeholder:text-[var(--color-text-muted)] focus:ring-2 focus:ring-[var(--color-accent)]/30 focus:border-[var(--color-accent)] transition-all outline-none"
                     value={displayName}
@@ -181,13 +182,8 @@ export default function Auth({ onAuthSuccess, onBack }: AuthProps) {
               <div className="relative">
                 <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--color-text-muted)]" />
                 <input
+                  ref={emailRef}
                   type="email"
-                  name="email"
-                  autoComplete="username"
-                  inputMode="email"
-                  autoCapitalize="none"
-                  autoCorrect="off"
-                  spellCheck={false}
                   placeholder="you@example.com"
                   className="w-full pl-10 pr-4 py-3 bg-[var(--color-surface-1)] border border-[var(--color-border)] rounded-xl text-[var(--color-text-primary)] placeholder:text-[var(--color-text-muted)] focus:ring-2 focus:ring-[var(--color-accent)]/30 focus:border-[var(--color-accent)] transition-all outline-none"
                   value={email}
@@ -210,9 +206,8 @@ export default function Auth({ onAuthSuccess, onBack }: AuthProps) {
                 <div className="relative">
                   <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--color-text-muted)]" />
                   <input
+                    ref={passwordRef}
                     type={showPassword ? 'text' : 'password'}
-                    name="password"
-                    autoComplete={mode === 'login' ? 'current-password' : 'new-password'}
                     placeholder="••••••••"
                     className="w-full pl-10 pr-12 py-3 bg-[var(--color-surface-1)] border border-[var(--color-border)] rounded-xl text-[var(--color-text-primary)] placeholder:text-[var(--color-text-muted)] focus:ring-2 focus:ring-[var(--color-accent)]/30 focus:border-[var(--color-accent)] transition-all outline-none"
                     value={password}
