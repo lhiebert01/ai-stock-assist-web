@@ -30,9 +30,11 @@ brand-new accounts created just to upvote you are discounted by PH's spam filter
 PH "days" run Pacific Time, 12:01 AM → 11:59 PM PT. You compete only against products launched the same PT day.
 Tue–Thu = most traffic, most competition; Sat–Sun/Mon = lower traffic, easier top-5 badge.
 
-- **Do the pre-launch properly (~1.5–2 weeks):** target **Tuesday, July 1, 2026** (max eyeballs) or **Sunday, July 6, 2026** (easier badge). Both leave room to build "Notify me" followers + supporter list.
-- **Launching sooner:** **Tuesday, June 23, 2026** or **Sunday, June 28, 2026** work but compress pre-launch into ~5–9 days — start the Phase 1 engagement TODAY.
-- **Avoid the July 4 holiday window (Fri, July 3–Sat, July 4)** for a US-audience launch. Either way, start Phase 1 today (as of June 18).
+_Dates corrected 2026-06-22 (the earlier draft had the wrong weekdays):_
+- **Do the pre-launch properly (~2 weeks):** target **Tuesday, July 7, 2026** (max eyeballs, full pre-launch window). Leaves room to build "Notify me" followers + supporter list.
+- **Easier-badge option:** **Monday, July 6, 2026** (lower traffic) — but it hugs the July 4 weekend.
+- **Launching sooner (aggressive):** **Tuesday, June 30, 2026** works but compresses pre-launch into ~8 days — start the Phase 1 engagement TODAY.
+- **Avoid the July 4 holiday window (Fri, July 3–Sat, July 4)** for a US-audience launch. Either way, start Phase 1 now (as of June 22).
 
 ---
 

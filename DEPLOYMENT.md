@@ -20,167 +20,116 @@ Browser → aistockassist.com (Vercel)
 
 ---
 
-## Step 1: Supabase Tables
+-- =============================================================================
+-- AI Stock Assist — Supabase Migration
+-- Run this in Supabase SQL Editor (Dashboard → SQL Editor → New Query)
+--
+-- NOTE: This project shares a Supabase instance with the existing Streamlit app.
+-- The old app uses a "users" table (VARCHAR IDs, custom auth).
+-- The new React app uses "user_profiles" (UUID IDs, Supabase Auth).
+-- Both tables coexist — they do NOT conflict.
+-- =============================================================================
 
-1. Go to **Supabase Dashboard** → your project → **SQL Editor**
-2. Open `supabase/migration.sql` from this repo
-3. Paste the entire contents and click **Run**
-4. Verify: Go to **Table Editor** → confirm `user_profiles` and `analysis_history` tables exist
-5. After your first signup, set yourself as admin:
-   ```sql
-   update public.user_profiles set is_admin = true where email = 'lindsay.hiebert@gmail.com';
-   ```
+-- Clean up any previous attempts (drops table + all policies/indexes)
+drop table if exists public.analysis_history cascade;
+drop table if exists public.user_profiles cascade;
 
-### Supabase Auth Settings
+-- 1. USER PROFILES TABLE
+-- Linked to Supabase Auth (auth.users) via UUID foreign key
+create table public.user_profiles (
+  id uuid primary key references auth.users(id) on delete cascade,
+  email text not null,
+  username text,
+  credits_remaining integer not null default 3,
+  credits_lifetime integer not null default 0,
+  stripe_customer_id text,
+  total_purchases integer not null default 0,
+  total_spent_cents integer not null default 0,
+  analyses_total_lifetime integer not null default 0,
+  unique_tickers_lifetime integer not null default 0,
+  is_admin boolean not null default false,
+  created_at timestamptz not null default now(),
+  last_login timestamptz
+);
 
-In **Authentication → Providers**:
-- **Email**: Enabled (confirm email = optional for now)
-- **Google OAuth**: Enable with your Google Cloud credentials
-  - Authorized redirect: `https://aistockassist.com`
-  - Add `https://<project-ref>.supabase.co/auth/v1/callback` as redirect URI in Google Console
+-- Indexes
+create index idx_user_profiles_email on public.user_profiles(email);
+create index idx_user_profiles_stripe on public.user_profiles(stripe_customer_id);
 
-In **Authentication → URL Configuration**:
-- Site URL: `https://aistockassist.com`
-- Redirect URLs: `https://aistockassist.com/**`
+-- 2. ANALYSIS HISTORY TABLE
+create table public.analysis_history (
+  id bigint generated always as identity primary key,
+  user_id uuid not null references public.user_profiles(id) on delete cascade,
+  tickers text[] not null,
+  methodology text not null default 'Growth & Quality',
+  snapshots jsonb,
+  recommendation jsonb,
+  comparative_analysis text,
+  created_at timestamptz not null default now()
+);
 
----
+-- Indexes
+create index idx_analysis_history_user on public.analysis_history(user_id);
+create index idx_analysis_history_created on public.analysis_history(created_at desc);
 
-## Step 2: Deploy FastAPI Backend to Render
+-- =============================================================================
+-- ROW LEVEL SECURITY (RLS)
+-- =============================================================================
 
-### Option A: Via Render Dashboard (Recommended)
+alter table public.user_profiles enable row level security;
+alter table public.analysis_history enable row level security;
 
-1. Go to **Render Dashboard** → **New** → **Web Service**
-2. Connect your `ai-stock-render` GitHub repo
-3. Configure:
-   - **Name:** `ai-stock-assist-api`
-   - **Root Directory:** `api`
-   - **Runtime:** Python
-   - **Build Command:** `pip install -r requirements.txt`
-   - **Start Command:** `uvicorn server:app --host 0.0.0.0 --port $PORT`
-   - **Plan:** Starter ($7/mo) or Free
-   - **Health Check Path:** `/health`
+-- USER PROFILES policies
+create policy "Users can read own profile"
+  on public.user_profiles for select
+  using (auth.uid() = id);
 
-4. Set **Environment Variables**:
-   | Key | Value |
-   |-----|-------|
-   | `GOOGLE_API_KEY` | Your Gemini API key |
-   | `GROQ_API_KEY` | Your Groq API key (fallback AI) |
-   | `SUPABASE_JWT_SECRET` | From Supabase → Settings → API → JWT Secret |
+create policy "Users can update own profile"
+  on public.user_profiles for update
+  using (auth.uid() = id)
+  with check (auth.uid() = id);
 
-5. Click **Deploy**
-6. After deploy, test: `curl https://ai-stock-assist-api.onrender.com/health`
+create policy "Users can insert own profile"
+  on public.user_profiles for insert
+  with check (auth.uid() = id);
 
-### Option B: Via render.yaml Blueprint
+create policy "Admins can read all profiles"
+  on public.user_profiles for select
+  using (
+    exists (
+      select 1 from public.user_profiles up
+      where up.id = auth.uid() and up.is_admin = true
+    )
+  );
 
-The `render.yaml` already has the second service configured. Use **Render Blueprints** to deploy both services from one file.
+create policy "Admins can update all profiles"
+  on public.user_profiles for update
+  using (
+    exists (
+      select 1 from public.user_profiles up
+      where up.id = auth.uid() and up.is_admin = true
+    )
+  );
 
-### Custom Domain
+-- ANALYSIS HISTORY policies
+create policy "Users can read own history"
+  on public.analysis_history for select
+  using (auth.uid() = user_id);
 
-1. In Render → your API service → **Settings** → **Custom Domains**
-2. Add `api.aistockassist.com`
-3. Render will give you a CNAME target (e.g., `ai-stock-assist-api.onrender.com`)
+create policy "Users can insert own history"
+  on public.analysis_history for insert
+  with check (auth.uid() = user_id);
 
----
+create policy "Users can delete own history"
+  on public.analysis_history for delete
+  using (auth.uid() = user_id);
 
-## Step 3: Deploy Frontend to Vercel
+-- =============================================================================
+-- SERVICE ROLE ACCESS (for Stripe webhook — bypasses RLS automatically)
+-- No additional policies needed.
+-- =============================================================================
 
-1. Go to **vercel.com** → **New Project**
-2. Import `ai-stock-assist-web` from GitHub
-3. Framework: **Vite** (auto-detected)
-4. Build Command: `vite build` (auto-detected)
-5. Output Directory: `dist` (auto-detected)
-
-### Environment Variables (set in Vercel Dashboard)
-
-| Variable | Value | Notes |
-|----------|-------|-------|
-| `VITE_SUPABASE_URL` | `https://<project>.supabase.co` | From Supabase Settings → API |
-| `VITE_SUPABASE_ANON_KEY` | `eyJ...` | From Supabase Settings → API |
-| `VITE_API_URL` | `https://api.aistockassist.com` | Your Render FastAPI URL |
-| `VITE_STRIPE_PUBLISHABLE_KEY` | `pk_live_...` | From Stripe Dashboard |
-| `VITE_STRIPE_PRICE_ID_PRO` | `price_1TG1e1G2UTIPy8Q7Qrbjx7sw` | Pro Pack $9.99 |
-| `VITE_STRIPE_PRICE_ID_STARTER` | `price_1TG1j6G2UTIPy8Q7DhdWbVi2` | Starter Pack $4.99 |
-| `VITE_APP_URL` | `https://aistockassist.com` | Your domain |
-| `STRIPE_SECRET_KEY` | `sk_live_...` | For serverless functions only |
-| `STRIPE_WEBHOOK_SECRET` | `whsec_...` | From Stripe webhook setup |
-| `SUPABASE_SERVICE_ROLE_KEY` | `eyJ...` | From Supabase → Settings → API (service_role) |
-
-6. Click **Deploy**
-7. Test the preview URL works
-
----
-
-## Step 4: DNS Configuration
-
-### aistockassist.com → Vercel (Frontend)
-
-In your domain registrar (Namecheap, Cloudflare, etc.):
-
-| Type | Name | Value | TTL |
-|------|------|-------|-----|
-| A | `@` | `76.76.21.21` | 300 |
-| CNAME | `www` | `cname.vercel-dns.com` | 300 |
-
-Then in Vercel → Project → **Settings** → **Domains**:
-- Add `aistockassist.com`
-- Add `www.aistockassist.com` (redirect to apex)
-
-### api.aistockassist.com → Render (Backend API)
-
-| Type | Name | Value | TTL |
-|------|------|-------|-----|
-| CNAME | `api` | `ai-stock-assist-api.onrender.com` | 300 |
-
-Then in Render → API service → **Settings** → **Custom Domains**:
-- Add `api.aistockassist.com`
-
----
-
-## Step 5: Stripe Webhook
-
-1. Go to **Stripe Dashboard** → **Developers** → **Webhooks**
-2. Click **Add endpoint**
-3. URL: `https://aistockassist.com/api/webhook`
-4. Events to listen for: `checkout.session.completed`
-5. Click **Add endpoint**
-6. Copy the **Signing secret** (`whsec_...`)
-7. Add it as `STRIPE_WEBHOOK_SECRET` in Vercel env vars
-8. **Redeploy** the Vercel project to pick up the new env var
-
-### Test the Webhook
-
-```bash
-# Install Stripe CLI
-brew install stripe/stripe-cli/stripe
-
-# Listen locally for testing
-stripe listen --forward-to localhost:3000/api/webhook
-
-# Trigger a test event
-stripe trigger checkout.session.completed
-```
-
----
-
-## Post-Deployment Checklist
-
-- [ ] `https://aistockassist.com` loads React app
-- [ ] `https://api.aistockassist.com/health` returns `{"status": "ok"}`
-- [ ] Supabase Auth: signup, login, logout all work
-- [ ] Google OAuth works
-- [ ] Analyze "AAPL" → stock card renders with chart and AI recommendation
-- [ ] Credits deducted after analysis
-- [ ] Stripe: Buy Starter Pack → checkout → credits added
-- [ ] Stripe: Buy Pro Pack → checkout → credits added
-- [ ] Admin dashboard loads for admin user
-- [ ] Stock Discovery categories load
-- [ ] Analysis History shows past analyses
-- [ ] Mobile responsive on iPhone Safari
-
----
-
-## Rollback Plan
-
-The old Streamlit app at `ai-stock-assist.onrender.com` remains running. If issues arise:
-1. Point `aistockassist.com` DNS back to Render (the Streamlit service)
-2. The new React app stays on its Vercel preview URL for further testing
+-- =============================================================================
+-- AFTER FIRST SIGNUP: Set yourself as admin
+-- =============================================================================
+-- update public.user_profiles set is_admin = true where email = 'lindsay.hiebert@gmail.com';

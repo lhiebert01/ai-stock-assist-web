@@ -356,3 +356,45 @@ Posted into targeted value/stock investing groups (number-free durable post + he
 **Canonical URL (live):** https://lindsayhiebert.substack.com/p/the-sealed-envelope
 
 **Pre-publish to-dos:** (1) ✅ images generated & saved (Jun 18); (2) optional — re-run TSLA the morning of publish and reconcile the live verdict + FCF Yield with the article text + mockup (current mockup = HOLD / FCF Yield ~1.8% / P/E ~75x, illustrative); (3) add Ep 8 card to `src/components/LearnPage.tsx`; (4) after publishing, fill the real Substack/LinkedIn/FB/X/Reddit URLs above.
+
+---
+
+## Campaign: Product Hunt Launch (ASSETS READY — not yet launched)
+
+**Status:** 🟡 Submission package complete & paste-ready; **product NOT yet submitted/launched** on Product Hunt (requires Lindsay's logged-in PH account). This is an *independent* launch, not part of the Episode arc — Phase-1 pre-launch (Coming Soon page + "Notify me" followers + supporter list) was **not** done upfront; being compressed/started now (Jun 22).
+
+**Deliverables (in `launch-assets/`):**
+- `PRODUCT-HUNT-SUBMISSION.md` — full strategy + launch-day runbook (dates corrected Jun 22)
+- `AI-Stock-Assist-Product-Hunt-Launch-Playbook.docx` — Word version for copy-paste
+- `PRODUCT-HUNT-SUBMIT-NOW.md` — **lean paste-in-order sheet** (name, tagline, description, topics, pricing, first comment, gallery + the 6 manual steps)
+
+**Copy (ready):** Name `AI Stock Assist` · Tagline `Know what you own before you buy — AI stock analysis` (52/60) · 3-topic set Fintech · Investing · AI · Freemium pricing label · full maker first-comment.
+
+**Images:** logo = `docs/images/brand/ai-stock-assist-emblem-angular.png` ✅ · gallery #1 = `public/og-card-v4.jpg` ✅ · gallery #6 = `public/og-image-4.jpg` ✅ · gallery #2–5 product screenshots ⏳ still to capture (CVE/WTI run, crop ~1270×760).
+
+**Launch date (corrected weekdays):** recommend **Tue, July 7, 2026** (max traffic + full pre-launch window). Alternates: Tue Jun 30 (aggressive, ~8 days prep) · Mon Jul 6 (easier badge). **Avoid Fri Jul 3 – Sat Jul 4.**
+
+**Link:** `https://aistockassist.com/?utm_source=producthunt&utm_campaign=launch`
+
+**To do after launch:** fill live PH URL here, embed the PH badge on aistockassist.com, add the URL to the distribution pack + Substack/Medium articles.
+
+---
+
+## Campaign: Episode 9 "The Detective's Notebook" (DRAFTED — not yet published)
+
+**Status:** 🟢 Publish-ready article + per-platform channel posts + image prompts drafted Jun 22, 2026. Target publish: **week of Mon Jun 29** (maintains the ~weekly cadence after Ep 8 Jun 18). Pending: image generation + (optional) live ROE refresh + LearnPage card.
+
+**Theme:** Tom, 62, has picked stocks "by feel" for ten years and is sure he's good at it. Alex asks "how do you *know*?" Parable: two detectives — one trusts his gut and stays as good as day one; the other keeps a dated notebook, rereads her own old cases, and gets sharper every year. Lesson: a decision you can't audit can't make you better; ten years of unrecorded "feel" is one year repeated ten times. Objection demolished: **"I'll just check the current data — I don't need history."**
+
+**Feature spotlight:** Analysis History (the "casebook") — per-account, server-side, up to 50 dated past analyses; click any to re-open the original snapshot (verdict + reasoning + metrics, frozen at that date). **IMPORTANT — re-aimed from the original arc note:** the History feature is a *snapshot list*, NOT a verdict-over-time replay/timeline. The original "Detective's Notebook" premise (verdict drift / "pattern visible by year 2") was dropped because the app doesn't chart how a stock's verdict changed across dates. Episode teaches what the app actually does: keep a dated record of *your own decisions* to check yourself. Verified live: `AnalysisHistory.tsx`, `SavedAnalysisView.tsx`, `StockAnalyzer.tsx`.
+
+**Metric spotlight:** ROE (Return on Equity) — verified live in `MetricsGuide.tsx:218` + `StockCard.tsx:216` (`return_on_equity`). Thematic match: Buffett's "15%+ ROE *consistently*, not one good quarter" = trust the pattern in the record, not a single hunch. (Prior spotlights: Payout Ratio Ep5, P/FCF Ep6, OCF/NI Ep7, FCF Yield Ep8.)
+
+**Deliverables:**
+- Publish-ready article (paste-safe, links printed beneath each item): `docs/blog-episode-9-the-detectives-notebook-PUBLISH-READY.md`
+- Image prompt pack (3 visuals, one-shot prompts): `docs/episode-9-the-detectives-notebook-image-prompts.md`
+- Channel posts prepared per platform (LinkedIn ~280w · Facebook ~200w · X single consolidated · Reddit text/no-link) — Substack link in body, tool link in first comment.
+
+**Next-week teaser set:** Episode 10 (series finale) — Sarah bookend, the money objection direct ("a few dollars a stock… doesn't that add up?").
+
+**Pre-publish to-dos:** (1) generate the 3 images (hero casebook, Tom-by-feel café scene, Analysis History screenshot — capture real preferred); (2) optional — run a real ticker and drop its live ROE into the demo text; (3) add Ep 9 card to `src/components/LearnPage.tsx`; (4) build the one-file Word publish kit; (5) after publishing, fill real URLs + confirm the Substack slug.
