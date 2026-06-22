@@ -9,12 +9,12 @@ Upload to PH top-to-bottom (#1 is the feed thumbnail — strongest first).
 | #2 Verdict card | `PH-2-verdict-card.png` | ✅ ready | A clear verdict with the reasoning — not just data tiles. |
 | #3 Two-Lenses | `PH-3-two-lenses.png` | ✅ ready | Two views, one stock — and which lens fits your horizon. |
 | #4 Comparison + Top Pick | `PH-4-comparison-top-pick.png` | ✅ ready | Compare up to 10 stocks; get one defensible Top Pick. |
-| #5 Stock card + 50+ metrics | `PH-5-metrics.png` | ⏳ CREATE (see below) | 50+ fundamentals across cash flow, quality, and valuation — in seconds. |
+| #5 Stock card + 50+ metrics | `PH-5-metrics.png` | ✅ ready | 50+ fundamentals across cash flow, quality, and valuation — in seconds. |
 | #6 Honesty / OG | `PH-6-og-honesty.jpg` | ✅ ready | Check any stock's honesty in 30 seconds — 3 free. |
 
 Note: #1–#4 + #6 are reused from the published blog series (on-brand mockups + share cards). #3/#4 are 4:3 — PH accepts them. Numbers shown are illustrative product demos.
 
-You can LAUNCH with #1–#4 + #6 (5 images) right now. #5 makes it stronger but isn't blocking.
+All 6 gallery slots are ✅ ready. Upload #1–#6 in order.
 
 ---
 
