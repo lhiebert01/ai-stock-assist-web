@@ -361,7 +361,14 @@ Posted into targeted value/stock investing groups (number-free durable post + he
 
 ## Campaign: Product Hunt Launch (ASSETS READY — not yet launched)
 
-**Status:** 🟡 Submission package complete & paste-ready; **product NOT yet submitted/launched** on Product Hunt (requires Lindsay's logged-in PH account). This is an *independent* launch, not part of the Episode arc — Phase-1 pre-launch (Coming Soon page + "Notify me" followers + supporter list) was **not** done upfront; being compressed/started now (Jun 22).
+**Status:** 🟢 **SCHEDULED** — Coming Soon page live + launch scheduled for **~Wed Jun 24, 2026** (Lindsay chose the aggressive timeline over the recommended Jul 7; ~1-day prelaunch window). Chosen tagline: **"BUY, HOLD or SELL — with the reasoning, in 30 seconds."** Shoutouts, first comment, video/Loom, categories, makers all ✓ on the PH dashboard.
+
+**Prelaunch / Coming Soon URL:** https://www.producthunt.com/products/ai-stock-assist/ai-stock-assist/prelaunch
+(Use the PH dashboard "Prep your social posts → Copy Link" *tracked* links in posts for vote attribution.)
+
+**Social announcement posts:** `launch-assets/PRODUCT-HUNT-SOCIAL-POSTS.md` — Set A ("Notify me", publish now) + Set B ("we're LIVE", publish launch morning) for LinkedIn / Facebook / X.
+
+This is an *independent* launch, not part of the Episode arc.
 
 **Deliverables (in `launch-assets/`):**
 - `PRODUCT-HUNT-SUBMISSION.md` — full strategy + launch-day runbook (dates corrected Jun 22)
