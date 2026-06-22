@@ -110,20 +110,20 @@ Hi Product Hunt 👋 I'm Lindsay, founder of PI GenAI and an "AI for Good" produ
 I built AI Stock Assist because most tools either dump data on you or sell you tips — very few help you actually KNOW what you own before you buy. The mission is simple: be wealthy AND wise.
 
 Type up to 10 tickers and in ~30 seconds you get a real, defensible verdict:
-• BUY / HOLD / SELL with a confidence rating AND the reasoning — powered by Google Gemini 3.5 Flash
-• 50+ fundamentals weighed across two consistent frameworks — Graham Value and Growth & Quality (cash-flow focused): FCF Yield, P/FCF, OCF/NI, Payout Ratio, a Balance Sheet Health score, and more
-• A Two-Lenses view that puts the Wall Street rating next to our methodology verdict and explains when each applies
-• Compare a whole watchlist at once and get a single Top Pick
-• Honest about gaps: no TTM profit? P/E shows N/A and it leans on cash flow instead of pretending the stock is "cheap" — and it caps confidence accordingly
+• BUY / HOLD / SELL with a confidence score AND the reasoning behind it — powered by Google Gemini 3.5 Flash
+• 50+ fundamentals weighed two ways: classic value (Graham) and cash-flow quality (does the business actually generate cash?)
+• A "Two-Lenses" view that shows the Wall Street rating next to ours — and explains when each one is right for you
+• Compare a whole watchlist at once and get one clear Top Pick
+• Refreshingly honest: when the data is thin, it tells you and dials down its confidence — it won't pretend a risky stock is a safe "bargain"
 • Export the full report to PDF or Word
 
-Built with a stack I love: Vercel (frontend + serverless), FastAPI on Render, Supabase (auth + the saved analysis history), Cloudflare, and Stripe — shoutouts above 🙏
+Built with a stack I love: Vercel (frontend + serverless), FastAPI on Render, Supabase (auth + saved analysis history), Cloudflare, and Stripe — shoutouts above 🙏
 
-The recent Gemini 3.5 Flash upgrade is why I'm launching now — it made the analysis noticeably faster and sharper, so you get better information, faster, to make higher-quality decisions.
+The recent Gemini 3.5 Flash upgrade is why I'm launching now — it made the analysis noticeably faster and sharper.
 
-It's 3 free analyses, no credit card — then packs from $4.99 (≈25¢ per analysis). No subscription.
+3 free analyses, no credit card — then packs from $4.99 (≈25¢ each). No subscription.
 
-I'd genuinely love your honest feedback — drop a ticker you're researching and I'll tell you what the framework says 👇
+I'd love your honest feedback — drop a ticker you're researching and I'll tell you what the framework says 👇
 ```
 
 ---
