@@ -95,7 +95,7 @@ If you've got a minute, a look and an honest comment today genuinely helps — t
 ## X / Twitter  (single post, link in body)
 🚀 AI Stock Assist is LIVE on @ProductHunt!
 
-Type up to 10 tickers → in ~30s, a clear BUY / HOLD / SELL verdict with the reasoning. Know what you own before you buy. 3 free, no card.
+Type up to 10 tickers → in ~30s, a clear BUY / HOLD / SELL verdict with the reasoning. 3 free, no card.
 
 If it's useful, your support + honest feedback today means a lot 👇
 [PASTE PH LIVE TRACKED LINK]
