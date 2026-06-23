@@ -28,7 +28,7 @@ You don't have to be a genius investor. You just have to be willing to read your
 
 This is our AI for Good mission: wealthy AND wise. Wisdom is just instinct that's been checked against a record.
 
-Episode 9 is live (link below). 3 free analyses, no credit card.
+Episode 9 is live (link below).
 
 (Illustrative, not advice.)
 
@@ -64,7 +64,7 @@ In this episode, Alex shows Tom the notebook he's never kept: AI Stock Assist sa
 
 You don't have to be a genius. You just have to keep score.
 
-3 free analyses, no credit card. (Illustrative, not advice.)
+(Illustrative, not advice.)
 
 https://lindsayhiebert.substack.com/p/episode-9-the-detectives-notebook
 
