@@ -294,8 +294,9 @@ https://lindsayhiebert.substack.com/p/episode-9-the-detectives-notebook
 
 #Investing #StockMarket #FinancialLiteracy #IntelligenceEra #AIForGood
 
-▸ (2) IMAGE TO ATTACH:  Blog-9-promo-linkedin-fb.png  (1.91:1, headline baked in — best for the feed)
-Alt: Blog-9-hero-detectives-notebook.png (plain hero, no text).  Folder: docs/images/episode-9/
+▸ (2) IMAGE TO ATTACH:  Blog-9-hero-detectives-notebook.png  (the casebook hero, 16:9 — best for the feed)
+Alt: Blog-9-hero-detectives-notebook-OG-1200x630.jpg (clean 1200x630 link card) or Blog-9-hero-detectives-notebook-alt.png.  Folder: docs/images/episode-9/
+(NOTE: the headline "promo-linkedin-fb" card was an optional Canva build that wasn't made — the hero works great as-is.)
 
 ▸ (3) FIRST COMMENT  (post immediately after):
 Quick one 👇 do you keep any record of WHY you bought your stocks — a notebook, a spreadsheet, anything? Or is it all in your head?
@@ -304,6 +305,7 @@ That's exactly what the History tab is for: every analysis you run is saved and 
 
 Try it free (3 analyses, no card): https://aistockassist.com
 New here? Catch up on the whole series: https://aistockassist.com/?view=learn
+Prefer Medium? Same article: https://medium.com/@lindsay.hiebert/episode-9-the-detectives-notebook-3754180d1d34
 
 
 ════════ FACEBOOK ════════
@@ -324,14 +326,14 @@ You don't have to be a genius. You just have to keep score.
 
 https://lindsayhiebert.substack.com/p/episode-9-the-detectives-notebook
 
-▸ (2) IMAGE TO ATTACH:  Blog-9-promo-linkedin-fb.png  (1.91:1, headline baked in)
-Alt: Blog-9-hero-detectives-notebook-OG-1200x630.jpg (clean 1200x630).  Folder: docs/images/episode-9/
+▸ (2) IMAGE TO ATTACH:  Blog-9-hero-detectives-notebook.png  (the casebook hero) — or Blog-9-hero-detectives-notebook-OG-1200x630.jpg (clean 1200x630).  Folder: docs/images/episode-9/
 
 ▸ (3) FIRST COMMENT  (post immediately after):
 Want to start your own casebook? Run a stock you already own in AI Stock Assist — it saves the analysis, dated, so you can reopen it in a year and check your own call.
 
 3 free analyses, no card → https://aistockassist.com
 New to the series? Start at Episode 0 and catch up → https://aistockassist.com/?view=learn
+Prefer Medium? Same article → https://medium.com/@lindsay.hiebert/episode-9-the-detectives-notebook-3754180d1d34
 
 
 ════════ X / TWITTER ════════
@@ -390,8 +392,8 @@ IMAGE ASSETS — ✅ GENERATED & SAVED in docs/images/episode-9/ (prompts: docs/
 WHICH IMAGE TO USE PER PLATFORM (the hero / attached image):
 • Substack — header + first inline image: Blog-9-hero-detectives-notebook.png (16:9)
 • Medium — featured image: Blog-9-hero-detectives-notebook.png (16:9)
-• LinkedIn — attach: Blog-9-promo-linkedin-fb.png (1.91:1, headline baked in) — or the plain hero if you want no text
-• Facebook — attach: Blog-9-promo-linkedin-fb.png (1.91:1) — or Blog-9-hero-detectives-notebook-OG-1200x630.jpg
+• LinkedIn — attach: Blog-9-hero-detectives-notebook.png (the casebook hero, 16:9)
+• Facebook — attach: Blog-9-hero-detectives-notebook.png — or Blog-9-hero-detectives-notebook-OG-1200x630.jpg (clean 1200x630)
 • X / Twitter — in-tweet image: Blog-9-hero-detectives-notebook.png (16:9)
 
 CANONICAL (use these in the article, in this order):
@@ -399,8 +401,8 @@ CANONICAL (use these in the article, in this order):
 • docs/images/episode-9/Blog-9-tom-by-feel.png — opening scene (Tom, ~62, tapping his temple confidently, brokerage app on phone, Alex across the table, coffee shop)
 • docs/images/episode-9/Blog-9-history-screenshot.png — Analysis History panel: dated list of past analyses with BUY/HOLD/SELL pills (clean mockup matching the real "Analysis History" screen)
 
-SOCIAL PROMO CARD (headline baked in — best for LinkedIn + Facebook feed):
-• docs/images/episode-9/Blog-9-promo-linkedin-fb.png — 1.91:1 (1734x907). Casebook still-life + headline "TEN YEARS OF INSTINCT — AND NO WAY TO CHECK IT" / "A decision you can't audit can't make you better." + diamond logo.
+SOCIAL PROMO CARD (OPTIONAL — not built; only if you want a headline-baked card later, build in Canva):
+• Blog-9-promo-linkedin-fb.png — 1.91:1 (1734x907). Casebook hero + headline "TEN YEARS OF INSTINCT — AND NO WAY TO CHECK IT" / "A decision you can't audit can't make you better." + diamond logo. (Until built, use the plain hero — it works great.)
 
 SOCIAL LINK CARD (OG — for LinkedIn/Facebook URL unfurl when the link is in the body):
 • docs/images/episode-9/Blog-9-hero-detectives-notebook-OG-1200x630.jpg — 1200x630 crop of the hero
