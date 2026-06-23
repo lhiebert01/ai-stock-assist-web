@@ -16,13 +16,13 @@ AI Stock Assist answers the question most tools dodge: do you actually know what
 
 Type up to 10 tickers and in ~30 seconds you get a clear BUY / HOLD / SELL verdict — with the reasoning, a confidence score, and the Wall Street rating shown right next to ours. Powered by Google Gemini 3.5 Flash. 3 free, no credit card.
 
-Product Hunt's first hours decide everything, and a small "AI for Good" project lives or dies on early support. If you tap **"Notify me"** now, PH will ping you the moment we're live tomorrow — and that one tap genuinely helps.
+Product Hunt's first hours decide everything, and a small independent project lives or dies on early support. If you tap **"Notify me"** now, PH will ping you the moment we're live tomorrow — and that one tap genuinely helps.
 
 Would love to have you there on day one. 🙏
 
 🔔 Notify-me link in the first comment.
 
-#ProductHunt #Investing #AI #FinTech #AIForGood
+#ProductHunt #Investing #AI #FinTech
 
 ▸ FIRST COMMENT:
 🔔 Tap "Notify me" here so you don't miss launch: https://www.producthunt.com/products/ai-stock-assist/ai-stock-assist/prelaunch
@@ -61,34 +61,42 @@ https://www.producthunt.com/products/ai-stock-assist/ai-stock-assist/prelaunch
 # SET B — "We're LIVE" (publish LAUNCH MORNING, ~Jun 24)
 Replace the prelaunch URL with the **live PH launch URL** + your **tracked "Copy Link"**. Post the maker first comment on PH itself the instant it goes live, then fire these.
 
-## LinkedIn  (link in first comment)
+## LinkedIn  (two comments: app first, Product Hunt second)
 🚀 We're LIVE on Product Hunt.
 
 AI Stock Assist is the fastest way to actually know what you own before you buy. Type up to 10 tickers and in ~30 seconds you get a clear BUY / HOLD / SELL verdict — with the reasoning, a confidence score, and the Wall Street rating right beside ours. Powered by Google Gemini 3.5 Flash. 3 free, no card.
 
-If it's useful to you, a look and an honest comment on Product Hunt today would mean the world — the first hours are everything for a small "AI for Good" project. 🙏
+Try it yourself, and if it's useful, a look and an honest comment on Product Hunt today would mean the world — the first hours are everything for a small independent project. 🙏
 
-🚀 Link in the first comment.
+🚀 App + Product Hunt links in the comments.
 
-#ProductHunt #Investing #AI #FinTech #AIForGood
+#ProductHunt #Investing #AI #FinTech
 
-▸ FIRST COMMENT:
-🚀 We're live — would love your honest feedback: [PASTE PH LIVE TRACKED LINK]
-Try it free: https://aistockassist.com
+▸ COMMENT 1 (the app):
+Try it free — 3 analyses, no card: https://aistockassist.com
+Drop a ticker you're researching and I'll tell you what the framework says 👇
+
+▸ COMMENT 2 (Product Hunt — to support / upvote):
+If it earns it after you try it, an upvote + honest review on Product Hunt today helps more investors find it 🙏
+[PASTE PH LIVE TRACKED LINK]
 
 ---
 
-## Facebook  (link in first comment)
+## Facebook  (two comments: app first, Product Hunt second)
 🚀 It's launch day! AI Stock Assist is LIVE on Product Hunt.
 
 Type a few tickers, get a clear BUY / HOLD / SELL verdict in ~30 seconds — with the reasoning, not just data. 3 free, no credit card.
 
-If you've got a minute, a look and an honest comment today genuinely helps — the first hours decide how far it reaches. Thank you. 🙏
+Try it, and if you've got a minute, a look and an honest comment today genuinely helps — the first hours decide how far it reaches. Thank you. 🙏
 
-🚀 Link in the comments.
+🚀 App + Product Hunt links in the comments.
 
-▸ FIRST COMMENT:
-🚀 We're live: [PASTE PH LIVE TRACKED LINK]
+▸ COMMENT 1 (the app):
+Try it free — 3 analyses, no card: https://aistockassist.com
+
+▸ COMMENT 2 (Product Hunt — to support / upvote):
+And if you like it, an upvote on Product Hunt today helps a lot 🙏
+[PASTE PH LIVE TRACKED LINK]
 
 ---
 
