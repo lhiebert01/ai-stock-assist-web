@@ -383,9 +383,9 @@ Curious how this sub handles it:
 
 
 ========================================================================
-IMAGE ASSETS — ⏳ TO GENERATE (prompts: docs/episode-9-the-detectives-notebook-image-prompts.md)
+IMAGE ASSETS — ✅ GENERATED & SAVED in docs/images/episode-9/ (prompts: docs/episode-9-the-detectives-notebook-image-prompts.md)
 ========================================================================
-(all files must be landscape — never square/portrait)
+(all landscape 1672x941 — generated ChatGPT Jun 23; alts: hero -alt, café -alt-castB (diverse cast), history -alt. OG link card: Blog-9-hero-detectives-notebook-OG-1200x630.jpg)
 
 WHICH IMAGE TO USE PER PLATFORM (the hero / attached image):
 • Substack — header + first inline image: Blog-9-hero-detectives-notebook.png (16:9)

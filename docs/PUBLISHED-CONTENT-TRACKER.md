@@ -404,4 +404,4 @@ This is an *independent* launch, not part of the Episode arc.
 
 **Next-week teaser set:** Episode 10 (series finale) — Sarah bookend, the money objection direct ("a few dollars a stock… doesn't that add up?").
 
-**Pre-publish to-dos:** (1) generate the 3 images (hero casebook, Tom-by-feel café scene, Analysis History screenshot — capture real preferred); (2) optional — run a real ticker and drop its live ROE into the demo text; (3) add Ep 9 card to `src/components/LearnPage.tsx`; (4) build the one-file Word publish kit; (5) after publishing, fill real URLs + confirm the Substack slug.
+**Pre-publish to-dos:** (1) ✅ images generated & saved Jun 23 in `docs/images/episode-9/` (hero casebook + Tom-by-feel café + Analysis History mockup, all 1672×941, + OG crop + alts incl. diverse-cast café); (2) optional — run a real ticker and drop its live ROE into the demo text; (3) add Ep 9 card to `src/components/LearnPage.tsx`; (4) build the one-file Word publish kit; (5) after publishing, fill real URLs + confirm the Substack slug.

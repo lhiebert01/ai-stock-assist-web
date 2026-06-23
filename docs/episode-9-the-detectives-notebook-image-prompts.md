@@ -6,9 +6,9 @@ Episode 9 needs **3 visuals** — two generated photoreal, one captured/mocked f
 
 | Slot | Canonical file | Output size | Status |
 |---|---|---|---|
-| Hero / Substack header (parable) | `docs/images/episode-9/Blog-9-hero-detectives-notebook.png` | 1600×900 (16:9) + `Blog-9-hero-detectives-notebook-OG-1200x630.jpg` | ⏳ to generate |
-| Opening scene (café + "I just go by feel") | `docs/images/episode-9/Blog-9-tom-by-feel.png` | 1600×900 (16:9) | ⏳ to generate |
-| Demo screenshot (Analysis History casebook) | `docs/images/episode-9/Blog-9-history-screenshot.png` | 1600×900 (16:9) | ⏳ capture preferred |
+| Hero / Substack header (parable) | `docs/images/episode-9/Blog-9-hero-detectives-notebook.png` | 1672×941 (16:9) + `Blog-9-hero-detectives-notebook-OG-1200x630.jpg` | ✅ saved (Jun 23) — alt: `-alt` |
+| Opening scene (café + "I just go by feel") | `docs/images/episode-9/Blog-9-tom-by-feel.png` | 1672×941 (16:9) | ✅ saved (Jun 23) — alt: `-alt-castB` (diverse cast) |
+| Demo screenshot (Analysis History casebook) | `docs/images/episode-9/Blog-9-history-screenshot.png` | 1672×941 (16:9) | ✅ saved (Jun 23) — alt: `-alt` |
 
 Platform sizing reference (all landscape, never square/portrait):
 • Substack hero + in-article embeds: 1456×816 (16:9) — downsize from the 1600×900 render
