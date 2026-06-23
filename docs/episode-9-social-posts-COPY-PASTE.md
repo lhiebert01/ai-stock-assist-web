@@ -26,7 +26,7 @@ It's the difference between two detectives. One trusts his gut and stays exactly
 
 You don't have to be a genius investor. You just have to be willing to read your own old cases.
 
-This is our AI for Good mission: wealthy AND wise. Wisdom is just instinct that's been checked against a record.
+This is our AI for Good mission: Wisdom is just instinct that's been checked against a record.
 
 Episode 9 is live (link below).
 

@@ -394,7 +394,9 @@ This is an *independent* launch, not part of the Episode arc.
 **Substack (canonical):** https://lindsayhiebert.substack.com/p/episode-9-the-detectives-notebook
 **Share link:** https://open.substack.com/pub/lindsayhiebert/p/episode-9-the-detectives-notebook
 **Medium (cross-post, canonical → Substack):** https://medium.com/@lindsay.hiebert/episode-9-the-detectives-notebook-3754180d1d34
+**Facebook:** https://www.facebook.com/share/p/1HvqLzXFzv/
 **Tags** — Medium: Investing · Stock Market · Data Science · Finance · Artificial Intelligence. Substack: Investing · Stocks · Finance · Personal Finance · AI.
+**Edit note:** post bodies drop "3 free analyses, no credit card" (kept in first-comment CTA + blog); LinkedIn AI-for-Good line trimmed to "This is our AI for Good mission: Wisdom is just instinct that's been checked against a record." (dropped "wealthy AND wise" — cleaner, ties to the episode).
 
 **Theme:** Tom, 62, has picked stocks "by feel" for ten years and is sure he's good at it. Alex asks "how do you *know*?" Parable: two detectives — one trusts his gut and stays as good as day one; the other keeps a dated notebook, rereads her own old cases, and gets sharper every year. Lesson: a decision you can't audit can't make you better; ten years of unrecorded "feel" is one year repeated ten times. Objection demolished: **"I'll just check the current data — I don't need history."**
 
