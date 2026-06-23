@@ -83,8 +83,7 @@ const blogEpisodes = [
   { ep: 6, emoji: '🗺️', title: 'The Two Maps', hook: 'Wall Street says STRONG BUY, the value lens says SELL — and both can be right. Learn to read both maps and pick the one for your time horizon.', url: 'https://lindsayhiebert.substack.com/p/episode-6-the-two-maps' },
   { ep: 7, emoji: '🍎', title: 'The Three Apple Stands', hook: 'Three stocks look identical on price — until you check which one\'s earnings are actually backed by cash. A spreadsheet gives data; OCF/NI picks the winner.', url: 'https://lindsayhiebert.substack.com/p/episode-7-the-three-apple-stands' },
   { ep: 8, emoji: '✉️', title: 'The Sealed Envelope', hook: 'Bought on a tip and can\'t remember why? Save your thesis the day you buy — the Executive Summary writes the verdict and the FCF Yield, and one click seals it as a dated PDF you can reopen.', url: 'https://lindsayhiebert.substack.com/p/the-sealed-envelope' },
-  // NOTE: Ep 9 not yet published — URL below is a predicted slug; swap for the real Substack URL once live.
-  { ep: 9, emoji: '🕵️', title: 'The Detective\'s Notebook', hook: 'Picking "by feel" for ten years isn\'t ten years of experience — it\'s one year, ten times. Keep a dated casebook of your calls (and demand ROE that\'s high every year, not just once).', url: 'https://lindsayhiebert.substack.com/p/the-detectives-notebook' },
+  { ep: 9, emoji: '🕵️', title: 'The Detective\'s Notebook', hook: 'Picking "by feel" for ten years isn\'t ten years of experience — it\'s one year, ten times. Keep a dated casebook of your calls (and demand ROE that\'s high every year, not just once).', url: 'https://lindsayhiebert.substack.com/p/episode-9-the-detectives-notebook' },
 ];
 
 const grahamMetrics = [

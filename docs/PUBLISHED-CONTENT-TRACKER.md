@@ -387,9 +387,13 @@ This is an *independent* launch, not part of the Episode arc.
 
 ---
 
-## Campaign: Episode 9 "The Detective's Notebook" (DRAFTED — not yet published)
+## Campaign: Episode 9 "The Detective's Notebook" (PUBLISHED — Jun 23, 2026)
 
-**Status:** 🟢 Publish-ready article + per-platform channel posts + image prompts drafted Jun 22, 2026. Target publish: **week of Mon Jun 29** (maintains the ~weekly cadence after Ep 8 Jun 18). Pending: image generation + (optional) live ROE refresh + LearnPage card.
+**Status:** ✅ Published to Substack Jun 23, 2026. Published slug = `episode-9-the-detectives-notebook` (matched the prediction's title but kept the `episode-9-` prefix, unlike Ep 8). LearnPage card URL updated predicted→real + pushed. Remaining: Medium cross-post, channel posts (LinkedIn/FB/X/Reddit from the kit), optional live-ROE refresh.
+
+**Substack (canonical):** https://lindsayhiebert.substack.com/p/episode-9-the-detectives-notebook
+**Share link:** https://open.substack.com/pub/lindsayhiebert/p/episode-9-the-detectives-notebook
+**Tags** — Medium: Investing · Stock Market · Data Science · Finance · Artificial Intelligence. Substack: Investing · Stocks · Finance · Personal Finance · AI.
 
 **Theme:** Tom, 62, has picked stocks "by feel" for ten years and is sure he's good at it. Alex asks "how do you *know*?" Parable: two detectives — one trusts his gut and stays as good as day one; the other keeps a dated notebook, rereads her own old cases, and gets sharper every year. Lesson: a decision you can't audit can't make you better; ten years of unrecorded "feel" is one year repeated ten times. Objection demolished: **"I'll just check the current data — I don't need history."**
 
