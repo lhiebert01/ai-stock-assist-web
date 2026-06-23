@@ -397,6 +397,7 @@ This is an *independent* launch, not part of the Episode arc.
 **LinkedIn:** https://www.linkedin.com/posts/lindsayhiebert_investing-stockmarket-financialliteracy-share-7475310210908319744-Balk/
 **Facebook:** https://www.facebook.com/share/p/1HvqLzXFzv/
 **X / Twitter:** https://x.com/Lindsay_Hiebert/status/2069547882500219288
+**Reddit (r/ValueInvesting):** https://www.reddit.com/r/ValueInvesting/s/bs6HYoJ2Rj — tuned-to-the-moment variant tying the "keep a dated record / know your conviction" insight to the live SaaS/software selloff (CRM/NOW/ADBE). Text self-post, Discussion flair, NO link in body (per [[feedback_reddit_posting_style]]).
 **Tags** — Medium: Investing · Stock Market · Data Science · Finance · Artificial Intelligence. Substack: Investing · Stocks · Finance · Personal Finance · AI.
 **Edit note:** post bodies drop "3 free analyses, no credit card" (kept in first-comment CTA + blog); LinkedIn AI-for-Good line trimmed to "This is our AI for Good mission: Wisdom is just instinct that's been checked against a record." (dropped "wealthy AND wise" — cleaner, ties to the episode).
 
