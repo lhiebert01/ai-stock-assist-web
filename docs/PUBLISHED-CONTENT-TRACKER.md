@@ -394,6 +394,7 @@ This is an *independent* launch, not part of the Episode arc.
 **Substack (canonical):** https://lindsayhiebert.substack.com/p/episode-9-the-detectives-notebook
 **Share link:** https://open.substack.com/pub/lindsayhiebert/p/episode-9-the-detectives-notebook
 **Medium (cross-post, canonical → Substack):** https://medium.com/@lindsay.hiebert/episode-9-the-detectives-notebook-3754180d1d34
+**LinkedIn:** https://www.linkedin.com/posts/lindsayhiebert_investing-stockmarket-financialliteracy-share-7475310210908319744-Balk/
 **Facebook:** https://www.facebook.com/share/p/1HvqLzXFzv/
 **Tags** — Medium: Investing · Stock Market · Data Science · Finance · Artificial Intelligence. Substack: Investing · Stocks · Finance · Personal Finance · AI.
 **Edit note:** post bodies drop "3 free analyses, no credit card" (kept in first-comment CTA + blog); LinkedIn AI-for-Good line trimmed to "This is our AI for Good mission: Wisdom is just instinct that's been checked against a record." (dropped "wealthy AND wise" — cleaner, ties to the episode).
