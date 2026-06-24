@@ -74,7 +74,7 @@ export async function getRecommendation(
 /** Get AI comparative analysis for multiple stocks. */
 export async function getComparativeAnalysis(
   snapshots: StockSnapshot[]
-): Promise<{ analysis: string }> {
+): Promise<{ analysis: string; plain_summary?: string }> {
   return apiPost('/api/comparative', { snapshots });
 }
 
@@ -97,7 +97,8 @@ export async function discoverStocks(
 export async function exportWord(
   snapshots: StockSnapshot[],
   windowLabel: string,
-  cachedAnalysis?: string
+  cachedAnalysis?: string,
+  plainSummary?: string
 ): Promise<Blob> {
   const headers = await getAuthHeaders();
   const res = await fetchWithRetry(`${API_URL}/api/export/word`, {
@@ -107,6 +108,7 @@ export async function exportWord(
       snapshots,
       window_label: windowLabel,
       cached_analysis: cachedAnalysis,
+      plain_summary: plainSummary,
     }),
   });
   if (!res.ok) throw new Error('Export failed');

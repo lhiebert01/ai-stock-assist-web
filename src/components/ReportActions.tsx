@@ -8,10 +8,11 @@ interface ReportActionsProps {
   snapshots: StockSnapshot[];
   methodology: Methodology;
   comparativeAnalysis: string | null;
+  plainSummary?: string | null;
   resultsRef: React.RefObject<HTMLDivElement | null>;
 }
 
-export default function ReportActions({ snapshots, methodology, comparativeAnalysis, resultsRef }: ReportActionsProps) {
+export default function ReportActions({ snapshots, methodology, comparativeAnalysis, plainSummary, resultsRef }: ReportActionsProps) {
   const [pdfLoading, setPdfLoading] = useState(false);
   const [wordLoading, setWordLoading] = useState(false);
 
@@ -34,7 +35,7 @@ export default function ReportActions({ snapshots, methodology, comparativeAnaly
     if (wordLoading) return;
     setWordLoading(true);
     try {
-      const blob = await exportWord(snapshots, windowLabel, comparativeAnalysis || undefined);
+      const blob = await exportWord(snapshots, windowLabel, comparativeAnalysis || undefined, plainSummary || undefined);
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;

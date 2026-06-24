@@ -7,6 +7,7 @@ import { analyzeStocks, getRecommendation, getComparativeAnalysis, friendlyError
 import { supabase } from '../supabase';
 import StockCard from './StockCard';
 import ComparisonTable from './ComparisonTable';
+import BottomLine from './BottomLine';
 import MetricsGlossary from './MetricsGlossary';
 import ExecutiveSummary from './ExecutiveSummary';
 import ReportActions from './ReportActions';
@@ -27,6 +28,7 @@ export default function StockAnalyzer({ userId, userProfile, onCreditsUsed, onNe
   const [snapshots, setSnapshots] = useState<StockSnapshot[]>([]);
   const [recommendations, setRecommendations] = useState<Record<string, AIRecommendation>>({});
   const [comparativeAnalysis, setComparativeAnalysis] = useState<string | null>(null);
+  const [plainSummary, setPlainSummary] = useState<string | null>(null);
   const [errors, setErrors] = useState<string[]>([]);
   const [glossaryOpen, setGlossaryOpen] = useState(false);
   const resultsRef = useRef<HTMLDivElement>(null);
@@ -65,6 +67,7 @@ export default function StockAnalyzer({ userId, userProfile, onCreditsUsed, onNe
     setSnapshots([]);
     setRecommendations({});
     setComparativeAnalysis(null);
+    setPlainSummary(null);
 
     try {
       // Step 1: Fetch snapshots
@@ -90,6 +93,7 @@ export default function StockAnalyzer({ userId, userProfile, onCreditsUsed, onNe
         setLoadingStep('Generating comparative analysis...');
         const comp = await getComparativeAnalysis(result.snapshots);
         setComparativeAnalysis(comp.analysis);
+        setPlainSummary(comp.plain_summary || null);
         compContext = comp.analysis;
       }
 
@@ -246,12 +250,16 @@ export default function StockAnalyzer({ userId, userProfile, onCreditsUsed, onNe
           snapshots={snapshots}
           methodology={methodology}
           comparativeAnalysis={comparativeAnalysis}
+          plainSummary={plainSummary}
           resultsRef={resultsRef}
         />
       )}
 
       {/* Results Section — captured for PDF */}
       <div ref={resultsRef}>
+        {/* The Bottom Line — in Plain English (leads the results; self-hides when empty) */}
+        {!loading && <BottomLine summary={plainSummary} />}
+
         {/* Executive Summary */}
         {!loading && snapshots.length > 0 && (
           <ExecutiveSummary
