@@ -398,6 +398,17 @@ This is an *independent* launch, not part of the Episode arc.
 **Facebook:** https://www.facebook.com/share/p/1HvqLzXFzv/
 **X / Twitter:** https://x.com/Lindsay_Hiebert/status/2069547882500219288
 **Reddit (r/ValueInvesting):** https://www.reddit.com/r/ValueInvesting/s/bs6HYoJ2Rj — tuned-to-the-moment variant tying the "keep a dated record / know your conviction" insight to the live SaaS/software selloff (CRM/NOW/ADBE). Text self-post, Discussion flair, NO link in body (per [[feedback_reddit_posting_style]]).
+
+---
+
+## Reddit Engagement Log — "be the most useful voice" (no link, profile carries it)
+
+Execution of `docs/REDDIT-ENGAGEMENT-PLAYBOOK.md`: answer real questions with AI Stock Assist's cash-flow rigor, no link/tool mention. First entry:
+
+- **Jun 24, 2026 · r/ValueInvesting** — comment on a "next value play: NOW/MSFT/CRM/INTU?" thread: https://www.reddit.com/r/ValueInvesting/s/1RY8qJNKLu
+  - Brought the cash-flow comparison the 50-comment thread lacked; flipped the consensus (MSFT priciest on cash at ~39x P/FCF despite being the "no-brainer"; CRM cheapest at ~11% FCF yield). All four statement-verified.
+  - Notably surfaced + fixed the FCF>OCF bug ([[lesson_yfinance_fcf_info_unreliable]]) and the "best ROE" superlative error mid-draft → both now guarded in the product.
+  - Watch for: profile clicks, replies, any "what tool?" question (→ use the disclosure line).
 **Tags** — Medium: Investing · Stock Market · Data Science · Finance · Artificial Intelligence. Substack: Investing · Stocks · Finance · Personal Finance · AI.
 **Edit note:** post bodies drop "3 free analyses, no credit card" (kept in first-comment CTA + blog); LinkedIn AI-for-Good line trimmed to "This is our AI for Good mission: Wisdom is just instinct that's been checked against a record." (dropped "wealthy AND wise" — cleaner, ties to the episode).
 
