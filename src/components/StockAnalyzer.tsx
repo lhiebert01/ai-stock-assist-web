@@ -88,21 +88,22 @@ export default function StockAnalyzer({ userId, userProfile, onCreditsUsed, onNe
       }
 
       // Step 2: Comparative analysis (if 2+ stocks)
-      let compContext: string | undefined;
       if (result.snapshots.length >= 2) {
         setLoadingStep('Generating comparative analysis...');
         const comp = await getComparativeAnalysis(result.snapshots);
         setComparativeAnalysis(comp.analysis);
         setPlainSummary(comp.plain_summary || null);
-        compContext = comp.analysis;
       }
 
       // Step 3: Individual recommendations
+      // NOTE: recommendations are STANDALONE — we deliberately do NOT pass the
+      // comparative context, so a ticker's BUY/HOLD/SELL depends only on its own
+      // fundamentals, never on which peers it was batched with.
       setLoadingStep('Generating AI recommendations...');
       const recs: Record<string, AIRecommendation> = {};
       for (const snap of result.snapshots) {
         try {
-          const rec = await getRecommendation(snap, methodology, compContext);
+          const rec = await getRecommendation(snap, methodology);
           recs[snap.ticker] = rec;
           setRecommendations((prev) => ({ ...prev, [snap.ticker]: rec }));
         } catch {
