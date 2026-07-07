@@ -88,11 +88,13 @@ export default function StockAnalyzer({ userId, userProfile, onCreditsUsed, onNe
       }
 
       // Step 2: Comparative analysis (if 2+ stocks)
+      let comparativeText: string | null = null; // kept ONLY for the history save
       if (result.snapshots.length >= 2) {
         setLoadingStep('Generating comparative analysis...');
         const comp = await getComparativeAnalysis(result.snapshots);
         setComparativeAnalysis(comp.analysis);
         setPlainSummary(comp.plain_summary || null);
+        comparativeText = comp.analysis; // NOT passed to per-stock recs — decouple stays intact
       }
 
       // Step 3: Individual recommendations
@@ -121,7 +123,7 @@ export default function StockAnalyzer({ userId, userProfile, onCreditsUsed, onNe
           methodology,
           snapshots: result.snapshots,
           recommendation: recs,
-          comparative_analysis: compContext || null,
+          comparative_analysis: comparativeText,
         });
       } catch (histErr) {
         console.warn('[History] Failed to save:', histErr);
