@@ -34,3 +34,8 @@ A readable narrative summary now leads multi-stock reports (web card + PDF + Wor
 - **Relative context must never leak into an absolute judgment.** A per-item verdict fed "here's how it ranks vs the group" will drift with the group. Keep standalone judgments standalone; do ranking separately, downstream, and let it re-order but never re-rate.
 - **`yfinance` `.info` fields are unreliable estimates** — pull from the financial statements and add invariant guards (FCF ≤ OCF, dividend-yield sanity, drop trailing-NaN closes). See [[lesson_yfinance_fcf_info_unreliable]], [[lesson_yfinance_trailing_nan_row]], [[lesson_yfinance_dividend_yield_percent]].
 - **The bug was found in the wild, then reproduced from the user's own logs before any code changed** — verify first, fix at the source, and add a regression test so it can't silently return.
+
+## Planned follow-ups (backlog — owner will QA history first)
+1. **Make the type-check a real deploy gate.** `vite build` doesn't type-check, and `npm run lint` (`tsc --noEmit`) already has pre-existing errors (`import.meta.env` typing in Auth.tsx/stockApi.ts/supabase.ts; Supabase admin generics in `api/admin/users.ts`). Fix those so `tsc` runs clean, then wire it into CI/pre-push — this would have caught the `compContext` ReferenceError before deploy. See [[lesson_vite_build_no_typecheck]].
+2. **Make the Analysis-History `try/catch` loud.** It currently swallows a failed save as a `console.warn` (which hid the 5-day breakage). Upgrade to `console.error` and surface a small non-blocking toast / telemetry event so a broken write is visible immediately.
+
