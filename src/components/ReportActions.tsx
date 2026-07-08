@@ -15,6 +15,7 @@ interface ReportActionsProps {
 export default function ReportActions({ snapshots, methodology, comparativeAnalysis, plainSummary, resultsRef }: ReportActionsProps) {
   const [pdfLoading, setPdfLoading] = useState(false);
   const [wordLoading, setWordLoading] = useState(false);
+  const [exportError, setExportError] = useState<string | null>(null);
 
   const tickers = snapshots.map((s) => s.ticker);
   const windowLabel = new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
@@ -34,8 +35,9 @@ export default function ReportActions({ snapshots, methodology, comparativeAnaly
   const handleWord = async () => {
     if (wordLoading) return;
     setWordLoading(true);
+    setExportError(null);
     try {
-      const blob = await exportWord(snapshots, windowLabel, comparativeAnalysis || undefined, plainSummary || undefined);
+      const blob = await exportWord(snapshots, windowLabel, comparativeAnalysis || undefined, plainSummary || undefined, methodology);
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
@@ -46,6 +48,8 @@ export default function ReportActions({ snapshots, methodology, comparativeAnaly
       URL.revokeObjectURL(url);
     } catch (err) {
       console.error('Word export failed:', err);
+      // The report QA gate (422) returns the specific reasons — show them.
+      setExportError((err as Error)?.message || 'Export failed. Please try again.');
     } finally {
       setWordLoading(false);
     }
@@ -80,6 +84,9 @@ export default function ReportActions({ snapshots, methodology, comparativeAnaly
         <Printer className="w-4 h-4" />
         Print
       </button>
+      {exportError && (
+        <p className="w-full text-center text-xs text-red-400 mt-1">{exportError}</p>
+      )}
     </div>
   );
 }

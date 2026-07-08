@@ -46,6 +46,8 @@ export function ratingColor(rating: string): string {
   const r = rating.toUpperCase();
   if (r === 'BUY' || r === 'STRONG_BUY' || r === 'STRONG BUY') return 'bg-emerald-500/15 text-emerald-400 border-emerald-500/30';
   if (r === 'SELL' || r === 'STRONG_SELL' || r === 'STRONG SELL') return 'bg-red-500/15 text-red-400 border-red-500/30';
+  // Data-quality states are neutral gray, never verdict-colored
+  if (r === 'NOT_RATED' || r === 'NOT RATED' || r === 'ERROR' || r === 'N/A') return 'bg-zinc-500/15 text-zinc-400 border-zinc-500/30';
   return 'bg-yellow-500/15 text-yellow-400 border-yellow-500/30';
 }
 

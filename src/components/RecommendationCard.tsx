@@ -1,5 +1,5 @@
 import { motion } from 'motion/react';
-import { Brain, TrendingUp, Minus, TrendingDown, AlertTriangle } from 'lucide-react';
+import { Brain, TrendingUp, Minus, TrendingDown, AlertTriangle, HelpCircle } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import type { AIRecommendation, Methodology } from '../types/stock';
@@ -30,6 +30,14 @@ export default function RecommendationCard({ recommendation, methodology }: Reco
       text: 'text-red-400',
       icon: <TrendingDown className="w-6 h-6" />,
       label: 'SELL',
+    },
+    // Neutral gray — a data-quality state, deliberately NOT a verdict color
+    // (WO-ASA-001.3: missing/corrupt data must never look like a SELL).
+    NOT_RATED: {
+      bg: 'bg-zinc-500/10 border-zinc-500/30',
+      text: 'text-zinc-400',
+      icon: <HelpCircle className="w-6 h-6" />,
+      label: 'NOT RATED',
     },
     ERROR: {
       bg: 'bg-zinc-500/10 border-zinc-500/30',

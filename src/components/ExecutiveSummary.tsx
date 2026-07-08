@@ -14,24 +14,30 @@ function ratingBorderColor(rating: string): string {
   const r = rating.toUpperCase();
   if (r === 'BUY') return 'border-emerald-500/40';
   if (r === 'SELL') return 'border-red-500/40';
+  if (r === 'NOT_RATED' || r === 'ERROR') return 'border-zinc-500/30';
   return 'border-yellow-500/40';
 }
 
 export default function ExecutiveSummary({ snapshots, recommendations, methodology }: ExecutiveSummaryProps) {
   if (snapshots.length === 0) return null;
 
+  // NOT_RATED stocks are excluded from every "best of" highlight — their data
+  // failed validation or is incomplete, so ranking them is meaningless
+  // (WO-ASA-001.3).
+  const rated = snapshots.filter((s) => recommendations[s.ticker]?.rating !== 'NOT_RATED');
+
   // Best performer (highest YTD%)
-  const bestPerformer = [...snapshots]
+  const bestPerformer = [...rated]
     .filter((s) => s.changes.ytd_pct != null)
     .sort((a, b) => (b.changes.ytd_pct ?? -Infinity) - (a.changes.ytd_pct ?? -Infinity))[0];
 
   // Best value (lowest positive P/E)
-  const bestValue = [...snapshots]
+  const bestValue = [...rated]
     .filter((s) => s.trailing_pe != null && s.trailing_pe > 0)
     .sort((a, b) => (a.trailing_pe ?? Infinity) - (b.trailing_pe ?? Infinity))[0];
 
   // Strongest cash flow (highest FCF yield)
-  const bestCashFlow = [...snapshots]
+  const bestCashFlow = [...rated]
     .filter((s) => s.cash_flow.fcf_yield != null)
     .sort((a, b) => (b.cash_flow.fcf_yield ?? -Infinity) - (a.cash_flow.fcf_yield ?? -Infinity))[0];
 
@@ -87,7 +93,7 @@ export default function ExecutiveSummary({ snapshots, recommendations, methodolo
               >
                 <span className="font-bold font-mono text-sm">{s.ticker}</span>
                 <span className={`px-2 py-0.5 rounded text-xs font-bold border ${colorClass}`}>
-                  {rating === 'ERROR' ? 'N/A' : rating}
+                  {rating === 'ERROR' ? 'N/A' : rating.replace(/_/g, ' ')}
                 </span>
                 <span className="text-xs text-[var(--color-text-muted)] font-mono">{formatPrice(s.price)}</span>
               </div>

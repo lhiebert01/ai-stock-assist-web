@@ -45,6 +45,7 @@ export interface StockSnapshot {
     free_cash_flow: number | null;
     operating_cash_flow: number | null;
     net_income: number | null;
+    capex?: number | null;
     fcf_yield: number | null;
     p_fcf: number | null;
     ocf_to_ni_ratio: number | null;
@@ -60,13 +61,46 @@ export interface StockSnapshot {
     payout_ratio: number | null;
     balance_sheet_health: number | null;
   };
+  /** Currency provenance (WO-ASA-001.1) — all absolutes are USD-normalized;
+   * these fields carry the FX rate/date for the card footnote. Optional:
+   * history snapshots predate the field. */
+  currency?: {
+    financial_currency: string | null;
+    trading_currency: string | null;
+    fx_financial_to_usd: number | null;
+    fx_financial_date: string | null;
+    fx_trading_to_usd: number | null;
+    fx_trading_date: string | null;
+    normalized: boolean;
+  };
+  /** Single statement vintage per card (WO-ASA-001.4). */
+  data_vintage?: {
+    period: string | null;
+    statement_date: string | null;
+    prices_as_of: string | null;
+  };
+  /** Cross-consistency validator result (WO-ASA-001.1) — FAIL means the
+   * card's numbers contradict each other and the verdict is NOT_RATED. */
+  integrity?: {
+    status: 'OK' | 'FAIL';
+    failures: string[];
+    warnings: string[];
+  };
   as_of: string;
 }
 
 export interface AIRecommendation {
-  rating: 'BUY' | 'HOLD' | 'SELL' | 'ERROR';
+  rating: 'BUY' | 'HOLD' | 'SELL' | 'NOT_RATED' | 'ERROR';
   text: string;
   has_recommendation: boolean;
+  not_rated_reason?: string;
+}
+
+export interface AnalyzeError {
+  ticker: string;
+  error: string;
+  /** Set when the input was a segment/brand name (e.g. AWS -> AMZN). */
+  suggested_ticker?: string;
 }
 
 export interface ChartData {

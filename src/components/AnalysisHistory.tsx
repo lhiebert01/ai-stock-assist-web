@@ -112,7 +112,7 @@ export default function AnalysisHistory({ user }: AnalysisHistoryProps) {
                                 key={t}
                                 className={`inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-bold border ${colorClass}`}
                               >
-                                {t}: {rating === 'ERROR' ? 'N/A' : rating}
+                                {t}: {rating === 'ERROR' ? 'N/A' : rating.replace(/_/g, ' ')}
                               </span>
                             );
                           })}

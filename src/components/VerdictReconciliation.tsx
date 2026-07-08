@@ -10,7 +10,9 @@ import {
 
 interface VerdictReconciliationProps {
   analystRaw: string | null | undefined;
-  aiRating: 'BUY' | 'HOLD' | 'SELL' | 'ERROR' | undefined;
+  // NOT_RATED falls through to 'UNKNOWN' below — no reconciliation is shown
+  // for a stock the framework refused to rate (WO-ASA-001.3).
+  aiRating: 'BUY' | 'HOLD' | 'SELL' | 'NOT_RATED' | 'ERROR' | undefined;
   methodology: Methodology;
 }
 

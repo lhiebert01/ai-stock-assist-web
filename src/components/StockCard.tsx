@@ -24,6 +24,7 @@ function ratingAccentBorder(rating: string | undefined): string {
   if (r === 'BUY') return 'border-l-emerald-500';
   if (r === 'SELL') return 'border-l-red-500';
   if (r === 'HOLD') return 'border-l-yellow-500';
+  if (r === 'NOT_RATED') return 'border-l-zinc-500'; // neutral gray — not a verdict
   return 'border-l-[var(--color-border-light)]';
 }
 
@@ -107,6 +108,20 @@ export default function StockCard({ snapshot, recommendation, methodology, hideC
             className="overflow-hidden"
           >
             <div className="px-6 pb-6 space-y-6">
+              {/* Data-integrity gate notice (WO-ASA-001.1/001.3) */}
+              {s.integrity?.status === 'FAIL' && (
+                <div className="flex items-start gap-2 rounded-lg border border-zinc-500/40 bg-zinc-500/10 p-3 text-xs leading-relaxed text-[var(--color-text-secondary)]">
+                  <AlertTriangle className="w-4 h-4 text-zinc-400 shrink-0 mt-0.5" />
+                  <span>
+                    <span className="font-semibold text-[var(--color-text-primary)]">Data integrity check failed</span>
+                    {' — this stock is Not Rated because its source data contradicts itself'}
+                    {s.integrity.failures.length > 0 && <> ({s.integrity.failures[0]})</>}
+                    . It is excluded from Top Pick, rankings, and avoid lists. Metrics below are shown for
+                    transparency only and should not be relied on.
+                  </span>
+                </div>
+              )}
+
               {/* Price on mobile */}
               <div className="sm:hidden flex items-center justify-between">
                 <span className="text-2xl font-bold font-mono">{formatPrice(s.price)}</span>
@@ -269,14 +284,36 @@ export default function StockCard({ snapshot, recommendation, methodology, hideC
                       <TrendingUp className="w-4 h-4 text-[var(--color-accent)]" />
                       <h4 className="text-sm font-bold">Growth</h4>
                     </div>
-                    <MetricRow label="CAGR 3yr" value={s.growth.cagr_3yr != null ? `${(s.growth.cagr_3yr * 100).toFixed(1)}%` : '—'} />
-                    <MetricRow label="CAGR 5yr" value={s.growth.cagr_5yr != null ? `${(s.growth.cagr_5yr * 100).toFixed(1)}%` : '—'} />
+                    {/* cagr_* arrive as percents already (backend ×100) — no second ×100 */}
+                    <MetricRow label="CAGR 3yr" value={s.growth.cagr_3yr != null ? `${s.growth.cagr_3yr.toFixed(1)}%` : '—'} />
+                    <MetricRow label="CAGR 5yr" value={s.growth.cagr_5yr != null ? `${s.growth.cagr_5yr.toFixed(1)}%` : '—'} />
                     <MetricRow label="Rev Growth" value={s.growth.revenue_growth != null ? `${(s.growth.revenue_growth * 100).toFixed(1)}%` : '—'} />
                     <MetricRow label="Earn Growth" value={s.growth.earnings_growth != null ? `${(s.growth.earnings_growth * 100).toFixed(1)}%` : '—'} />
                     <MetricRow label="Earn 5yr" value={s.growth.earnings_growth_5yr != null ? `${(s.growth.earnings_growth_5yr * 100).toFixed(1)}%` : '—'} />
                   </div>
                 )}
               </div>
+
+              {/* Data vintage + FX provenance (WO-ASA-001.1 / 001.4) */}
+              {(s.data_vintage?.statement_date || s.data_vintage?.period ||
+                (s.currency?.financial_currency && s.currency.financial_currency !== 'USD')) && (
+                <p className="text-[11px] leading-relaxed text-[var(--color-text-muted)] px-1">
+                  {(s.data_vintage?.statement_date || s.data_vintage?.period) && (
+                    <>
+                      Data as of {s.data_vintage?.statement_date ?? '—'} ({s.data_vintage?.period ?? 'latest statements'})
+                      {s.data_vintage?.prices_as_of && <>; prices as of {s.data_vintage.prices_as_of}</>}.{' '}
+                    </>
+                  )}
+                  {s.currency?.financial_currency && s.currency.financial_currency !== 'USD' &&
+                    s.currency.fx_financial_to_usd != null && (
+                    <>
+                      Financials converted from {s.currency.financial_currency} to USD at{' '}
+                      {s.currency.fx_financial_to_usd.toFixed(4)}
+                      {s.currency.fx_financial_date && <> (FX as of {s.currency.fx_financial_date})</>}.
+                    </>
+                  )}
+                </p>
+              )}
 
               {/* P/E advisory — shown when valuation lacks a usable P/E (flows into PDF/print capture) */}
               {recommendation && peNum == null && (

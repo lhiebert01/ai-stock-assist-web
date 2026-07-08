@@ -1,9 +1,10 @@
 import { useState, useRef } from 'react';
 import { motion } from 'motion/react';
-import { Search, Loader2, BarChart3, BookOpen, Sparkles, X, AlertCircle } from 'lucide-react';
+import { Search, Loader2, BarChart3, BookOpen, Sparkles, X, AlertCircle, HelpCircle } from 'lucide-react';
 import type { StockSnapshot, AIRecommendation, Methodology } from '../types/stock';
 import type { UserProfile } from '../types/user';
 import { analyzeStocks, getRecommendation, getComparativeAnalysis, friendlyErrorMessage } from '../services/stockApi';
+import { SEGMENT_ALIASES } from '../lib/symbols';
 import { supabase } from '../supabase';
 import StockCard from './StockCard';
 import ComparisonTable from './ComparisonTable';
@@ -30,6 +31,9 @@ export default function StockAnalyzer({ userId, userProfile, onCreditsUsed, onNe
   const [comparativeAnalysis, setComparativeAnalysis] = useState<string | null>(null);
   const [plainSummary, setPlainSummary] = useState<string | null>(null);
   const [errors, setErrors] = useState<string[]>([]);
+  // Segment/brand names awaiting user confirmation (WO-ASA-001.2):
+  // "AWS is a segment of Amazon.com (AMZN). Analyze AMZN instead?"
+  const [aliasPrompts, setAliasPrompts] = useState<{ from: string; to: string; note: string }[]>([]);
   const [glossaryOpen, setGlossaryOpen] = useState(false);
   const resultsRef = useRef<HTMLDivElement>(null);
 
@@ -54,6 +58,14 @@ export default function StockAnalyzer({ userId, userProfile, onCreditsUsed, onNe
         `These don't look like valid ticker symbols: ${badTickers.join(', ')}. ` +
         `Tickers are letter-based (for example AAPL, MSFT, BRK.B). Please check your input and try again.`,
       ]);
+      return;
+    }
+
+    // Segment/brand names (AWS, YouTube, Azure…) aren't listed tickers —
+    // confirm the parent-company swap before any analysis or credit spend.
+    const aliases = tickers.filter((t) => SEGMENT_ALIASES[t]);
+    if (aliases.length > 0) {
+      setAliasPrompts(aliases.map((t) => ({ from: t, to: SEGMENT_ALIASES[t].ticker, note: SEGMENT_ALIASES[t].note })));
       return;
     }
 
@@ -138,6 +150,18 @@ export default function StockAnalyzer({ userId, userProfile, onCreditsUsed, onNe
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && !loading) handleAnalyze();
+  };
+
+  // Replace (or remove) a segment name in the input, keeping other tokens.
+  const resolveAlias = (from: string, to: string | null) => {
+    setInput((prev) =>
+      prev
+        .split(/([\s,]+)/) // keep separators so the rest of the input is untouched
+        .map((tok) => (tok.toUpperCase() === from ? (to ?? '') : tok))
+        .join('')
+        .replace(/^[\s,]+|[\s,]+$/g, '')
+    );
+    setAliasPrompts((prev) => prev.filter((p) => p.from !== from));
   };
 
   return (
@@ -227,6 +251,41 @@ export default function StockAnalyzer({ userId, userProfile, onCreditsUsed, onNe
           <p className="text-lg font-medium mb-1">{loadingStep}</p>
           <p className="text-sm text-[var(--color-text-muted)]">This may take 10-30 seconds per stock</p>
         </motion.div>
+      )}
+
+      {/* Segment-name confirmations (WO-ASA-001.2) */}
+      {aliasPrompts.length > 0 && (
+        <div className="max-w-3xl mx-auto mb-6">
+          {aliasPrompts.map((p) => (
+            <div
+              key={p.from}
+              className="flex flex-wrap items-center gap-3 px-4 py-3 mb-2 bg-amber-500/10 border border-amber-500/20 rounded-xl text-sm"
+            >
+              <HelpCircle className="w-4 h-4 shrink-0 text-amber-400" />
+              <span className="text-[var(--color-text-secondary)]">
+                <span className="font-bold text-[var(--color-text-primary)]">{p.from}</span> isn't a listed ticker — {p.note} (
+                <span className="font-mono font-bold">{p.to}</span>).
+              </span>
+              <div className="flex gap-2 ml-auto">
+                <button
+                  onClick={() => resolveAlias(p.from, p.to)}
+                  className="px-3 py-1.5 rounded-lg bg-[var(--color-accent)]/15 text-[var(--color-accent)] text-xs font-bold hover:bg-[var(--color-accent)]/25 transition-all"
+                >
+                  Analyze {p.to} instead
+                </button>
+                <button
+                  onClick={() => resolveAlias(p.from, null)}
+                  className="px-3 py-1.5 rounded-lg bg-[var(--color-surface-3)] text-[var(--color-text-secondary)] text-xs font-bold hover:text-white transition-all"
+                >
+                  Remove {p.from}
+                </button>
+              </div>
+            </div>
+          ))}
+          <p className="text-xs text-[var(--color-text-muted)] px-1">
+            Resolve the names above, then press Analyze again. No credits were used.
+          </p>
+        </div>
       )}
 
       {/* Errors */}

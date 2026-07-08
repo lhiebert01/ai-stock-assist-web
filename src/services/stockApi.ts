@@ -1,5 +1,5 @@
 import { supabase } from '../supabase';
-import type { StockSnapshot, AIRecommendation, ChartData, DiscoveredStock, Methodology } from '../types/stock';
+import type { StockSnapshot, AIRecommendation, AnalyzeError, ChartData, DiscoveredStock, Methodology } from '../types/stock';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
@@ -54,7 +54,7 @@ export async function analyzeStocks(
   tickers: string[],
   methodology: Methodology,
   useMtd = false
-): Promise<{ snapshots: StockSnapshot[]; errors: Array<{ ticker: string; error: string }> }> {
+): Promise<{ snapshots: StockSnapshot[]; errors: AnalyzeError[] }> {
   return apiPost('/api/analyze', { tickers, methodology, use_mtd: useMtd });
 }
 
@@ -98,7 +98,8 @@ export async function exportWord(
   snapshots: StockSnapshot[],
   windowLabel: string,
   cachedAnalysis?: string,
-  plainSummary?: string
+  plainSummary?: string,
+  methodology: Methodology = 'Growth & Quality'
 ): Promise<Blob> {
   const headers = await getAuthHeaders();
   const res = await fetchWithRetry(`${API_URL}/api/export/word`, {
@@ -109,9 +110,14 @@ export async function exportWord(
       window_label: windowLabel,
       cached_analysis: cachedAnalysis,
       plain_summary: plainSummary,
+      methodology,
     }),
   });
-  if (!res.ok) throw new Error('Export failed');
+  if (!res.ok) {
+    // 422 = report QA gate (WO-ASA-001 §5) — surface the reasons, don't swallow them
+    const err = await res.json().catch(() => ({ detail: res.statusText }));
+    throw new Error(typeof err.detail === 'string' ? err.detail : 'Export failed');
+  }
   return res.blob();
 }
 

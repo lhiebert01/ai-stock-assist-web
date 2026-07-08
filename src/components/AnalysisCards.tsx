@@ -128,7 +128,7 @@ export default function AnalysisCards({ analysis, snapshots, recommendations, me
                       <div className="text-xs text-[var(--color-text-muted)] truncate">{name}</div>
                     </div>
                     <span className={`shrink-0 px-2 py-0.5 rounded text-xs font-bold border ${ratingPillClass(rec.rating)}`}>
-                      {rec.rating === 'ERROR' ? 'N/A' : rec.rating}
+                      {rec.rating === 'ERROR' ? 'N/A' : rec.rating.replace(/_/g, ' ')}
                     </span>
                   </div>
                   {bottom && (
