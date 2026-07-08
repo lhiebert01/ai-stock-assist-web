@@ -278,7 +278,19 @@ export default function StockCard({ snapshot, recommendation, methodology, hideC
                   />
                   <MetricRow label="Free Cash Flow" value={humanMoney(cf.free_cash_flow)} />
                   <MetricRow label="Operating CF" value={humanMoney(cf.operating_cash_flow)} />
+                  {cf.capex != null && <MetricRow label="Capex" value={humanMoney(cf.capex)} />}
                   <MetricRow label="Net Income" value={humanMoney(cf.net_income)} />
+                  {/* Capex/FCF bridge (WO-ASA-002.9): shows WHY FCF is what it
+                      is — an investment cycle reads very differently from
+                      structural decline, and the framework's harshest signals
+                      deserve their explanation. */}
+                  {cf.operating_cash_flow != null && cf.capex != null && cf.free_cash_flow != null && cf.operating_cash_flow > 0 && (
+                    <p className="pt-2 text-[11px] leading-snug text-[var(--color-text-muted)]">
+                      Bridge: OCF {humanMoney(cf.operating_cash_flow)} − capex {humanMoney(cf.capex)} = FCF {humanMoney(cf.free_cash_flow)}
+                      {' '}· capex is {((cf.capex / cf.operating_cash_flow) * 100).toFixed(0)}% of OCF
+                      {cf.capex / cf.operating_cash_flow > 0.5 ? ' — a heavy investment cycle suppresses FCF' : ''}
+                    </p>
+                  )}
                 </div>
 
                 {/* Balance Sheet & Trading */}
