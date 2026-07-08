@@ -235,9 +235,20 @@ export default function StockAnalyzer({ userId, userProfile, onCreditsUsed, onNe
     if (e.key === 'Enter' && !loading) handleAnalyze();
   };
 
-  // Set the chosen resolution for one finding (panel row buttons).
-  const setFindingAction = (symbol: string, action: 'replace' | 'remove' | 'keep') => {
-    setFindings((prev) => prev.map((f) => (f.symbol === symbol ? { ...f, action } : f)));
+  // Row buttons act IMMEDIATELY (owner tweak): the input text and the row
+  // update on click — no second press needed for that symbol.
+  const applyFinding = (symbol: string, action: 'replace' | 'remove' | 'keep') => {
+    const f = findings.find((x) => x.symbol === symbol);
+    const replacement = action === 'replace' && f?.suggested ? f.suggested : action === 'keep' ? symbol : null;
+    setInput((prev) =>
+      prev
+        .split(/([\s,]+)/) // keep separators so the rest of the input is untouched
+        .map((tok) => (tok.toUpperCase() === symbol ? (replacement ?? '') : tok))
+        .join('')
+        .replace(/[\s,]{2,}/g, ' ')
+        .replace(/^[\s,]+|[\s,]+$/g, '')
+    );
+    setFindings((prev) => prev.filter((x) => x.symbol !== symbol));
   };
 
   // Apply every finding's chosen action, then run — ONE press total.
@@ -389,23 +400,23 @@ export default function StockAnalyzer({ userId, userProfile, onCreditsUsed, onNe
                 <div className="flex gap-1.5">
                   {f.status === 'ALIAS' && (
                     <button
-                      onClick={() => setFindingAction(f.symbol, 'replace')}
-                      className={`px-2.5 py-1 rounded-md font-bold transition-all ${f.action === 'replace' ? 'bg-[var(--color-accent)]/25 text-[var(--color-accent)]' : 'bg-[var(--color-surface-3)] text-[var(--color-text-secondary)] hover:text-white'}`}
+                      onClick={() => applyFinding(f.symbol, 'replace')}
+                      className="px-2.5 py-1 rounded-md font-bold bg-[var(--color-accent)]/15 text-[var(--color-accent)] hover:bg-[var(--color-accent)]/25 transition-all"
                     >
                       Use {f.suggested}
                     </button>
                   )}
                   {f.status === 'UNVERIFIABLE' && (
                     <button
-                      onClick={() => setFindingAction(f.symbol, 'keep')}
-                      className={`px-2.5 py-1 rounded-md font-bold transition-all ${f.action === 'keep' ? 'bg-[var(--color-accent)]/25 text-[var(--color-accent)]' : 'bg-[var(--color-surface-3)] text-[var(--color-text-secondary)] hover:text-white'}`}
+                      onClick={() => applyFinding(f.symbol, 'keep')}
+                      className="px-2.5 py-1 rounded-md font-bold bg-[var(--color-accent)]/15 text-[var(--color-accent)] hover:bg-[var(--color-accent)]/25 transition-all"
                     >
                       Keep anyway
                     </button>
                   )}
                   <button
-                    onClick={() => setFindingAction(f.symbol, 'remove')}
-                    className={`px-2.5 py-1 rounded-md font-bold transition-all ${f.action === 'remove' ? 'bg-red-500/20 text-red-400' : 'bg-[var(--color-surface-3)] text-[var(--color-text-secondary)] hover:text-white'}`}
+                    onClick={() => applyFinding(f.symbol, 'remove')}
+                    className="px-2.5 py-1 rounded-md font-bold bg-red-500/15 text-red-400 hover:bg-red-500/25 transition-all"
                   >
                     Remove
                   </button>
