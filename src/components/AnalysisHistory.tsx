@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { motion } from 'motion/react';
-import { History, Loader2, Search, Clock, BarChart3, ChevronRight, FileDown } from 'lucide-react';
+import { Loader2, Search, Clock, BarChart3, ChevronRight, Trash2 } from 'lucide-react';
 import { supabase } from '../supabase';
 import type { AppUser } from '../types/user';
 import type { FullHistoryEntry, Methodology } from '../types/stock';
@@ -9,25 +9,35 @@ import SavedAnalysisView from './SavedAnalysisView';
 
 interface AnalysisHistoryProps {
   user: AppUser;
+  /** Re-run a saved report's tickers at today's prices (spends credits). */
+  onReanalyze?: (tickers: string) => void;
 }
 
-export default function AnalysisHistory({ user }: AnalysisHistoryProps) {
+export default function AnalysisHistory({ user, onReanalyze }: AnalysisHistoryProps) {
   const [entries, setEntries] = useState<FullHistoryEntry[]>([]);
   const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState<string | null>(null);
   const [selectedEntry, setSelectedEntry] = useState<FullHistoryEntry | null>(null);
 
   useEffect(() => {
     async function load() {
       try {
-        const { data } = await supabase
+        const { data, error } = await supabase
           .from('analysis_history')
           .select('*')
           .eq('user_id', user.id)
           .order('created_at', { ascending: false })
           .limit(50);
+        // Supabase reports errors in the result — a silent failure here reads
+        // as "No analyses yet", which is worse than the truth.
+        if (error) {
+          console.error('[History] load failed:', error.message);
+          setLoadError('Couldn\'t load your history right now — please refresh to try again.');
+        }
         setEntries((data as FullHistoryEntry[]) || []);
-      } catch {
-        // ignore
+      } catch (err) {
+        console.error('[History] load exception:', err);
+        setLoadError('Couldn\'t load your history right now — please refresh to try again.');
       } finally {
         setLoading(false);
       }
@@ -35,12 +45,18 @@ export default function AnalysisHistory({ user }: AnalysisHistoryProps) {
     load();
   }, [user.id]);
 
+  const deleteEntry = async (id: string) => {
+    const { error } = await supabase.from('analysis_history').delete().eq('id', id).eq('user_id', user.id);
+    if (!error) setEntries((prev) => prev.filter((e) => e.id !== id));
+  };
+
   // Show saved analysis detail view
   if (selectedEntry) {
     return (
       <SavedAnalysisView
         entry={selectedEntry}
         onBack={() => setSelectedEntry(null)}
+        onReanalyze={onReanalyze}
       />
     );
   }
@@ -65,6 +81,12 @@ export default function AnalysisHistory({ user }: AnalysisHistoryProps) {
           Click any analysis to view full results
         </p>
       </div>
+
+      {loadError && (
+        <div className="max-w-xl mx-auto mb-6 px-4 py-3 bg-red-500/10 border border-red-500/20 rounded-xl text-red-400 text-sm text-center">
+          {loadError}
+        </div>
+      )}
 
       {entries.length === 0 ? (
         <div className="text-center py-16">
@@ -126,6 +148,13 @@ export default function AnalysisHistory({ user }: AnalysisHistoryProps) {
                       <Clock className="w-3.5 h-3.5" />
                       {new Date(entry.created_at).toLocaleDateString()}
                     </div>
+                    <button
+                      onClick={(e) => { e.stopPropagation(); deleteEntry(entry.id); }}
+                      className="p-1.5 rounded-lg text-[var(--color-text-muted)] hover:text-red-400 hover:bg-red-500/10 transition-all"
+                      title="Delete this analysis"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
                     <ChevronRight className="w-4 h-4 text-[var(--color-text-muted)] group-hover:text-[var(--color-accent)] transition-colors" />
                   </div>
                 </div>

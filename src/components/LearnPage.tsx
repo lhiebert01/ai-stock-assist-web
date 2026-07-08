@@ -151,7 +151,7 @@ function FeatureCard({ article }: { article: typeof startHere }) {
 }
 
 export default function LearnPage({ userProfile, onNavigateMetrics }: LearnPageProps) {
-  const hasPaidAccess = (userProfile?.credits_remaining ?? 0) > 0;
+  void userProfile; // no longer gates anything — kept for prop compatibility
   return (
     <div className="relative max-w-6xl mx-auto px-4 sm:px-6 py-8">
       <div className="fixed inset-0 -z-10 pointer-events-none">
@@ -192,8 +192,10 @@ export default function LearnPage({ userProfile, onNavigateMetrics }: LearnPageP
         </div>
       </motion.div>
 
-      {/* Premium Metrics Guide CTA */}
-      {hasPaidAccess && onNavigateMetrics && (
+      {/* Metrics Guide CTA — public education content. Gating this on
+          credits_remaining > 0 locked out paying users who had spent their
+          last credit, and hid SEO-worthy content from visitors. */}
+      {onNavigateMetrics && (
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}

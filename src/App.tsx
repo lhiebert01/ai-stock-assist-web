@@ -8,6 +8,7 @@ import MarketingLanding from './components/MarketingLanding';
 import Auth from './components/Auth';
 import StockAnalyzer from './components/StockAnalyzer';
 import StockDiscovery from './components/StockDiscovery';
+import WatchlistPage from './components/WatchlistPage';
 import AnalysisHistory from './components/AnalysisHistory';
 import Payments from './components/Payments';
 import AdminDashboard from './components/AdminDashboard';
@@ -19,7 +20,7 @@ import SetNewPassword from './components/SetNewPassword';
 import Footer from './components/Footer';
 import { healthCheck } from './services/stockApi';
 
-type View = 'landing' | 'analyzer' | 'discovery' | 'history' | 'payments' | 'admin' | 'auth' | 'learn' | 'metrics' | 'privacy' | 'terms' | 'reset-password';
+type View = 'landing' | 'analyzer' | 'discovery' | 'watchlist' | 'history' | 'payments' | 'admin' | 'auth' | 'learn' | 'metrics' | 'privacy' | 'terms' | 'reset-password';
 
 export default function App() {
   const [user, setUser] = useState<AppUser | null>(null);
@@ -133,7 +134,19 @@ export default function App() {
     if (user) await loadProfile(user);
   };
 
-  const deductCredits = async (count: number = 1) => {
+  const deductCredits = async (count: number = 1, serverRemaining: number | null = null) => {
+    // When the backend enforced credits itself (serverRemaining != null), the
+    // DB is already updated — just sync local state. The client-side write
+    // below is the legacy fallback for when server enforcement is off.
+    if (serverRemaining != null) {
+      console.log('[Credits] Server-enforced charge — remaining:', serverRemaining);
+      setUserProfile(prev => prev ? {
+        ...prev,
+        credits_remaining: serverRemaining,
+        analyses_total_lifetime: (prev.analyses_total_lifetime || 0) + count,
+      } : null);
+      return;
+    }
     try {
       if (!user || !userProfile) {
         console.warn('[Credits] Cannot deduct — missing user or profile', { user: !!user, profile: !!userProfile });
@@ -255,8 +268,12 @@ export default function App() {
           <StockDiscovery onAnalyze={handleDiscoveryAnalyze} />
         )}
 
+        {view === 'watchlist' && user && (
+          <WatchlistPage onAnalyze={handleDiscoveryAnalyze} />
+        )}
+
         {view === 'history' && user && (
-          <AnalysisHistory user={user} />
+          <AnalysisHistory user={user} onReanalyze={handleDiscoveryAnalyze} />
         )}
 
         {view === 'payments' && (
@@ -279,7 +296,9 @@ export default function App() {
           />
         )}
 
-        {view === 'metrics' && user && (
+        {/* Metrics Guide is public education content — no auth gate, so the
+            ?view=metrics deep link works for logged-out visitors too. */}
+        {view === 'metrics' && (
           <MetricsGuide onBack={() => navigateTo('learn')} />
         )}
 

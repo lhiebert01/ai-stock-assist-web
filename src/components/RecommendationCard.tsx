@@ -103,6 +103,23 @@ export default function RecommendationCard({ recommendation, methodology }: Reco
       ">
         <ReactMarkdown remarkPlugins={[remarkGfm]}>{text}</ReactMarkdown>
       </div>
+
+      {/* What would change this verdict — deterministic triggers computed from
+          the published thresholds (never by the LLM). HOLD/SELL only. */}
+      {recommendation.watch_conditions && recommendation.watch_conditions.length > 0 && (
+        <div className="px-6 pb-5">
+          <div className="rounded-xl bg-white/[0.03] border border-[var(--color-border)]/50 p-4">
+            <h5 className="text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)] mb-2">
+              What would change this verdict
+            </h5>
+            <div className="space-y-1 text-xs leading-relaxed text-[var(--color-text-secondary)]">
+              {recommendation.watch_conditions.map((c, i) => (
+                <p key={i} className={i === 0 ? 'font-medium text-[var(--color-text-primary)]' : ''}>{c}</p>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
     </motion.div>
   );
 }

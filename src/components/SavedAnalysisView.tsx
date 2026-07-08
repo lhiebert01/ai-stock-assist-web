@@ -1,23 +1,27 @@
 import { useRef } from 'react';
 import { motion } from 'motion/react';
-import { ArrowLeft, Calendar, Info } from 'lucide-react';
+import { ArrowLeft, Info, RefreshCw } from 'lucide-react';
 import type { FullHistoryEntry, Methodology } from '../types/stock';
 import ExecutiveSummary from './ExecutiveSummary';
 import StockCard from './StockCard';
 import ComparisonTable from './ComparisonTable';
 import ReportActions from './ReportActions';
+import BottomLine from './BottomLine';
 
 interface SavedAnalysisViewProps {
   entry: FullHistoryEntry;
   onBack: () => void;
+  /** Re-run these tickers at today's prices (spends credits). */
+  onReanalyze?: (tickers: string) => void;
 }
 
-export default function SavedAnalysisView({ entry, onBack }: SavedAnalysisViewProps) {
+export default function SavedAnalysisView({ entry, onBack, onReanalyze }: SavedAnalysisViewProps) {
   const resultsRef = useRef<HTMLDivElement>(null);
   const methodology = entry.methodology as Methodology;
   const snapshots = entry.snapshots || [];
   const recommendations = entry.recommendation || {};
   const comparativeAnalysis = entry.comparative_analysis || null;
+  const tickers = Array.isArray(entry.tickers) ? entry.tickers : [entry.tickers];
 
   const dateStr = new Date(entry.created_at).toLocaleDateString('en-US', {
     weekday: 'short',
@@ -49,6 +53,16 @@ export default function SavedAnalysisView({ entry, onBack }: SavedAnalysisViewPr
         <span>
           Saved analysis from <strong>{dateStr}</strong> — prices and data reflect that point in time.
         </span>
+        {onReanalyze && (
+          <button
+            onClick={() => onReanalyze(tickers.join(' '))}
+            className="no-print ml-auto shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[var(--color-accent)]/15 text-[var(--color-accent)] text-xs font-bold hover:bg-[var(--color-accent)]/25 transition-all"
+            title={`Run a fresh analysis of ${tickers.join(', ')} (uses ${tickers.length} credit${tickers.length > 1 ? 's' : ''})`}
+          >
+            <RefreshCw className="w-3.5 h-3.5" />
+            Re-analyze at today's prices
+          </button>
+        )}
       </motion.div>
 
       {/* Report actions */}
@@ -56,11 +70,15 @@ export default function SavedAnalysisView({ entry, onBack }: SavedAnalysisViewPr
         snapshots={snapshots}
         methodology={methodology}
         comparativeAnalysis={comparativeAnalysis}
+        plainSummary={entry.plain_summary}
         resultsRef={resultsRef}
       />
 
       {/* Results content — captured for PDF export */}
       <div ref={resultsRef}>
+        {/* Bottom Line (saved with the report from Jul 2026 on; self-hides when absent) */}
+        <BottomLine summary={entry.plain_summary ?? null} />
+
         {/* Executive Summary */}
         <ExecutiveSummary
           snapshots={snapshots}

@@ -94,6 +94,26 @@ export interface AIRecommendation {
   text: string;
   has_recommendation: boolean;
   not_rated_reason?: string;
+  /** Deterministic "what would change this verdict" triggers (HOLD/SELL only). */
+  watch_conditions?: string[];
+}
+
+/** Server-side credit accounting attached to /api/analyze responses.
+ * enforced=false means the backend lacks Supabase credentials and the
+ * legacy client-side deduction flow applies. */
+export interface CreditsInfo {
+  enforced: boolean;
+  charged: number;
+  remaining: number | null;
+}
+
+export interface WatchlistEntry {
+  id: string;
+  ticker: string;
+  note: string | null;
+  last_price: number | null;
+  last_rating: string | null;
+  added_at: string;
 }
 
 export interface AnalyzeError {
@@ -145,6 +165,9 @@ export interface FullHistoryEntry {
   snapshots: StockSnapshot[];
   recommendation: Record<string, AIRecommendation>;
   comparative_analysis: string | null;
+  /** Bottom Line plain-English summary — optional: rows saved before Jul 2026
+   * (or before the column migration runs) don't have it. */
+  plain_summary?: string | null;
   created_at: string;
 }
 

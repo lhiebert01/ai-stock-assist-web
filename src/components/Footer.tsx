@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { TrendingUp, Heart, ExternalLink, Mail } from 'lucide-react';
 
-type View = 'landing' | 'analyzer' | 'discovery' | 'history' | 'payments' | 'admin' | 'auth' | 'learn' | 'metrics' | 'privacy' | 'terms' | 'reset-password';
+type View = 'landing' | 'analyzer' | 'discovery' | 'watchlist' | 'history' | 'payments' | 'admin' | 'auth' | 'learn' | 'metrics' | 'privacy' | 'terms' | 'reset-password';
 
 interface FooterProps {
   onNavigate: (view: View) => void;

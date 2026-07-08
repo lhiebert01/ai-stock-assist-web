@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import {
   TrendingUp, TrendingDown, Globe, Building2, Factory,
   DollarSign, BarChart3, Activity, ChevronDown, ChevronUp,
-  ExternalLink, AlertTriangle,
+  ExternalLink, AlertTriangle, Bookmark,
 } from 'lucide-react';
 import type { StockSnapshot, AIRecommendation, Methodology } from '../types/stock';
 import { formatPrice, humanMoney, pctFmt, changeColor, ratingColor, isFiniteNum } from '../lib/formatters';
@@ -16,6 +16,9 @@ interface StockCardProps {
   recommendation?: AIRecommendation;
   methodology: Methodology;
   hideChart?: boolean;
+  /** Watchlist wiring — omitted (undefined) when watchlists aren't available. */
+  watched?: boolean;
+  onWatchToggle?: () => void;
 }
 
 function ratingAccentBorder(rating: string | undefined): string {
@@ -40,7 +43,7 @@ function MetricRow({ label, value, sub }: { label: string; value: string; sub?: 
   );
 }
 
-export default function StockCard({ snapshot, recommendation, methodology, hideChart }: StockCardProps) {
+export default function StockCard({ snapshot, recommendation, methodology, hideChart, watched, onWatchToggle }: StockCardProps) {
   const [expanded, setExpanded] = useState(true);
   const s = snapshot;
   // Guard against non-finite P/E that can arrive as the string "Infinity" (crashes .toFixed)
@@ -82,6 +85,19 @@ export default function StockCard({ snapshot, recommendation, methodology, hideC
         </div>
 
         <div className="flex items-center gap-6">
+          {onWatchToggle && (
+            <button
+              onClick={(e) => { e.stopPropagation(); onWatchToggle(); }}
+              className={`p-2 rounded-lg transition-all ${
+                watched
+                  ? 'text-[var(--color-accent)] bg-[var(--color-accent)]/10'
+                  : 'text-[var(--color-text-muted)] hover:text-[var(--color-accent)] hover:bg-[var(--color-accent)]/10'
+              }`}
+              title={watched ? `Remove ${s.ticker} from watchlist` : `Add ${s.ticker} to watchlist`}
+            >
+              <Bookmark className={`w-4 h-4 ${watched ? 'fill-current' : ''}`} />
+            </button>
+          )}
           <div className="text-right hidden sm:block">
             <div className="text-xl font-bold font-mono">{formatPrice(s.price)}</div>
             <div className={`text-sm font-medium ${changeColor(ch.daily_pct)}`}>

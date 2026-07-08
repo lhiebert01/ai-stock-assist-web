@@ -1,10 +1,11 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { motion } from 'motion/react';
 import { Search, Loader2, BarChart3, BookOpen, Sparkles, X, AlertCircle, HelpCircle } from 'lucide-react';
 import type { StockSnapshot, AIRecommendation, Methodology } from '../types/stock';
 import type { UserProfile } from '../types/user';
 import { analyzeStocks, getRecommendation, getComparativeAnalysis, friendlyErrorMessage } from '../services/stockApi';
 import { SEGMENT_ALIASES } from '../lib/symbols';
+import { listWatchlist, addToWatchlist, removeFromWatchlist } from '../services/watchlistApi';
 import { supabase } from '../supabase';
 import StockCard from './StockCard';
 import ComparisonTable from './ComparisonTable';
@@ -16,7 +17,8 @@ import ReportActions from './ReportActions';
 interface StockAnalyzerProps {
   userId: string;
   userProfile: UserProfile | null;
-  onCreditsUsed: (count: number) => void;
+  /** serverRemaining is set when the backend enforced/charged credits itself. */
+  onCreditsUsed: (count: number, serverRemaining?: number | null) => void;
   onNeedCredits: () => void;
   initialTickers?: string;
 }
@@ -31,11 +33,34 @@ export default function StockAnalyzer({ userId, userProfile, onCreditsUsed, onNe
   const [comparativeAnalysis, setComparativeAnalysis] = useState<string | null>(null);
   const [plainSummary, setPlainSummary] = useState<string | null>(null);
   const [errors, setErrors] = useState<string[]>([]);
+  // Amber, non-blocking notices (history-save trouble, low-credit nudge)
+  const [notices, setNotices] = useState<string[]>([]);
   // Segment/brand names awaiting user confirmation (WO-ASA-001.2):
   // "AWS is a segment of Amazon.com (AMZN). Analyze AMZN instead?"
   const [aliasPrompts, setAliasPrompts] = useState<{ from: string; to: string; note: string }[]>([]);
   const [glossaryOpen, setGlossaryOpen] = useState(false);
+  // Watchlist state — undefined until loaded; null when the table isn't live yet
+  const [watched, setWatched] = useState<Set<string> | null>(null);
   const resultsRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    (async () => {
+      const result = await listWatchlist();
+      setWatched(result.unavailable ? null : new Set(result.entries.map((e) => e.ticker)));
+    })();
+  }, []);
+
+  const toggleWatch = async (ticker: string) => {
+    if (watched == null) return;
+    if (watched.has(ticker)) {
+      const { ok } = await removeFromWatchlist(ticker);
+      if (ok) setWatched((prev) => { const n = new Set(prev); n.delete(ticker); return n; });
+    } else {
+      const snap = snapshots.find((s) => s.ticker === ticker);
+      const { ok } = await addToWatchlist(userId, ticker, snap?.price ?? null, recommendations[ticker]?.rating ?? null);
+      if (ok) setWatched((prev) => new Set(prev).add(ticker));
+    }
+  };
 
   const credits = userProfile?.credits_remaining ?? 0;
 
@@ -76,6 +101,7 @@ export default function StockAnalyzer({ userId, userProfile, onCreditsUsed, onNe
 
     setLoading(true);
     setErrors([]);
+    setNotices([]);
     setSnapshots([]);
     setRecommendations({});
     setComparativeAnalysis(null);
@@ -101,12 +127,14 @@ export default function StockAnalyzer({ userId, userProfile, onCreditsUsed, onNe
 
       // Step 2: Comparative analysis (if 2+ stocks)
       let comparativeText: string | null = null; // kept ONLY for the history save
+      let plainSummaryText: string | null = null;
       if (result.snapshots.length >= 2) {
         setLoadingStep('Generating comparative analysis...');
         const comp = await getComparativeAnalysis(result.snapshots);
         setComparativeAnalysis(comp.analysis);
         setPlainSummary(comp.plain_summary || null);
         comparativeText = comp.analysis; // NOT passed to per-stock recs — decouple stays intact
+        plainSummaryText = comp.plain_summary || null;
       }
 
       // Step 3: Individual recommendations
@@ -125,22 +153,55 @@ export default function StockAnalyzer({ userId, userProfile, onCreditsUsed, onNe
         }
       }
 
-      onCreditsUsed(result.snapshots.length);
+      // Sync credits — server-enforced charge wins over the legacy client write
+      const serverRemaining = result.credits?.enforced ? result.credits.remaining : null;
+      onCreditsUsed(result.snapshots.length, serverRemaining);
 
-      // Save to analysis history
+      // Low-credit nudge: warn BEFORE the user hits the 0-credit wall
+      const remainingNow = serverRemaining ?? Math.max(0, credits - result.snapshots.length);
+      if (remainingNow <= 2) {
+        setNotices((prev) => [...prev,
+          remainingNow === 0
+            ? 'That was your last credit — top up to keep analyzing.'
+            : `Heads up: ${remainingNow} analysis credit${remainingNow === 1 ? '' : 's'} left.`,
+        ]);
+      }
+
+      // Save to analysis history. Supabase returns errors rather than throwing,
+      // so CHECK the result — a silent failure here once hid a broken History
+      // save for 5 days. plain_summary is retried without in case the column
+      // migration hasn't run yet.
+      const baseRow = {
+        user_id: userId,
+        tickers: result.snapshots.map((s) => s.ticker),
+        methodology,
+        snapshots: result.snapshots,
+        recommendation: recs,
+        comparative_analysis: comparativeText,
+      };
+      let saveError: string | null = null;
       try {
-        await supabase.from('analysis_history').insert({
-          user_id: userId,
-          tickers: result.snapshots.map((s) => s.ticker),
-          methodology,
-          snapshots: result.snapshots,
-          recommendation: recs,
-          comparative_analysis: comparativeText,
-        });
+        const { error } = await supabase.from('analysis_history').insert({ ...baseRow, plain_summary: plainSummaryText });
+        if (error) {
+          const retry = await supabase.from('analysis_history').insert(baseRow);
+          saveError = retry.error ? retry.error.message : null;
+        }
       } catch (histErr) {
-        console.warn('[History] Failed to save:', histErr);
+        saveError = (histErr as Error)?.message || 'unknown error';
+      }
+      if (saveError) {
+        console.error('[History] Failed to save:', saveError);
+        setNotices((prev) => [...prev,
+          'Your analysis is complete, but saving it to History failed — this report won\'t appear in your History list.',
+        ]);
       }
     } catch (err) {
+      // 402 = server-side credit gate — send the user to the credits page
+      if ((err as { status?: number })?.status === 402) {
+        setErrors([(err as Error).message.replace('INSUFFICIENT_CREDITS: ', '')]);
+        onNeedCredits();
+        return;
+      }
       setErrors([friendlyErrorMessage(err, 'Analysis failed', tickers)]);
     } finally {
       setLoading(false);
@@ -306,6 +367,24 @@ export default function StockAnalyzer({ userId, userProfile, onCreditsUsed, onNe
         </div>
       )}
 
+      {/* Notices (non-blocking) */}
+      {notices.length > 0 && !loading && (
+        <div className="max-w-3xl mx-auto mb-6">
+          {notices.map((n, i) => (
+            <div
+              key={i}
+              className="flex items-center gap-2 px-4 py-3 mb-2 bg-amber-500/10 border border-amber-500/20 rounded-xl text-amber-300 text-sm"
+            >
+              <AlertCircle className="w-4 h-4 shrink-0" />
+              {n}
+              <button onClick={() => setNotices((p) => p.filter((_, j) => j !== i))} className="ml-auto">
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+          ))}
+        </div>
+      )}
+
       {/* Report Actions */}
       {!loading && snapshots.length > 0 && (
         <ReportActions
@@ -356,6 +435,8 @@ export default function StockAnalyzer({ userId, userProfile, onCreditsUsed, onNe
                   snapshot={snap}
                   recommendation={recommendations[snap.ticker]}
                   methodology={methodology}
+                  watched={watched?.has(snap.ticker)}
+                  onWatchToggle={watched != null ? () => toggleWatch(snap.ticker) : undefined}
                 />
               </motion.div>
             ))}

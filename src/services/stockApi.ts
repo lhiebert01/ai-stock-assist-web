@@ -1,5 +1,5 @@
 import { supabase } from '../supabase';
-import type { StockSnapshot, AIRecommendation, AnalyzeError, ChartData, DiscoveredStock, Methodology } from '../types/stock';
+import type { StockSnapshot, AIRecommendation, AnalyzeError, ChartData, CreditsInfo, DiscoveredStock, Methodology } from '../types/stock';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
@@ -44,7 +44,9 @@ async function apiPost<T>(path: string, body: unknown): Promise<T> {
   });
   if (!res.ok) {
     const err = await res.json().catch(() => ({ detail: res.statusText }));
-    throw new Error(err.detail || `API error ${res.status}`);
+    const e = new Error(err.detail || `API error ${res.status}`) as Error & { status?: number };
+    e.status = res.status; // callers branch on 402 (insufficient credits)
+    throw e;
   }
   return res.json();
 }
@@ -54,7 +56,7 @@ export async function analyzeStocks(
   tickers: string[],
   methodology: Methodology,
   useMtd = false
-): Promise<{ snapshots: StockSnapshot[]; errors: AnalyzeError[] }> {
+): Promise<{ snapshots: StockSnapshot[]; errors: AnalyzeError[]; credits?: CreditsInfo }> {
   return apiPost('/api/analyze', { tickers, methodology, use_mtd: useMtd });
 }
 

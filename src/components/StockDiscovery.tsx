@@ -32,12 +32,12 @@ export default function StockDiscovery({ onAnalyze }: StockDiscoveryProps) {
     if (activeCategory === categoryId) {
       setActiveCategory(null);
       setStocks([]);
-      setSelected(new Set());
       return;
     }
 
+    // Selection survives category switches so users can build a comparison
+    // basket across categories (e.g. 2 value picks + 2 tech-growth picks).
     setActiveCategory(categoryId);
-    setSelected(new Set());
     setLoading(true);
 
     try {
@@ -119,14 +119,14 @@ export default function StockDiscovery({ onAnalyze }: StockDiscoveryProps) {
                 <div className="bg-[var(--color-surface-1)] border border-[var(--color-accent)]/30 rounded-xl p-3 flex items-center justify-between backdrop-blur-xl">
                   <span className="text-sm text-[var(--color-text-secondary)]">
                     {selected.size} stock{selected.size > 1 ? 's' : ''} selected
-                    <span className="text-xs text-[var(--color-text-muted)] ml-1">(10 max)</span>
+                    <span className="text-xs text-[var(--color-text-muted)] ml-1">(10 max — selection is kept across categories)</span>
                   </span>
                   <button
                     onClick={() => onAnalyze(Array.from(selected).join(' '))}
                     className="flex items-center gap-2 px-5 py-2.5 bg-[var(--color-accent)] text-[var(--color-surface-0)] rounded-lg font-bold hover:brightness-110 transition-all"
                   >
                     <BarChart3 className="w-4 h-4" />
-                    Analyze Selected
+                    Analyze Selected ({selected.size} credit{selected.size > 1 ? 's' : ''})
                   </button>
                 </div>
               </div>
