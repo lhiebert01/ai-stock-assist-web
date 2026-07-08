@@ -48,7 +48,7 @@ end $$ language plpgsql;
 drop trigger if exists score_log_no_mutation on public.score_log;
 create trigger score_log_no_mutation
   before update or delete on public.score_log
-  for each row execute function public.score_log_immutable();
+  for each statement execute function public.score_log_immutable();
 
 -- VERIFICATION TEST (provenance rule 5) — run after creating; BOTH must ERROR:
 --   update public.score_log set scoring_version = 'x' where false or true;
