@@ -1,4 +1,5 @@
 import { motion } from 'motion/react';
+import { METRICS, SECTIONS, CHECKLIST, DEFINITIONS_VERSION } from '../lib/metricsDictionary';
 import { ArrowLeft, BookOpen, ChevronDown, CheckCircle2, AlertTriangle, TrendingUp, Shield } from 'lucide-react';
 
 interface MetricsGuideProps {
@@ -189,222 +190,32 @@ export default function MetricsGuide({ onBack }: MetricsGuideProps) {
         </div>
       </section>
 
-      {/* ── Section 1: Price & Valuation ── */}
-      <section id="price-and-valuation" className="mb-16">
-        <h2 className="text-xl font-bold mb-6 flex items-center gap-2">
-          <span className="text-lg">1️⃣</span> Price & Valuation Metrics
-        </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <MetricCard
-            name="P/E Ratio (Price-to-Earnings)"
-            formula="Stock Price / Earnings Per Share"
-            benchmarks={[
-              { color: 'green', text: '< 15 Excellent' },
-              { color: 'yellow', text: '15–25 Fair' },
-              { color: 'red', text: '> 35 Expensive' },
-            ]}
-            interpretation="How much you pay per dollar of earnings. Lower = cheaper. S&P 500 average is ~20-22. Tech/growth companies normally trade at 25-40+."
-            proTip="Compare to industry average AND the company's own historical P/E, not just absolute numbers."
-          />
-          <MetricCard
-            name="P/B Ratio (Price-to-Book)"
-            formula="Market Cap / Shareholders' Equity"
-            benchmarks={[
-              { color: 'green', text: '< 1.5 Bargain' },
-              { color: 'yellow', text: '1.5–5.0 Fair' },
-              { color: 'red', text: '> 10 Very Expensive' },
-            ]}
-            interpretation="Compares stock price to the company's actual net asset value. Below 1.0 means you're buying assets for less than they're worth on paper. Warren Buffett looks for P/B < 1.5."
-            proTip="P/B < 0.5 may indicate bankruptcy risk, not a bargain. Always check WHY it's cheap."
-          />
-          <MetricCard
-            name="P/FCF Ratio (Price-to-Free Cash Flow)"
-            formula="Market Cap / Free Cash Flow"
-            benchmarks={[
-              { color: 'green', text: '< 15 Excellent' },
-              { color: 'yellow', text: '15–25 Good' },
-              { color: 'red', text: '> 35 Expensive' },
-            ]}
-            interpretation="How much you pay per dollar of real cash. More reliable than P/E because cash can't be manipulated like accounting earnings. Warren Buffett's preferred metric. Our framework's own line is stricter than the general guidance above: under 20x counts as 'cheap' for scoring, and 5% FCF yield is the 'strong' target. See How Verdicts Are Scored."
-            proTip="If P/FCF is much higher than P/E, that's an accounting red flag — earnings may be inflated."
-          />
-          <MetricCard
-            name="Market Capitalization"
-            formula="Current Price x Shares Outstanding"
-            benchmarks={[
-              { color: 'green', text: 'Mega >$200B' },
-              { color: 'yellow', text: 'Mid $2B–$10B' },
-              { color: 'red', text: 'Micro <$300M' },
-            ]}
-            interpretation="Total value of all shares. Mega/Large = more stable. Small/Micro = more growth potential but riskier. Large Cap: $10B-$200B. Small Cap: $300M-$2B."
-          />
-          <MetricCard
-            name="52-Week High / Low"
-            benchmarks={[
-              { color: 'green', text: 'Near low = potential value' },
-              { color: 'yellow', text: 'Mid-range' },
-              { color: 'red', text: 'Near high = expensive?' },
-            ]}
-            interpretation="Highest and lowest price in the past year. Shows volatility and where the stock sits in its range. Calculate: (Current - Low) / (High - Low) x 100 to get range position."
-            proTip="New 52-week lows may indicate real problems, not just a bargain. Always investigate why."
-          />
-          <MetricCard
-            name="Dividend Yield"
-            formula="Annual Dividend / Current Price x 100"
-            benchmarks={[
-              { color: 'green', text: '> 2% Good income' },
-              { color: 'yellow', text: '1–2% Modest' },
-              { color: 'red', text: '> 8% Possibly unsustainable' },
-            ]}
-            interpretation="Cash returned to shareholders yearly as a percentage of price. Utilities/REITs typically pay 3-6%. Tech companies often pay 0-2%, preferring stock buybacks."
-            proTip="High yield + declining stock price often signals a coming dividend cut. Check if FCF covers the dividend."
-          />
-          <MetricCard
-            name="Payout Ratio"
-            formula="Annual Dividends / Net Income x 100"
-            benchmarks={[
-              { color: 'green', text: '< 60% Sustainable' },
-              { color: 'yellow', text: '60–100% Watch carefully' },
-              { color: 'red', text: '> 100% Borrowing to pay' },
-            ]}
-            interpretation="What share of profit a company pays out as dividends. Below 60% = plenty of room to keep paying and grow. Above 100% = paying out more than they earn (borrowing the difference) — a dividend cut is usually coming. The single best 'is this dividend safe?' check."
-            proTip="Pair with Dividend Yield. A high yield + high payout ratio is the classic 'yield trap' (think 12% yield with 162% payout — unsustainable). A modest 3% yield with 44% payout is what J&J pays — and what compounds for decades."
-          />
-        </div>
-        <FrameworkChip>P/FCF under 20x counts toward the score. P/E and P/B are context, not score inputs.</FrameworkChip>
-      </section>
-
-      {/* ── Section 2: Cash Flow ── */}
-      <section id="cash-flow" className="mb-16">
-        <h2 className="text-xl font-bold mb-6 flex items-center gap-2">
-          <span className="text-lg">2️⃣</span> Cash Flow Metrics
-        </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <MetricCard
-            name="Free Cash Flow (FCF)"
-            formula="Operating Cash Flow - Capital Expenditures"
-            benchmarks={[
-              { color: 'green', text: 'Positive & growing' },
-              { color: 'red', text: 'Negative or declining' },
-            ]}
-            interpretation="The cash left after running the business. The truest measure of profitability. This is the cash available to pay dividends, buy back stock, pay down debt, or fund growth without borrowing."
-            proTip="Negative FCF is OK for early-stage growth companies investing heavily. For mature companies, it's a red flag. Right now, watch Capex/OCF for big tech: many are spending half or more of their operating cash on AI infrastructure. That suppresses free cash flow without meaning the business is declining — judge which it is before reacting."
-          />
-          <MetricCard
-            name="FCF Yield"
-            formula="(Free Cash Flow / Market Cap) x 100"
-            benchmarks={[
-              { color: 'green', text: '> 5% Very good' },
-              { color: 'yellow', text: '3–5% Good' },
-              { color: 'red', text: '< 0% Burning cash' },
-            ]}
-            interpretation="Cash return on the stock price. A 6% FCF Yield means you're getting 6% of your investment back in cash each year. Compare to the current 10-year Treasury yield — if FCF Yield > 5%, the stock may be undervalued."
-            proTip="> 8% FCF Yield is excellent — better than most bonds! This is what value investors hunt for."
-          />
-          <MetricCard
-            name="Operating Cash Flow (OCF)"
-            benchmarks={[
-              { color: 'green', text: 'Positive & growing' },
-              { color: 'red', text: 'Negative' },
-            ]}
-            interpretation="Cash generated from core business operations, before capital spending. Should be positive and ideally larger than Net Income (this is the quality check). Consistent growth = healthy business model."
-          />
-          <MetricCard
-            name="OCF/Net Income Ratio"
-            formula="Operating Cash Flow / Net Income"
-            benchmarks={[
-              { color: 'green', text: '> 1.0 Quality earnings' },
-              { color: 'yellow', text: '0.8–1.0 Caution' },
-              { color: 'red', text: '< 0.8 RED FLAG' },
-            ]}
-            interpretation="THE critical red flag check. Cash cannot be faked, but earnings can be manipulated. Below 1.0 means the company is reporting profits it's NOT collecting in cash. Enron and WorldCom both had OCF/NI < 1.0 before their collapse."
-            proTip="This metric is non-negotiable. If consistently < 1.0, investigate: aggressive revenue recognition? Customers not paying? Potential fraud?"
-          />
-        </div>
-        <FrameworkChip>FCF yield ≥ 5% and OCF/NI ≥ 1.0 — two of the six points live here. Cash is the heart of this framework.</FrameworkChip>
-      </section>
-
-      {/* ── Section 3: Profitability ── */}
-      <section id="profitability" className="mb-16">
-        <h2 className="text-xl font-bold mb-6 flex items-center gap-2">
-          <span className="text-lg">3️⃣</span> Profitability & Efficiency
-        </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <MetricCard
-            name="Return on Equity (ROE)"
-            formula="Net Income / Shareholders' Equity"
-            benchmarks={[
-              { color: 'green', text: '> 15% Good' },
-              { color: 'yellow', text: '10–15% Average' },
-              { color: 'red', text: '< 10% Poor' },
-            ]}
-            interpretation="How efficiently the company uses shareholder money to generate profit. Above 20% is best-in-class. Tech companies typically 15-30%, banks 10-15%, utilities 8-12%."
-            proTip="Warren Buffett's rule: Look for ROE > 15% consistently over multiple years, not just one good quarter. One more rule: very high ROE (50%+) is usually a leverage artifact, not a talent signal. Debt shrinks the equity denominator and inflates the ratio. Check Debt/Equity next — and prefer ROIC, which can't be flattered by borrowing."
-          />
-          <MetricCard
-            name="Profit Margin"
-            formula="(Net Income / Revenue) x 100"
-            benchmarks={[
-              { color: 'green', text: '> 10% Pricing power' },
-              { color: 'yellow', text: '5–10% Fair' },
-              { color: 'red', text: '< 5% Thin margins' },
-            ]}
-            interpretation="How much of each revenue dollar becomes profit. Higher margins = pricing power and operational efficiency. Software/Tech: 15-30% typical. Retail: 2-5%. Above 20% is excellent."
-          />
-        </div>
-        <FrameworkChip>ROE &gt; 15% and profit margin &gt; 10%. High ROE next to high debt gets flagged, not celebrated.</FrameworkChip>
-      </section>
-
-      {/* ── Section 4: Balance Sheet ── */}
-      <section id="balance-sheet" className="mb-16">
-        <h2 className="text-xl font-bold mb-6 flex items-center gap-2">
-          <span className="text-lg">4️⃣</span> Balance Sheet Health
-        </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <MetricCard
-            name="Balance Sheet Health Score (0-100)"
-            benchmarks={[
-              { color: 'green', text: '80-100 (A) Excellent' },
-              { color: 'yellow', text: '50-69 (C+/B) Fair' },
-              { color: 'red', text: '< 40 (D) Weak' },
-            ]}
-            interpretation="Our composite score based on Debt/Equity (35 pts), Current Ratio (35 pts), and Quick Ratio (30 pts). Quick way to assess financial stability and bankruptcy risk."
-          />
-          <MetricCard
-            name="Debt-to-Equity Ratio"
-            formula="Total Debt / Total Equity"
-            benchmarks={[
-              { color: 'green', text: '< 0.5 Low debt' },
-              { color: 'yellow', text: '0.5–1.0 Moderate' },
-              { color: 'red', text: '> 2.0 High risk' },
-            ]}
-            interpretation="How leveraged the company is. Lower = safer. Software/Tech: 0.0-0.5 typical. Utilities/REITs: 1.0-2.0 typical (capital intensive). Rising debt + falling revenue = danger."
-            proTip="Note: some analysis cards currently display D/E as a percentage — 623.75 there means 6.24x here. A display update to one convention is in progress."
-            /* <!-- REMOVE-WHEN: WO-ASA-002.5 --> the proTip above is temporary until the D/E convention ships */
-          />
-          <MetricCard
-            name="Current Ratio"
-            formula="Current Assets / Current Liabilities"
-            benchmarks={[
-              { color: 'green', text: '> 2.0 Strong' },
-              { color: 'yellow', text: '1.5–2.0 Good' },
-              { color: 'red', text: '< 1.0 Risky' },
-            ]}
-            interpretation="Can the company pay its short-term bills? Above 2 means they have $2 in assets for every $1 of short-term debt. Below 1.0 for extended periods = liquidity crisis risk."
-          />
-          <MetricCard
-            name="Quick Ratio (Acid Test)"
-            formula="(Current Assets - Inventory) / Current Liabilities"
-            benchmarks={[
-              { color: 'green', text: '> 1.0 Good' },
-              { color: 'yellow', text: '0.5–1.0 Fair' },
-              { color: 'red', text: '< 0.5 Poor' },
-            ]}
-            interpretation="Like Current Ratio but stricter — excludes inventory (which might not sell quickly). More conservative measure of liquidity. If both ratios are healthy, the company is in great shape."
-          />
-        </div>
-        <FrameworkChip>Health score ≥ 70 of 100. This is the check most otherwise-strong stocks fail.</FrameworkChip>
-      </section>
+      {/* ── Metric sections 1-4: rendered FROM the metrics dictionary
+          (WO-ASA-006.1) — no tier, formula, or threshold is hardcoded here ── */}
+      {SECTIONS.map((sec) => (
+        <section
+          key={sec.id}
+          id={{ valuation: 'price-and-valuation', cashflow: 'cash-flow', profitability: 'profitability', balance: 'balance-sheet' }[sec.id]}
+          className="mb-16"
+        >
+          <h2 className="text-xl font-bold mb-6 flex items-center gap-2">
+            <span className="text-lg">{sec.emoji}</span> {sec.title}
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {METRICS.filter((m) => m.section === sec.id).map((m) => (
+              <MetricCard
+                key={m.id}
+                name={m.name}
+                formula={m.formula}
+                benchmarks={m.tiers}
+                interpretation={m.interpretation}
+                proTip={m.proTip}
+              />
+            ))}
+          </div>
+          <FrameworkChip>{sec.chip}</FrameworkChip>
+        </section>
+      ))}
 
       {/* ── SECTION B: How Verdicts Are Scored (WO-ASA-002.18; AEO anchor target) ── */}
       <section id="how-verdicts-are-scored" className="mb-16">
@@ -474,25 +285,11 @@ export default function MetricsGuide({ onBack }: MetricsGuideProps) {
             <h3 className="text-base font-bold text-emerald-400 mb-4 flex items-center gap-2">
               <CheckCircle2 className="w-5 h-5" /> Quality Company Signals
             </h3>
-            <div className="space-y-4">
-              <div>
-                <p className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wider mb-2">Financial Stability (Must Have)</p>
-                <ul className="space-y-1.5 text-xs text-[var(--color-text-secondary)]">
-                  <li className="flex items-center gap-2"><CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" /> OCF/Net Income &ge; 1.0 (cash quality check)</li>
-                  <li className="flex items-center gap-2"><CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" /> Debt/Equity &lt; 1.0 (manageable debt)</li>
-                  <li className="flex items-center gap-2"><CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" /> Current Ratio &gt; 1.5 (can pay bills)</li>
-                  <li className="flex items-center gap-2"><CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" /> Health Score &gt; 70 (B+ or better)</li>
-                </ul>
-              </div>
-              <div>
-                <p className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wider mb-2">Profitability (Should Have)</p>
-                <ul className="space-y-1.5 text-xs text-[var(--color-text-secondary)]">
-                  <li className="flex items-center gap-2"><CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" /> ROE &gt; 15% (efficient capital use)</li>
-                  <li className="flex items-center gap-2"><CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" /> Profit Margin &gt; 10% (pricing power)</li>
-                  <li className="flex items-center gap-2"><CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" /> Positive Free Cash Flow (generating cash)</li>
-                </ul>
-              </div>
-            </div>
+            <ul className="space-y-1.5 text-xs text-[var(--color-text-secondary)]">
+              {CHECKLIST.quality.map((item) => (
+                <li key={item} className="flex items-center gap-2"><CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" /> {item}</li>
+              ))}
+            </ul>
           </motion.div>
 
           {/* Red Flags */}
@@ -506,24 +303,17 @@ export default function MetricsGuide({ onBack }: MetricsGuideProps) {
               <AlertTriangle className="w-5 h-5" /> Red Flags to Avoid
             </h3>
             <div className="space-y-4">
-              <div>
-                <p className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wider mb-2">Critical (Avoid)</p>
-                <ul className="space-y-1.5 text-xs text-[var(--color-text-secondary)]">
-                  <li className="flex items-start gap-2"><AlertTriangle className="w-3.5 h-3.5 text-red-400 shrink-0 mt-0.5" /> OCF/NI &lt; 0.8 — possible accounting manipulation</li>
-                  <li className="flex items-start gap-2"><AlertTriangle className="w-3.5 h-3.5 text-red-400 shrink-0 mt-0.5" /> Debt/Equity &gt; 3.0 — dangerously overleveraged</li>
-                  <li className="flex items-start gap-2"><AlertTriangle className="w-3.5 h-3.5 text-red-400 shrink-0 mt-0.5" /> Current Ratio &lt; 1.0 — liquidity crisis risk</li>
-                  <li className="flex items-start gap-2"><AlertTriangle className="w-3.5 h-3.5 text-red-400 shrink-0 mt-0.5" /> Negative FCF for 3+ years (mature company)</li>
-                  <li className="flex items-start gap-2"><AlertTriangle className="w-3.5 h-3.5 text-red-400 shrink-0 mt-0.5" /> Health Score &lt; 40 (D grade)</li>
-                  <li className="flex items-start gap-2"><AlertTriangle className="w-3.5 h-3.5 text-red-400 shrink-0 mt-0.5" /> Payout Ratio &gt; 100% — borrowing to pay dividends</li>
-                </ul>
-              </div>
+              <ul className="space-y-1.5 text-xs text-[var(--color-text-secondary)]">
+                {CHECKLIST.redFlags.map((item) => (
+                  <li key={item} className="flex items-start gap-2"><AlertTriangle className="w-3.5 h-3.5 text-red-400 shrink-0 mt-0.5" /> {item}</li>
+                ))}
+              </ul>
               <div>
                 <p className="text-xs font-bold text-[var(--color-text-muted)] uppercase tracking-wider mb-2">Warning Signs (Investigate)</p>
                 <ul className="space-y-1.5 text-xs text-[var(--color-text-secondary)]">
-                  <li className="flex items-start gap-2"><AlertTriangle className="w-3.5 h-3.5 text-yellow-400 shrink-0 mt-0.5" /> ROE &lt; 10% — inefficient business</li>
-                  <li className="flex items-start gap-2"><AlertTriangle className="w-3.5 h-3.5 text-yellow-400 shrink-0 mt-0.5" /> Declining revenue for 2+ years</li>
-                  <li className="flex items-start gap-2"><AlertTriangle className="w-3.5 h-3.5 text-yellow-400 shrink-0 mt-0.5" /> P/E &gt; 50 with slowing growth</li>
-                  <li className="flex items-start gap-2"><AlertTriangle className="w-3.5 h-3.5 text-yellow-400 shrink-0 mt-0.5" /> Dividend yield &gt; 8% with Payout Ratio &gt; 80% — yield trap</li>
+                  {CHECKLIST.warnings.map((item) => (
+                    <li key={item} className="flex items-start gap-2"><AlertTriangle className="w-3.5 h-3.5 text-yellow-400 shrink-0 mt-0.5" /> {item}</li>
+                  ))}
                 </ul>
               </div>
             </div>
@@ -640,6 +430,10 @@ export default function MetricsGuide({ onBack }: MetricsGuideProps) {
           </p>
         </div>
       </section>
+
+      <p className="text-xs text-[var(--color-text-muted)] text-center pb-8">
+        Definitions {DEFINITIONS_VERSION} — this guide and the in-app sidebar render from one metrics dictionary.
+      </p>
     </div>
   );
 }

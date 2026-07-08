@@ -2,6 +2,7 @@ import { useRef } from 'react';
 import { motion } from 'motion/react';
 import { ArrowLeft, Info, RefreshCw } from 'lucide-react';
 import type { FullHistoryEntry, Methodology } from '../types/stock';
+import { frameworkLabel } from '../lib/formatters';
 import ExecutiveSummary from './ExecutiveSummary';
 import StockCard from './StockCard';
 import ComparisonTable from './ComparisonTable';
@@ -77,6 +78,11 @@ export default function SavedAnalysisView({ entry, onBack, onReanalyze }: SavedA
 
       {/* Results content — captured for PDF export */}
       <div ref={resultsRef}>
+        {/* Framework banner — carried by screen, PDF capture, and Print */}
+        <p className="text-center text-sm text-[var(--color-text-secondary)] mb-4">
+          Analyzed with: <span className="font-bold text-[var(--color-accent)]">{frameworkLabel(methodology)}</span>
+        </p>
+
         {/* Bottom Line (saved with the report from Jul 2026 on; self-hides when absent) */}
         <BottomLine summary={entry.plain_summary ?? null} />
 

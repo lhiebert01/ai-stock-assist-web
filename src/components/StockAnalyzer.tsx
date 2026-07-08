@@ -490,6 +490,14 @@ export default function StockAnalyzer({ userId, userProfile, onCreditsUsed, onNe
 
       {/* Results Section — captured for PDF */}
       <div ref={resultsRef}>
+        {/* Framework banner — the lens used is stated ON the report itself,
+            so screen, PDF capture, and Print all carry it */}
+        {!loading && snapshots.length > 0 && (
+          <p className="text-center text-sm text-[var(--color-text-secondary)] mb-4">
+            Analyzed with: <span className="font-bold text-[var(--color-accent)]">{frameworkLabel(methodology)}</span>
+            <span className="text-xs text-[var(--color-text-muted)]"> — {FRAMEWORK_EXPLAINERS[methodology]}</span>
+          </p>
+        )}
         {/* The Bottom Line — in Plain English (leads the results; self-hides when empty) */}
         {!loading && <BottomLine summary={plainSummary} />}
 
