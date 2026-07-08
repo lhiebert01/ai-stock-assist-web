@@ -169,8 +169,8 @@ export default function MetricsGuide({ onBack }: MetricsGuideProps) {
               body: 'Sometimes a ratio isn\'t big or small — it\'s undefined. Example: price-to-free-cash-flow when free cash flow is negative. Dividing a price by a negative number produces something like "−1,070x," which sounds dramatic and means nothing. We print n/m instead, with the reason, and tell you the real story in words (for example: "capex currently exceeds operating cash flow").',
             },
             {
-              title: 'NOT RATED',
-              body: 'If we can\'t verify a stock\'s numbers — missing data, or figures that contradict each other — the card says NOT RATED and explains why. Missing data is never treated as bad data. A stock we can\'t score is a stock we won\'t score; it will never receive a SELL just because a feed came up empty.',
+              title: 'Rated — with caveats, and NOT RATED',
+              body: 'When some figures can\'t be fetched or verified, the card scores what did verify, lists exactly what\'s missing and why, and shows a confidence level. NOT RATED is reserved for the rare case we can\'t trust a stock\'s identity or currency at all — figures that contradict each other or can\'t be cleanly converted. Missing data is never treated as bad data; unverifiable data is never scored.',
             },
             {
               title: 'Two views, one stock',
