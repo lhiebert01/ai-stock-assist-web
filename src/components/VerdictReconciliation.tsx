@@ -1,5 +1,6 @@
 import { Scale, CheckCircle2, AlertTriangle, Info } from 'lucide-react';
 import type { Methodology } from '../types/stock';
+import { frameworkLabel } from '../lib/formatters';
 import {
   normalizeRating,
   compareVerdicts,
@@ -42,7 +43,7 @@ export default function VerdictReconciliation({
         <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
         <span className="text-[var(--color-text-secondary)]">
           Both <strong className="text-[var(--color-text-primary)]">Wall Street</strong> and{' '}
-          <strong className="text-[var(--color-text-primary)]">AI Stock Assist ({methodology})</strong>{' '}
+          <strong className="text-[var(--color-text-primary)]">AI Stock Assist ({frameworkLabel(methodology)})</strong>{' '}
           agree:{' '}
           <strong className={bucketColor(ai)}>{bucketLabel(ai)}</strong>.
         </span>
@@ -73,7 +74,7 @@ export default function VerdictReconciliation({
               <span className={`font-bold ${bucketColor(analyst)}`}>{bucketLabel(analyst)}</span>
             </div>
             <div className="text-xs flex items-center gap-2">
-              <span className="text-[var(--color-text-muted)]">AI Stock Assist ({methodology}):</span>
+              <span className="text-[var(--color-text-muted)]">AI Stock Assist ({frameworkLabel(methodology)}):</span>
               <span className={`font-bold ${bucketColor(ai)}`}>{bucketLabel(ai)}</span>
             </div>
           </div>

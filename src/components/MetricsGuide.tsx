@@ -95,9 +95,43 @@ export default function MetricsGuide({ onBack }: MetricsGuideProps) {
         </p>
       </div>
 
+      {/* ── SECTION G: Choosing a Lens (WO-ASA-005.2 / MVQ addendum 🟢) ── */}
+      <section id="choosing-a-lens" className="max-w-3xl mx-auto mb-12">
+        <h2 className="text-xl font-bold mb-3">Choosing a Lens</h2>
+        <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed mb-4">
+          This app can score the same stock through more than one framework. Same data, same date, different
+          questions. None of them predicts anything; each one is a different way of asking "is this a good business
+          at this price?"
+        </p>
+        <div className="space-y-3">
+          <div className="bg-[var(--color-surface-2)] border border-[var(--color-border)] rounded-xl p-4">
+            <h4 className="text-sm font-bold mb-1">Growth &amp; Quality</h4>
+            <p className="text-xs text-[var(--color-text-secondary)] leading-relaxed">
+              Six checks on cash generation, earnings honesty, profitability, and balance-sheet strength, scored
+              0–6. If you want one lens and don't know which, start here.
+            </p>
+          </div>
+          <div className="bg-[var(--color-surface-2)] border border-[var(--color-border)] rounded-xl p-4">
+            <h4 className="text-sm font-bold mb-1">Graham Classic</h4>
+            <p className="text-xs text-[var(--color-text-secondary)] leading-relaxed">
+              Benjamin Graham's 1949 value criteria, unmodified. A historical lens: its thresholds were written for
+              railroads and department stores, and by modern standards they are strict — most large modern companies
+              rate HOLD or SELL under them. That strictness is the point of keeping it: it shows you what "cheap"
+              meant when the idea of value investing was invented, and it makes a useful sparring partner for any
+              modern verdict.
+            </p>
+          </div>
+        </div>
+        <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed mt-4">
+          When two lenses disagree on a stock, the card says so and shows exactly which checks diverged.
+          Disagreement isn't an error — it's information about which question each framework is asking.
+        </p>
+      </section>
+
       {/* Jump to section */}
       <div className="flex flex-wrap justify-center gap-2 mb-12">
         {[
+          { label: 'Choosing a Lens', href: '#choosing-a-lens' },
           { label: 'Reading the Card', href: '#reading-the-card' },
           { label: 'Price & Valuation', href: '#price-and-valuation' },
           { label: 'Cash Flow', href: '#cash-flow' },
@@ -374,10 +408,11 @@ export default function MetricsGuide({ onBack }: MetricsGuideProps) {
 
       {/* ── SECTION B: How Verdicts Are Scored (WO-ASA-002.18; AEO anchor target) ── */}
       <section id="how-verdicts-are-scored" className="mb-16">
-        <h2 className="text-xl font-bold mb-3">How Verdicts Are Scored</h2>
+        <h2 className="text-xl font-bold mb-1">How Verdicts Are Scored <span className="text-base font-medium text-[var(--color-text-muted)]">— Growth &amp; Quality</span></h2>
+        <p className="text-xs text-[var(--color-text-muted)] mb-3">Each framework has its own scoring page; this one covers Growth &amp; Quality.</p>
         <p className="text-sm text-[var(--color-text-secondary)] mb-4 max-w-3xl">
           Every stock you analyze gets a verdict — <strong>BUY</strong>, <strong>HOLD</strong>, or{' '}
-          <strong>SELL</strong> — from our Growth &amp; Quality framework. There's no black box. The verdict comes
+          <strong>SELL</strong> — from the Growth &amp; Quality framework. There's no black box. The verdict comes
           from six checks, each pass worth points toward a 6-point score:
         </p>
         <p className="text-sm font-bold font-mono text-center mb-8 px-4 py-3 bg-[var(--color-surface-2)] border border-[var(--color-border)] rounded-xl max-w-xl mx-auto">

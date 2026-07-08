@@ -17,13 +17,18 @@ const SURFACES = [
 // guarantee future results", "not predictions") are explicitly allowed.
 const PROHIBITED = [
   { re: /beats? the market/i, why: 'market-beating claim' },
-  { re: /\bpredicts?\b(?![^.]*not)/i, why: 'predictive claim (unless negated as a disclaimer)' },
+  // Negated/disclaimer uses ("not predictions", "None of them predicts
+  // anything", "never claims to predict") are compliant — skip lines with a
+  // negation anywhere.
+  { re: /\bpredicts?\b/i, why: 'predictive claim (unless negated as a disclaimer)', unlessLine: /\b(not|none|never|no)\b|n't/i },
   { re: /money-?back guarantee/i, why: 'guarantee without fulfillment flow (WO-ASA-002.14)' },
   { re: /\bguaranteed\b/i, why: 'outcome guarantee' },
   { re: /#1\b/, why: 'superlative' },
   { re: /most accurate/i, why: 'superlative' },
   { re: /\bbest\s+(stock|analysis|tool|app|platform)/i, why: 'product superlative' },
   { re: /act now|don'?t miss|limited time/i, why: 'urgency framing' },
+  { re: /beats graham|outperforms?\b/i, why: 'outcome-superiority claim (MVQ addendum)' },
+  { re: /\bsuperior\b/i, why: 'superiority claim (MVQ addendum)' },
 ];
 
 let violations = 0;
@@ -36,7 +41,8 @@ for (const file of SURFACES) {
   }
   text.split('\n').forEach((line, i) => {
     if (/^\s*(\/\/|\{?\/?\*|<!--)/.test(line)) return; // comments (incl. JSX {/* ... */}) may cite prohibited terms
-    for (const { re, why } of PROHIBITED) {
+    for (const { re, why, unlessLine } of PROHIBITED) {
+      if (unlessLine && unlessLine.test(line)) continue;
       if (re.test(line)) {
         console.error(`CLAIMS VIOLATION ${file}:${i + 1} [${why}]: ${line.trim().slice(0, 120)}`);
         violations++;

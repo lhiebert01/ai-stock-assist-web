@@ -1,7 +1,7 @@
 import { motion } from 'motion/react';
 import { Award, TrendingUp, DollarSign, Banknote, Calendar, Sparkles, BookOpen } from 'lucide-react';
 import type { StockSnapshot, AIRecommendation, Methodology } from '../types/stock';
-import { formatPrice, pctFmt, ratingColor } from '../lib/formatters';
+import { formatPrice, pctFmt, ratingColor, frameworkLabel } from '../lib/formatters';
 
 interface ExecutiveSummaryProps {
   snapshots: StockSnapshot[];
@@ -71,7 +71,7 @@ export default function ExecutiveSummary({ snapshots, recommendations, methodolo
                 ) : (
                   <BookOpen className="w-3 h-3" />
                 )}
-                {methodology}
+                {frameworkLabel(methodology)}
                 <span className="mx-1">·</span>
                 {snapshots.length} stock{snapshots.length !== 1 ? 's' : ''}
               </div>

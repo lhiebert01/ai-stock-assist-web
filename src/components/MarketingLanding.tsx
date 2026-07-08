@@ -67,7 +67,7 @@ const features = [
   {
     icon: <Shield className="w-6 h-6" />,
     title: 'Two Methodologies',
-    desc: 'Choose Graham Value Investing (strict criteria) or Growth & Quality (cash flow focus).',
+    desc: 'Choose Graham Classic (Benjamin Graham\'s 1949 criteria, unmodified) or Growth & Quality (cash flow focus).',
   },
   {
     icon: <Sparkles className="w-6 h-6" />,
@@ -333,7 +333,7 @@ export default function MarketingLanding({ onGetStarted }: LandingProps) {
               <div className="w-10 h-10 rounded-xl bg-blue-500/15 flex items-center justify-center">
                 <Shield className="w-5 h-5 text-blue-400" />
               </div>
-              <h3 className="text-xl font-bold">Graham Value</h3>
+              <h3 className="text-xl font-bold">Graham Classic</h3>
             </div>
             <p className="text-xs text-blue-400 font-medium mb-5">Best for: Conservative, long-term value investors</p>
             <ul className="space-y-3">

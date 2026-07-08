@@ -57,6 +57,23 @@ export function formatNumber(x: number | null | undefined): string {
   return x.toLocaleString();
 }
 
+/** Display label for a methodology (WO-ASA-005.2 canon rename). The WIRE
+ * value stays 'Graham Value Investing' — it's the API contract and lives in
+ * every saved history row; only the label modernizes. */
+export function frameworkLabel(methodology: string): string {
+  return methodology === 'Graham Value Investing' ? 'Graham Classic' : methodology;
+}
+
+/** Plain-English framework explainers (WO-ASA-005.2, claims-register compliant). */
+export const FRAMEWORK_EXPLAINERS: Record<string, string> = {
+  'Growth & Quality':
+    'Six checks on cash generation, earnings quality, profitability, and balance-sheet strength, scored 0–6. ' +
+    'BUY ≥ 4.5, HOLD ≥ 3.0. The card does the arithmetic; you make the decision.',
+  'Graham Value Investing':
+    "Benjamin Graham's 1949 value criteria, unmodified — a historical lens. Its thresholds are strict by modern " +
+    'standards and can rate most large modern companies HOLD or SELL; useful for comparison, not the only word.',
+};
+
 /** Format price: $123.45 */
 export function formatPrice(x: number | null | undefined): string {
   if (x == null || !isFinite(x)) return '—';

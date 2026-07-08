@@ -3,6 +3,7 @@ import { Brain, TrendingUp, Minus, TrendingDown, AlertTriangle, HelpCircle } fro
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import type { AIRecommendation, Methodology } from '../types/stock';
+import { frameworkLabel } from '../lib/formatters';
 
 interface RecommendationCardProps {
   recommendation: AIRecommendation;
@@ -78,7 +79,7 @@ export default function RecommendationCard({ recommendation, methodology }: Reco
               className="text-sm font-bold"
               title="AI Stock Assist evaluates this stock using the methodology shown — independent from the Wall Street analyst consensus shown in the header. The two views may differ."
             >
-              AI Stock Assist Verdict — <span className={config.text}>{methodology}</span>
+              AI Stock Assist Verdict — <span className={config.text}>{frameworkLabel(methodology)}</span>
             </h4>
             {keyFactor && (
               <p className="text-xs text-[var(--color-text-secondary)] mt-0.5 max-w-[300px] truncate">{keyFactor}</p>

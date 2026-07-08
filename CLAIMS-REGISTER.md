@@ -52,6 +52,18 @@ free-form copywriting. At N=1 no comparative language is allowed at all
 3. The report QA gate blocks single-stock reports containing comparative
    language, and blocks recommendation/avoid self-contradictions.
 
+## MVQ / framework-comparison additions (from Metrics-Guide-MVQ-Addendum)
+
+- PROHIBITED: "superior", "beats Graham", "outperforms", "better results",
+  any predictive framing for MVQ or any framework.
+- APPROVED: "modernized", "evidence-tested", "principles retained,
+  measurements updated", "we publish the test, win or lose".
+- Compare-mode positioning: sell time and transparency, never outcome
+  superiority. Approved framing: "what takes an analyst hours per ticker,
+  the card does in seconds — and shows its arithmetic."
+- Framework display names: "Growth & Quality" and "Graham Classic" (the wire
+  value 'Graham Value Investing' is an API contract and never changes).
+
 ## Sweep log
 
 - 2026-07-09: `src/components/Payments.tsx:152` — removed "100% Money-Back

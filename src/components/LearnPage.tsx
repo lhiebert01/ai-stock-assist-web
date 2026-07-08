@@ -186,7 +186,7 @@ export default function LearnPage({ userProfile, onNavigateMetrics }: LearnPageP
               Powered by Google&rsquo;s latest <span className="text-[var(--color-accent)]">Gemini 3.5 Flash</span>
             </h2>
             <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed">
-              Frontier-level intelligence aimed at the unglamorous part of investing: the research. Every stock runs through two time-tested frameworks side by side — <span className="font-semibold text-[var(--color-text-primary)]">Graham Value</span> and <span className="font-semibold text-[var(--color-text-primary)]">Growth &amp; Quality</span> — cross-checking valuation, cash-flow quality, and earnings integrity, then reconciled against the Wall Street view so you see both maps at once. Work that takes a careful investor dozens of hours — and hundreds across a full portfolio — now takes seconds, checked and correlated to sharpen decisions for value- <em>and</em> growth-minded investors. Through our series, <span className="font-semibold text-[var(--color-text-primary)]">Investing in the Intelligence Era</span>, we keep teaching the <em>why</em> behind every number — so novice and veteran investors alike grow <span className="font-semibold text-[var(--color-text-primary)]">wealthier and wiser</span>.
+              Frontier-level intelligence aimed at the unglamorous part of investing: the research. Every stock runs through two time-tested frameworks side by side — <span className="font-semibold text-[var(--color-text-primary)]">Graham Classic</span> and <span className="font-semibold text-[var(--color-text-primary)]">Growth &amp; Quality</span> — cross-checking valuation, cash-flow quality, and earnings integrity, then reconciled against the Wall Street view so you see both maps at once. Work that takes a careful investor dozens of hours — and hundreds across a full portfolio — now takes seconds, checked and correlated to sharpen decisions for value- <em>and</em> growth-minded investors. Through our series, <span className="font-semibold text-[var(--color-text-primary)]">Investing in the Intelligence Era</span>, we keep teaching the <em>why</em> behind every number — so novice and veteran investors alike grow <span className="font-semibold text-[var(--color-text-primary)]">wealthier and wiser</span>.
             </p>
           </div>
         </div>
@@ -300,7 +300,7 @@ export default function LearnPage({ userProfile, onNavigateMetrics }: LearnPageP
               <div className="w-10 h-10 rounded-xl bg-blue-500/15 flex items-center justify-center">
                 <Shield className="w-5 h-5 text-blue-400" />
               </div>
-              <h3 className="text-lg font-bold">Graham Value</h3>
+              <h3 className="text-lg font-bold">Graham Classic</h3>
             </div>
             <p className="text-xs text-blue-400 font-medium mb-5">Best for: Conservative, long-term value investors</p>
             <ul className="space-y-3">

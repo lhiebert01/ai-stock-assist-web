@@ -96,6 +96,12 @@ export interface AIRecommendation {
   not_rated_reason?: string;
   /** Deterministic "what would change this verdict" triggers (HOLD/SELL only). */
   watch_conditions?: string[];
+  /** Near-miss decomposition (WO-ASA-004.5): checks within 10% of a tier boundary. */
+  near_misses?: string[];
+  /** RATED / RATED_WITH_CAVEATS / NOT_RATED (WO-ASA-004.2). */
+  state?: string;
+  /** Engine-emitted scoring version (provenance rule — never inferred). */
+  scoring_version?: string;
 }
 
 /** Server-side credit accounting attached to /api/analyze responses.
