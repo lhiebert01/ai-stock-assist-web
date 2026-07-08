@@ -113,10 +113,46 @@ export default function App() {
   }
 
   // ── Navigation ─────────────────────────────────────────────
+  // viewEpoch keys each section component so clicking a nav tab ALWAYS lands
+  // on that section's root — including the active tab (standard tab
+  // semantics: active-tab click resets the section's internal stack, e.g.
+  // History detail → History list). One behavior for every tab.
+  const [viewEpoch, setViewEpoch] = useState(0);
+
   const navigateTo = (newView: View) => {
     setView(newView);
+    setViewEpoch((e) => e + 1);
+    // Real route hashes (#history, #analyzer, …) so the URL reflects the
+    // actual view (no stale in-page anchors like #cash-flow) and browser
+    // back/forward traverse views correctly.
+    const target = newView === 'landing' ? '' : `#${newView}`;
+    if (window.location.hash !== target) {
+      window.location.hash = target;
+    }
     window.scrollTo(0, 0);
   };
+
+  // Browser back/forward + hash deep links (#history/{id} handled inside
+  // AnalysisHistory; the section part routes here). Unknown hashes (in-page
+  // guide anchors like #choosing-a-lens) are left alone.
+  useEffect(() => {
+    const sections: View[] = ['landing', 'analyzer', 'discovery', 'watchlist', 'history', 'payments', 'learn', 'metrics', 'privacy', 'terms'];
+    const onHash = () => {
+      const section = window.location.hash.slice(1).split('/')[0] as View;
+      if (section && sections.includes(section)) {
+        setView((curr) => {
+          if (curr !== section) {
+            setViewEpoch((e) => e + 1);
+            window.scrollTo(0, 0);
+          }
+          return section;
+        });
+      }
+    };
+    window.addEventListener('hashchange', onHash);
+    onHash(); // honor a #section hash on first load
+    return () => window.removeEventListener('hashchange', onHash);
+  }, []);
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
@@ -127,7 +163,7 @@ export default function App() {
 
   const handleDiscoveryAnalyze = (tickers: string) => {
     setAnalyzerInput(tickers);
-    setView('analyzer');
+    navigateTo('analyzer');
   };
 
   const refreshProfile = async () => {
@@ -255,7 +291,7 @@ export default function App() {
 
         {view === 'analyzer' && user && (
           <StockAnalyzer
-            key={analyzerInput}
+            key={`${analyzerInput}-${viewEpoch}`}
             userId={user.id}
             userProfile={userProfile}
             onCreditsUsed={deductCredits}
@@ -265,15 +301,15 @@ export default function App() {
         )}
 
         {view === 'discovery' && user && (
-          <StockDiscovery onAnalyze={handleDiscoveryAnalyze} />
+          <StockDiscovery key={viewEpoch} onAnalyze={handleDiscoveryAnalyze} />
         )}
 
         {view === 'watchlist' && user && (
-          <WatchlistPage userId={user.id} onAnalyze={handleDiscoveryAnalyze} />
+          <WatchlistPage key={viewEpoch} userId={user.id} onAnalyze={handleDiscoveryAnalyze} />
         )}
 
         {view === 'history' && user && (
-          <AnalysisHistory user={user} onReanalyze={handleDiscoveryAnalyze} />
+          <AnalysisHistory key={viewEpoch} user={user} onReanalyze={handleDiscoveryAnalyze} />
         )}
 
         {view === 'payments' && (

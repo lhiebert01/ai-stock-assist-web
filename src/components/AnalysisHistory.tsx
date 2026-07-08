@@ -50,12 +50,52 @@ export default function AnalysisHistory({ user, onReanalyze }: AnalysisHistoryPr
     if (!error) setEntries((prev) => prev.filter((e) => e.id !== id));
   };
 
+  // Real routes per saved analysis (#history/{id}): each report gets a stable
+  // in-app address — browser back, refresh, and deep links all inherit it.
+  const openEntry = (entry: FullHistoryEntry) => {
+    setSelectedEntry(entry);
+    window.location.hash = `history/${entry.id}`;
+  };
+  const closeEntry = () => {
+    setSelectedEntry(null);
+    if (window.location.hash.startsWith('#history/')) window.location.hash = 'history';
+  };
+
+  // Browser back from detail (#history/{id} → #history) closes the detail;
+  // a direct deep link to #history/{id} opens it once entries load.
+  useEffect(() => {
+    const syncFromHash = () => {
+      const h = window.location.hash;
+      if (h === '#history') {
+        setSelectedEntry(null);
+      } else if (h.startsWith('#history/')) {
+        const id = h.slice('#history/'.length);
+        setEntries((prev) => {
+          const match = prev.find((e) => e.id === id);
+          if (match) setSelectedEntry(match);
+          return prev;
+        });
+      }
+    };
+    window.addEventListener('hashchange', syncFromHash);
+    return () => window.removeEventListener('hashchange', syncFromHash);
+  }, []);
+
+  useEffect(() => {
+    // deep link resolution after load
+    const h = window.location.hash;
+    if (h.startsWith('#history/') && entries.length > 0) {
+      const match = entries.find((e) => e.id === h.slice('#history/'.length));
+      if (match) setSelectedEntry(match);
+    }
+  }, [entries]);
+
   // Show saved analysis detail view
   if (selectedEntry) {
     return (
       <SavedAnalysisView
         entry={selectedEntry}
-        onBack={() => setSelectedEntry(null)}
+        onBack={closeEntry}
         onReanalyze={onReanalyze}
       />
     );
@@ -109,7 +149,7 @@ export default function AnalysisHistory({ user, onReanalyze }: AnalysisHistoryPr
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.03 }}
-                onClick={() => setSelectedEntry(entry)}
+                onClick={() => openEntry(entry)}
                 className="bg-[var(--color-surface-2)] border border-[var(--color-border)] rounded-xl p-4 cursor-pointer hover:border-[var(--color-accent)]/30 hover:bg-white/[0.01] transition-all group"
               >
                 <div className="flex items-center justify-between">
