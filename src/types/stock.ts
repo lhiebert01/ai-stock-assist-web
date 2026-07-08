@@ -122,6 +122,16 @@ export interface WatchlistEntry {
   added_at: string;
 }
 
+/** Pre-flight symbol classification (one pass, all findings). */
+export interface SymbolFinding {
+  symbol: string;
+  status: 'VALID' | 'ALIAS' | 'UNKNOWN' | 'UNVERIFIABLE';
+  suggested?: string;
+  note?: string;
+  /** Client-side chosen resolution. */
+  action?: 'replace' | 'remove' | 'keep';
+}
+
 export interface AnalyzeError {
   ticker: string;
   error: string;

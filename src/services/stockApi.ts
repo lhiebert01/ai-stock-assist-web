@@ -1,5 +1,5 @@
 import { supabase } from '../supabase';
-import type { StockSnapshot, AIRecommendation, AnalyzeError, ChartData, CreditsInfo, DiscoveredStock, Methodology } from '../types/stock';
+import type { StockSnapshot, AIRecommendation, AnalyzeError, ChartData, CreditsInfo, DiscoveredStock, Methodology, SymbolFinding } from '../types/stock';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
@@ -49,6 +49,13 @@ async function apiPost<T>(path: string, body: unknown): Promise<T> {
     throw e;
   }
   return res.json();
+}
+
+/** One-pass pre-flight classification of ALL symbols (VALID / ALIAS /
+ * UNKNOWN / UNVERIFIABLE) against the backend's cached exchange directory —
+ * never the rate-limited analysis vendor. */
+export async function validateSymbols(symbols: string[]): Promise<{ findings: SymbolFinding[] }> {
+  return apiPost('/api/validate-symbols', { symbols });
 }
 
 /** Analyze 1-10 tickers. Returns snapshots + any per-ticker errors. */
