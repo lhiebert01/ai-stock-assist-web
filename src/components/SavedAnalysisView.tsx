@@ -72,6 +72,7 @@ export default function SavedAnalysisView({ entry, onBack, onReanalyze }: SavedA
         comparativeAnalysis={comparativeAnalysis}
         plainSummary={entry.plain_summary}
         resultsRef={resultsRef}
+        onReanalyze={onReanalyze}
       />
 
       {/* Results content — captured for PDF export */}

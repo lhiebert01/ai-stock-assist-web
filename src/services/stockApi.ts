@@ -118,7 +118,9 @@ export async function exportWord(
   if (!res.ok) {
     // 422 = report QA gate (WO-ASA-001 §5) — surface the reasons, don't swallow them
     const err = await res.json().catch(() => ({ detail: res.statusText }));
-    throw new Error(typeof err.detail === 'string' ? err.detail : 'Export failed');
+    const e = new Error(typeof err.detail === 'string' ? err.detail : 'Export failed') as Error & { status?: number };
+    e.status = res.status;
+    throw e;
   }
   return res.blob();
 }

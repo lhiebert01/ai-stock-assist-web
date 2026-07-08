@@ -10,12 +10,15 @@ interface ReportActionsProps {
   comparativeAnalysis: string | null;
   plainSummary?: string | null;
   resultsRef: React.RefObject<HTMLDivElement | null>;
+  /** When set, a QA-gate export block (422) offers a one-click fresh re-run. */
+  onReanalyze?: (tickers: string) => void;
 }
 
-export default function ReportActions({ snapshots, methodology, comparativeAnalysis, plainSummary, resultsRef }: ReportActionsProps) {
+export default function ReportActions({ snapshots, methodology, comparativeAnalysis, plainSummary, resultsRef, onReanalyze }: ReportActionsProps) {
   const [pdfLoading, setPdfLoading] = useState(false);
   const [wordLoading, setWordLoading] = useState(false);
   const [exportError, setExportError] = useState<string | null>(null);
+  const [exportBlocked, setExportBlocked] = useState(false);
 
   const tickers = snapshots.map((s) => s.ticker);
   const windowLabel = new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
@@ -48,8 +51,19 @@ export default function ReportActions({ snapshots, methodology, comparativeAnaly
       URL.revokeObjectURL(url);
     } catch (err) {
       console.error('Word export failed:', err);
-      // The report QA gate (422) returns the specific reasons — show them.
-      setExportError((err as Error)?.message || 'Export failed. Please try again.');
+      // 422 = the report QA gate refused to publish (WO-ASA-002.8): explain
+      // in plain language and offer a fresh re-run instead of a raw error.
+      if ((err as { status?: number })?.status === 422) {
+        setExportBlocked(true);
+        setExportError(
+          'This report can\'t be exported as a document — its saved data no longer passes our ' +
+          'data-integrity checks (this typically affects analyses saved before the checks existed, ' +
+          'or runs made during a data-source outage). Re-run these tickers at today\'s prices for a ' +
+          'clean, exportable report. PDF and Print still capture the page as-is.'
+        );
+      } else {
+        setExportError((err as Error)?.message || 'Export failed. Please try again.');
+      }
     } finally {
       setWordLoading(false);
     }
@@ -85,7 +99,17 @@ export default function ReportActions({ snapshots, methodology, comparativeAnaly
         Print
       </button>
       {exportError && (
-        <p className="w-full text-center text-xs text-red-400 mt-1">{exportError}</p>
+        <div className="w-full text-center mt-1">
+          <p className={`text-xs ${exportBlocked ? 'text-amber-300' : 'text-red-400'} max-w-2xl mx-auto`}>{exportError}</p>
+          {exportBlocked && onReanalyze && (
+            <button
+              onClick={() => onReanalyze(tickers.join(' '))}
+              className="mt-2 px-4 py-2 rounded-lg bg-[var(--color-accent)]/15 text-[var(--color-accent)] text-xs font-bold hover:bg-[var(--color-accent)]/25 transition-all"
+            >
+              Re-run {tickers.join(', ')} at today's prices ({tickers.length} credit{tickers.length > 1 ? 's' : ''})
+            </button>
+          )}
+        </div>
       )}
     </div>
   );
