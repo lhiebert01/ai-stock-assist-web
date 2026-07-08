@@ -1,8 +1,22 @@
-# WO-ASA-001 Completion Report — AI Stock Assist, July 8 2026
+# WO-ASA-001 Completion Report — AI Stock Assist, July 8 2026 (v2, end-of-day)
 
 **For:** Lindsay Hiebert / Claude Fable advisor review
-**Scope executed:** WO-ASA-001 P0 (all items) + report-QA gate + fixtures, plus Tier-1 revenue protection and Tier-2 engagement features from the same-day product scan. Everything below is **deployed to production and verified live**.
-**Repos/commits:** `ai-stock-render` 04fffaa, 0e0a129, e752112, c98e5fa · `ai-stock-assist-web` e070387, e6a37d7, 559539d
+**Scope executed:** WO-ASA-001 P0 (all items) + report-QA gate + fixtures, plus Tier-1 revenue protection and Tier-2 engagement features from the same-day product scan, plus one owner-feedback UX iteration. Everything below is **deployed to production, activated, and owner-smoke-tested the same day**.
+**Repos/commits:** `ai-stock-render` 04fffaa, 0e0a129, e752112, c98e5fa, 8ddc570 · `ai-stock-assist-web` e070387, e6a37d7, 559539d, ded25f0, f6e664e
+
+## 0. End-of-day status: SHIPPED, ACTIVATED, SMOKE-TESTED ✅
+
+- `https://api.aistockassist.com/health` → `auth_verified: true, credit_enforcement: true`
+- Supabase migration run (watchlists table + RLS, Bottom-Line persistence)
+- **Owner smoke test passed in production** (NVO + CRM, 2 credits):
+  - `AWS` input → intercepted with the "Analyze AMZN instead / Remove AWS" confirmation, zero credits.
+  - Credits charged **server-side**, exactly 2 (verified against the navbar counter across runs: 722→720→718).
+  - NVO card: revenue **$50.03B USD**, DKK→USD footnote at 0.1526 with FX date, "Data as of 2026-03-31 (TTM)", verdict **SELL (HIGH confidence, 2.5/6)** with a "What would change this verdict" panel (price-solved: "FCF yield reaches 5% — price ≤ $21.31 at current FCF").
+  - CRM: **BUY 5.0/6**, framework Top Pick; Bottom Line complete, correct superlatives, ends in a full sentence.
+  - Watchlist round-trip (save from card → Watchlist page → "Analyze at today's prices (1 credit)"), History delete buttons, saved entry replay with Bottom Line + "Re-analyze at today's prices."
+- **The full 8-ticker set was re-run fresh in the app** — the defective morning run and the clean evening run now sit adjacent in Analysis History: `NVO: BUY` (corrupt) vs `NVO: SELL` (clean), same day. A better regression artifact than any test log.
+- **Owner-feedback UX iteration shipped same day** (commit f6e664e): the tiny watchlist bookmark was easy to miss, so cards now carry a prominent labeled button — amber **"Save to Watchlist"** → green **"On Watchlist ✓"** — and the Watchlist page gained a comma-delimited **direct add box** (free, no analysis, validates symbols, auto-maps segment names like AWS→AMZN).
+- **One new defect found by the fresh run and fixed same day** (commit 8ddc570): AMZN's TTM free cash flow is currently *negative*, and its meaningless **−1070x P/FCF was crowned "lowest (cheapest)"** in the ranking facts. P/FCF superlatives now consider positive values only. (This also strengthens the case for the P2 capex/FCF bridge — see roadmap.)
 
 ---
 
@@ -58,6 +72,7 @@ Notably, NVO is the **only** verdict that changed — every stock with honest da
 - Supabase: `watchlists` table + RLS, `analysis_history.plain_summary` column (migration in `supabase/migrations/2026-07-08-watchlists-and-history.sql`) ✅
 - Render env: `SUPABASE_JWT_SECRET` (JWT verify) + `SUPABASE_SERVICE_ROLE_KEY` (credit enforcement) ✅
 - `/health` self-reports `version`, `auth_verified`, `credit_enforcement` for deploy verification ✅
+- Render account consolidation ✅: the repo was running THREE billed services (blueprint name-drift). The duplicate API and the retired Streamlit app are suspended (env exported to a private archive first), the `ai-stock-analysis-render` Blueprint disconnected, `render.yaml` deleted, and the topology documented in `RENDER-DEPLOY.md`. One production service remains: `ai-stock-render-api` = api.aistockassist.com. ~$14/month recovered.
 
 ---
 
@@ -82,8 +97,8 @@ Notably, NVO is the **only** verdict that changed — every stock with honest da
 10. Owned email list (forms currently just redirect to Substack), premium-tier definition (packs list identical features), money-back-guarantee claim needs a real flow or removal, admin analytics + role-based admin (hardcoded email today), legacy Streamlit/Stripe dead-code removal from the backend repo.
 
 ### Immediate niceties
-11. **Owner smoke test** (30 seconds): sign in → analyze one ticker (proves JWT + server billing end-to-end) → type `AWS` (alias prompt) → bookmark a card (Watchlist).
-12. Re-run the 8-ticker report in the app to produce the clean "after" document for the archive.
+11. ~~Owner smoke test~~ ✅ **DONE** — passed on all checks (see §0).
+12. ~~Re-run the 8-ticker report~~ ✅ **DONE** — clean after-run saved in Analysis History alongside the defective one.
 
 ---
 
