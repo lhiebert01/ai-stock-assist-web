@@ -132,7 +132,7 @@ export default function StockAnalyzer({ userId, userProfile, onCreditsUsed, onNe
       let plainSummaryText: string | null = null;
       if (result.snapshots.length >= 1) {
         setLoadingStep(result.snapshots.length >= 2 ? 'Generating comparative analysis...' : 'Writing the Bottom Line...');
-        const comp = await getComparativeAnalysis(result.snapshots);
+        const comp = await getComparativeAnalysis(result.snapshots, methodology);
         setComparativeAnalysis(comp.analysis || null);
         setPlainSummary(comp.plain_summary || null);
         comparativeText = comp.analysis || null; // NOT passed to per-stock recs — decouple stays intact

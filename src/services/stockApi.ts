@@ -73,11 +73,13 @@ export async function getRecommendation(
   });
 }
 
-/** Get AI comparative analysis for multiple stocks. */
+/** Get AI comparative analysis + Bottom Line. Methodology must match the
+ * cards (WO-ASA-004.4) so Graham reports narrate Graham verdicts. */
 export async function getComparativeAnalysis(
-  snapshots: StockSnapshot[]
+  snapshots: StockSnapshot[],
+  methodology: Methodology = 'Growth & Quality'
 ): Promise<{ analysis: string; plain_summary?: string }> {
-  return apiPost('/api/comparative', { snapshots });
+  return apiPost('/api/comparative', { snapshots, methodology });
 }
 
 /** Get OHLCV chart data for a ticker. */
