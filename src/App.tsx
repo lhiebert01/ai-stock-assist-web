@@ -269,7 +269,7 @@ export default function App() {
         )}
 
         {view === 'watchlist' && user && (
-          <WatchlistPage onAnalyze={handleDiscoveryAnalyze} />
+          <WatchlistPage userId={user.id} onAnalyze={handleDiscoveryAnalyze} />
         )}
 
         {view === 'history' && user && (

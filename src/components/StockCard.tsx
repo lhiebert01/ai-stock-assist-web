@@ -84,18 +84,23 @@ export default function StockCard({ snapshot, recommendation, methodology, hideC
           </div>
         </div>
 
-        <div className="flex items-center gap-6">
+        <div className="flex items-center gap-4">
+          {/* Prominent labeled save button — results are lost on navigation, so
+              this is the one action that persists a ticker. Amber = save,
+              green = saved. */}
           {onWatchToggle && (
             <button
               onClick={(e) => { e.stopPropagation(); onWatchToggle(); }}
-              className={`p-2 rounded-lg transition-all ${
+              className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-bold border transition-all shrink-0 ${
                 watched
-                  ? 'text-[var(--color-accent)] bg-[var(--color-accent)]/10'
-                  : 'text-[var(--color-text-muted)] hover:text-[var(--color-accent)] hover:bg-[var(--color-accent)]/10'
+                  ? 'bg-emerald-500/15 text-emerald-400 border-emerald-500/40 hover:bg-emerald-500/25'
+                  : 'bg-amber-500/15 text-amber-400 border-amber-500/40 hover:bg-amber-500/25'
               }`}
-              title={watched ? `Remove ${s.ticker} from watchlist` : `Add ${s.ticker} to watchlist`}
+              title={watched ? `${s.ticker} is on your watchlist — click to remove` : `Save ${s.ticker} to your watchlist`}
             >
               <Bookmark className={`w-4 h-4 ${watched ? 'fill-current' : ''}`} />
+              <span className="hidden md:inline">{watched ? 'On Watchlist ✓' : 'Save to Watchlist'}</span>
+              <span className="md:hidden">{watched ? 'Saved ✓' : 'Save'}</span>
             </button>
           )}
           <div className="text-right hidden sm:block">
