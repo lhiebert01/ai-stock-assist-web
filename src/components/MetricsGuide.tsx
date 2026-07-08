@@ -42,6 +42,17 @@ function MetricCard({ name, formula, benchmarks, interpretation, proTip }: {
   );
 }
 
+/** SECTION D framework chips (WO-ASA-002.18): one line tying each guide
+ * section to what the Growth & Quality framework actually scores. */
+function FrameworkChip({ children }: { children: React.ReactNode }) {
+  return (
+    <p className="mt-4 px-4 py-2.5 rounded-lg bg-[var(--color-accent)]/5 border border-[var(--color-accent)]/15 text-xs text-[var(--color-text-secondary)] italic">
+      <span className="not-italic font-bold text-[var(--color-accent)]">Framework: </span>
+      {children}
+    </p>
+  );
+}
+
 export default function MetricsGuide({ onBack }: MetricsGuideProps) {
   return (
     <div className="relative max-w-6xl mx-auto px-4 sm:px-6 py-8">
@@ -66,14 +77,83 @@ export default function MetricsGuide({ onBack }: MetricsGuideProps) {
         </p>
       </motion.div>
 
+      {/* ── SECTION A: intro reframe (WO-ASA-002.18) ── */}
+      <div className="max-w-3xl mx-auto mb-12 bg-[var(--color-surface-2)] border border-[var(--color-border)] rounded-2xl p-6 sm:p-8">
+        <h2 className="text-lg font-bold mb-3">Old ideas, today's numbers.</h2>
+        <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed mb-3">
+          Most of what works in investing was figured out decades ago: pay less than you get, trust cash over
+          accounting stories, and don't lend your money to companies drowning in debt. Benjamin Graham wrote that
+          down in 1949. The principles still hold. The <em>numbers</em> don't — Graham was screening railroads and
+          department stores, not cloud software companies that spend billions on data centers and carry no inventory.
+        </p>
+        <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed">
+          This guide does two things. First, it explains every metric in plain English — what it measures, what
+          "good" looks like today, and the trap hiding inside each one. Second, it shows you exactly how our
+          framework turns those metrics into a verdict, so a BUY, HOLD, or SELL is never a mystery — you can check
+          our math yourself. No finance degree required. No 500-page book. Just the ideas that survived, priced for
+          the market you're actually in.
+        </p>
+      </div>
+
       {/* Jump to section */}
       <div className="flex flex-wrap justify-center gap-2 mb-12">
-        {['Price & Valuation', 'Cash Flow', 'Profitability', 'Balance Sheet', 'Screening Checklist', 'Investment Strategies'].map((s) => (
-          <a key={s} href={`#${s.toLowerCase().replace(/\s+/g, '-').replace('&', 'and')}`} className="px-3 py-1.5 bg-[var(--color-surface-2)] border border-[var(--color-border)] rounded-lg text-xs font-medium text-[var(--color-text-secondary)] hover:text-[var(--color-accent)] hover:border-[var(--color-accent)]/30 transition-all">
-            {s}
+        {[
+          { label: 'Reading the Card', href: '#reading-the-card' },
+          { label: 'Price & Valuation', href: '#price-and-valuation' },
+          { label: 'Cash Flow', href: '#cash-flow' },
+          { label: 'Profitability', href: '#profitability' },
+          { label: 'Balance Sheet', href: '#balance-sheet' },
+          { label: 'How Verdicts Are Scored', href: '#how-verdicts-are-scored' },
+          { label: 'Screening Checklist', href: '#screening-checklist' },
+          { label: 'Investment Strategies', href: '#investment-strategies' },
+        ].map((s) => (
+          <a key={s.label} href={s.href} className="px-3 py-1.5 bg-[var(--color-surface-2)] border border-[var(--color-border)] rounded-lg text-xs font-medium text-[var(--color-text-secondary)] hover:text-[var(--color-accent)] hover:border-[var(--color-accent)]/30 transition-all">
+            {s.label}
           </a>
         ))}
       </div>
+
+      {/* ── SECTION C: Reading the Card (WO-ASA-002.18; AEO anchor target) ── */}
+      <section id="reading-the-card" className="mb-16">
+        <h2 className="text-xl font-bold mb-3">Reading the Card</h2>
+        <p className="text-sm text-[var(--color-text-secondary)] mb-6 max-w-3xl">
+          A few things appear on every analysis card that most stock sites don't show. Each one exists because of a
+          real way numbers can quietly lie.
+        </p>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {[
+            {
+              title: '"Data as of" stamp',
+              body: 'Every card shows one date and one period (usually TTM — the trailing twelve months). Every number on that card comes from the same period. That sounds obvious; it isn\'t. Mixing last quarter\'s profit with last year\'s revenue produces ratios that look precise and mean nothing. One card, one clock.',
+            },
+            {
+              title: 'The currency footnote',
+              body: 'Foreign companies report in their home currency — Danish kroner, Swiss francs, yen. We convert everything to US dollars at a single dated exchange rate, shown at the bottom of the card. Why it matters: a Danish company\'s "309 billion" in revenue is about $47 billion in dollars. Shown raw, that number would make the stock look six times cheaper than it is. If a card can\'t be converted cleanly, we don\'t show it at all.',
+            },
+            {
+              title: 'n/m — "not meaningful"',
+              body: 'Sometimes a ratio isn\'t big or small — it\'s undefined. Example: price-to-free-cash-flow when free cash flow is negative. Dividing a price by a negative number produces something like "−1,070x," which sounds dramatic and means nothing. We print n/m instead, with the reason, and tell you the real story in words (for example: "capex currently exceeds operating cash flow").',
+            },
+            {
+              title: 'NOT RATED',
+              body: 'If we can\'t verify a stock\'s numbers — missing data, or figures that contradict each other — the card says NOT RATED and explains why. Missing data is never treated as bad data. A stock we can\'t score is a stock we won\'t score; it will never receive a SELL just because a feed came up empty.',
+            },
+            {
+              title: 'Two views, one stock',
+              body: 'Every card shows Wall Street\'s consensus next to our framework\'s verdict. When they disagree sharply, the card says so and explains what each side is weighing. Disagreement isn\'t an error — it\'s information.',
+            },
+            {
+              title: 'The bookmark / Save to Watchlist button',
+              body: 'Saves the stock so you can re-run it later at that day\'s prices with one click. Verdicts aren\'t permanent; prices move, quarters get reported, and a HOLD at $367 can be a different proposition at $290.',
+            },
+          ].map((c) => (
+            <div key={c.title} className="bg-[var(--color-surface-2)] border border-[var(--color-border)] rounded-xl p-5">
+              <h4 className="text-sm font-bold mb-2">{c.title}</h4>
+              <p className="text-xs text-[var(--color-text-secondary)] leading-relaxed">{c.body}</p>
+            </div>
+          ))}
+        </div>
+      </section>
 
       {/* ── Section 1: Price & Valuation ── */}
       <section id="price-and-valuation" className="mb-16">
@@ -111,7 +191,7 @@ export default function MetricsGuide({ onBack }: MetricsGuideProps) {
               { color: 'yellow', text: '15–25 Good' },
               { color: 'red', text: '> 35 Expensive' },
             ]}
-            interpretation="How much you pay per dollar of real cash. More reliable than P/E because cash can't be manipulated like accounting earnings. Warren Buffett's preferred metric."
+            interpretation="How much you pay per dollar of real cash. More reliable than P/E because cash can't be manipulated like accounting earnings. Warren Buffett's preferred metric. Our framework's own line is stricter than the general guidance above: under 20x counts as 'cheap' for scoring, and 5% FCF yield is the 'strong' target. See How Verdicts Are Scored."
             proTip="If P/FCF is much higher than P/E, that's an accounting red flag — earnings may be inflated."
           />
           <MetricCard
@@ -157,6 +237,7 @@ export default function MetricsGuide({ onBack }: MetricsGuideProps) {
             proTip="Pair with Dividend Yield. A high yield + high payout ratio is the classic 'yield trap' (think 12% yield with 162% payout — unsustainable). A modest 3% yield with 44% payout is what J&J pays — and what compounds for decades."
           />
         </div>
+        <FrameworkChip>P/FCF under 20x counts toward the score. P/E and P/B are context, not score inputs.</FrameworkChip>
       </section>
 
       {/* ── Section 2: Cash Flow ── */}
@@ -173,7 +254,7 @@ export default function MetricsGuide({ onBack }: MetricsGuideProps) {
               { color: 'red', text: 'Negative or declining' },
             ]}
             interpretation="The cash left after running the business. The truest measure of profitability. This is the cash available to pay dividends, buy back stock, pay down debt, or fund growth without borrowing."
-            proTip="Negative FCF is OK for early-stage growth companies investing heavily. For mature companies, it's a red flag."
+            proTip="Negative FCF is OK for early-stage growth companies investing heavily. For mature companies, it's a red flag. Right now, watch Capex/OCF for big tech: many are spending half or more of their operating cash on AI infrastructure. That suppresses free cash flow without meaning the business is declining — judge which it is before reacting."
           />
           <MetricCard
             name="FCF Yield"
@@ -183,7 +264,7 @@ export default function MetricsGuide({ onBack }: MetricsGuideProps) {
               { color: 'yellow', text: '3–5% Good' },
               { color: 'red', text: '< 0% Burning cash' },
             ]}
-            interpretation="Cash return on the stock price. A 6% FCF Yield means you're getting 6% of your investment back in cash each year. Compare to the 10-year Treasury yield (~4%) — if FCF Yield > 5%, the stock may be undervalued."
+            interpretation="Cash return on the stock price. A 6% FCF Yield means you're getting 6% of your investment back in cash each year. Compare to the current 10-year Treasury yield — if FCF Yield > 5%, the stock may be undervalued."
             proTip="> 8% FCF Yield is excellent — better than most bonds! This is what value investors hunt for."
           />
           <MetricCard
@@ -206,6 +287,7 @@ export default function MetricsGuide({ onBack }: MetricsGuideProps) {
             proTip="This metric is non-negotiable. If consistently < 1.0, investigate: aggressive revenue recognition? Customers not paying? Potential fraud?"
           />
         </div>
+        <FrameworkChip>FCF yield ≥ 5% and OCF/NI ≥ 1.0 — two of the six points live here. Cash is the heart of this framework.</FrameworkChip>
       </section>
 
       {/* ── Section 3: Profitability ── */}
@@ -223,7 +305,7 @@ export default function MetricsGuide({ onBack }: MetricsGuideProps) {
               { color: 'red', text: '< 10% Poor' },
             ]}
             interpretation="How efficiently the company uses shareholder money to generate profit. Above 20% is best-in-class. Tech companies typically 15-30%, banks 10-15%, utilities 8-12%."
-            proTip="Warren Buffett's rule: Look for ROE > 15% consistently over multiple years, not just one good quarter."
+            proTip="Warren Buffett's rule: Look for ROE > 15% consistently over multiple years, not just one good quarter. One more rule: very high ROE (50%+) is usually a leverage artifact, not a talent signal. Debt shrinks the equity denominator and inflates the ratio. Check Debt/Equity next — and prefer ROIC, which can't be flattered by borrowing."
           />
           <MetricCard
             name="Profit Margin"
@@ -236,6 +318,7 @@ export default function MetricsGuide({ onBack }: MetricsGuideProps) {
             interpretation="How much of each revenue dollar becomes profit. Higher margins = pricing power and operational efficiency. Software/Tech: 15-30% typical. Retail: 2-5%. Above 20% is excellent."
           />
         </div>
+        <FrameworkChip>ROE &gt; 15% and profit margin &gt; 10%. High ROE next to high debt gets flagged, not celebrated.</FrameworkChip>
       </section>
 
       {/* ── Section 4: Balance Sheet ── */}
@@ -262,6 +345,8 @@ export default function MetricsGuide({ onBack }: MetricsGuideProps) {
               { color: 'red', text: '> 2.0 High risk' },
             ]}
             interpretation="How leveraged the company is. Lower = safer. Software/Tech: 0.0-0.5 typical. Utilities/REITs: 1.0-2.0 typical (capital intensive). Rising debt + falling revenue = danger."
+            proTip="Note: some analysis cards currently display D/E as a percentage — 623.75 there means 6.24x here. A display update to one convention is in progress."
+            /* <!-- REMOVE-WHEN: WO-ASA-002.5 --> the proTip above is temporary until the D/E convention ships */
           />
           <MetricCard
             name="Current Ratio"
@@ -283,6 +368,58 @@ export default function MetricsGuide({ onBack }: MetricsGuideProps) {
             ]}
             interpretation="Like Current Ratio but stricter — excludes inventory (which might not sell quickly). More conservative measure of liquidity. If both ratios are healthy, the company is in great shape."
           />
+        </div>
+        <FrameworkChip>Health score ≥ 70 of 100. This is the check most otherwise-strong stocks fail.</FrameworkChip>
+      </section>
+
+      {/* ── SECTION B: How Verdicts Are Scored (WO-ASA-002.18; AEO anchor target) ── */}
+      <section id="how-verdicts-are-scored" className="mb-16">
+        <h2 className="text-xl font-bold mb-3">How Verdicts Are Scored</h2>
+        <p className="text-sm text-[var(--color-text-secondary)] mb-4 max-w-3xl">
+          Every stock you analyze gets a verdict — <strong>BUY</strong>, <strong>HOLD</strong>, or{' '}
+          <strong>SELL</strong> — from our Growth &amp; Quality framework. There's no black box. The verdict comes
+          from six checks, each pass worth points toward a 6-point score:
+        </p>
+        <p className="text-sm font-bold font-mono text-center mb-8 px-4 py-3 bg-[var(--color-surface-2)] border border-[var(--color-border)] rounded-xl max-w-xl mx-auto">
+          Score ≥ 4.5 → BUY&nbsp;&nbsp;·&nbsp;&nbsp;Score ≥ 3.0 → HOLD&nbsp;&nbsp;·&nbsp;&nbsp;Below 3.0 → SELL
+        </p>
+        <h3 className="text-base font-bold mb-4">The six checks, in plain English</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+          {[
+            { n: 1, title: 'Free cash flow yield — "How much real cash do I get for my money?"', body: 'FCF Yield ≥ 5% passes. If you paid the full market price for the whole company today, would it hand you back at least 5 cents of spendable cash per dollar, per year? That roughly matches what a safe government bond pays — a stock should clear that bar or have a very good reason.' },
+            { n: 2, title: 'Price-to-free-cash-flow — "Am I overpaying for that cash?"', body: 'P/FCF under 20x passes. This is the price tag on each dollar of real cash the business generates. Under 20x, you\'re paying a reasonable multiple. At 60x or 70x, you\'re betting the cash grows into the price.' },
+            { n: 3, title: 'Earnings quality (OCF/NI) — "Are the profits real?"', body: 'Operating cash flow ≥ reported profit (a ratio of 1.0 or better) passes. Accounting profit can be dressed up; cash arriving in the bank cannot. When a company reports profits it isn\'t collecting in cash, we want to know why before you do anything else.' },
+            { n: 4, title: 'Balance-sheet health — "Can this company survive a bad year?"', body: 'Our 0–100 health score at 70 or above passes. It blends debt load, and two ways of asking "can they pay this month\'s bills." A great business with a fragile balance sheet is a great business someone else may end up owning.' },
+            { n: 5, title: 'Return on equity — "Does management turn your money into profit?"', body: 'ROE above 15% passes. (One caution: very high ROE — think 50%+ — is often a debt trick, not a skill signal. Debt shrinks the equity base, which inflates the ratio. We flag those cases; see the ROE card.)' },
+            { n: 6, title: 'Profit margin — "Does the business keep what it earns?"', body: 'Margin above 10% passes. It means the company has pricing power — customers pay up — rather than fighting for pennies.' },
+          ].map((c) => (
+            <div key={c.n} className="bg-[var(--color-surface-2)] border border-[var(--color-border)] rounded-xl p-5">
+              <h4 className="text-sm font-bold mb-2"><span className="text-[var(--color-accent)]">{c.n}.</span> {c.title}</h4>
+              <p className="text-xs text-[var(--color-text-secondary)] leading-relaxed">{c.body}</p>
+            </div>
+          ))}
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="bg-[var(--color-surface-2)] border border-[var(--color-border)] rounded-xl p-5">
+            <h4 className="text-sm font-bold mb-2">Why we sometimes disagree with Wall Street</h4>
+            <p className="text-xs text-[var(--color-text-secondary)] leading-relaxed">
+              Wall Street ratings lean on momentum and next quarter's earnings estimates. Our framework only cares
+              whether the business generates real cash, keeps honest books, carries survivable debt, and sells at a
+              sane price <em>today</em>. So a stock that has doubled can rate HOLD here while analysts say Strong
+              Buy — and a beaten-down stock can rate BUY while the chart looks ugly. Neither view is "right." They
+              answer different questions: <em>will the price go up soon?</em> versus <em>is this a good business at
+              this price?</em> We show you both on every card so you can pick the lens that matches your horizon.
+            </p>
+          </div>
+          <div className="bg-[var(--color-surface-2)] border border-[var(--color-border)] rounded-xl p-5">
+            <h4 className="text-sm font-bold mb-2">"What Would Change This Verdict"</h4>
+            <p className="text-xs text-[var(--color-text-secondary)] leading-relaxed">
+              Every HOLD and SELL card includes this panel. It's plain arithmetic, not a prediction: the exact
+              price, cash flow, or health score at which the stock would cross into the next rating under today's
+              numbers. If a card says "BUY if price ≤ $105.60 at current FCF," that's simply the price where the 5%
+              cash-yield check passes. Use it as a watch level, not a forecast.
+            </p>
+          </div>
         </div>
       </section>
 
@@ -357,6 +494,7 @@ export default function MetricsGuide({ onBack }: MetricsGuideProps) {
             </div>
           </motion.div>
         </div>
+        <FrameworkChip>This checklist is the human version of what the framework automates. If you only remember one line: OCF/NI below 1.0 means stop and ask why.</FrameworkChip>
       </section>
 
       {/* ── Section 6: Investment Strategies ── */}
@@ -430,6 +568,7 @@ export default function MetricsGuide({ onBack }: MetricsGuideProps) {
             </ul>
           </div>
         </div>
+        <FrameworkChip>Our Growth &amp; Quality verdict is closest to the Value and GARP columns. Growth and Income investors: use the card's raw metrics against your own column's thresholds.</FrameworkChip>
       </section>
 
       {/* ── Pro Tips ── */}
@@ -445,6 +584,25 @@ export default function MetricsGuide({ onBack }: MetricsGuideProps) {
             <li className="flex items-start gap-2"><span className="text-[var(--color-accent)]">6.</span> The OCF/NI ratio is non-negotiable — if &lt; 1.0, be VERY cautious</li>
             <li className="flex items-start gap-2"><span className="text-[var(--color-accent)]">7.</span> Focus on what you understand — avoid complex businesses you can't evaluate</li>
           </ul>
+        </div>
+      </section>
+
+      {/* ── SECTION F: The Short Version (WO-ASA-002.18 closer) ── */}
+      <section id="the-short-version" className="mb-12">
+        <div className="bg-[var(--color-surface-2)] border border-[var(--color-border)] rounded-2xl p-8">
+          <h3 className="text-lg font-bold mb-4">The Short Version</h3>
+          <p className="text-sm text-[var(--color-text-secondary)] mb-4">If you retain nothing else from this page:</p>
+          <ol className="space-y-3 text-sm text-[var(--color-text-secondary)]">
+            <li><span className="font-bold text-[var(--color-text-primary)]">1. Cash is the truth serum.</span> Profits are an opinion; cash in the bank is a fact. OCF/NI below 1.0 means the opinion and the fact disagree — find out why.</li>
+            <li><span className="font-bold text-[var(--color-text-primary)]">2. Price is what you pay for cash, not for a story.</span> FCF yield tells you what the business actually hands back per dollar invested. Compare it to what a bond pays.</li>
+            <li><span className="font-bold text-[var(--color-text-primary)]">3. Debt decides who survives.</span> A wonderful business with a fragile balance sheet is a wonderful business you might not own for long.</li>
+            <li><span className="font-bold text-[var(--color-text-primary)]">4. One date per card, one currency per card, and "n/m" when a number would lie.</span> If a stat can't be verified, we say so instead of guessing.</li>
+            <li><span className="font-bold text-[var(--color-text-primary)]">5. Two honest views beat one confident one.</span> Wall Street answers "will it go up soon?" We answer "is it a good business at this price?" You get both.</li>
+          </ol>
+          <p className="text-sm text-[var(--color-text-secondary)] mt-5 pt-4 border-t border-[var(--color-border)]/50">
+            Graham needed a book because his readers had to compute all of this by hand from paper annual reports.
+            You don't. The card does the arithmetic; this guide makes sure you understand what it's telling you.
+          </p>
         </div>
       </section>
     </div>

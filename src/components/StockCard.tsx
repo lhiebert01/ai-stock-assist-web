@@ -259,12 +259,22 @@ export default function StockCard({ snapshot, recommendation, methodology, hideC
                     <Activity className="w-4 h-4 text-[var(--color-accent)]" />
                     <h4 className="text-sm font-bold">Cash Flow Quality</h4>
                   </div>
-                  <MetricRow label="FCF Yield" value={cf.fcf_yield != null ? `${cf.fcf_yield.toFixed(2)}%` : '—'} />
-                  <MetricRow label="P/FCF" value={cf.p_fcf != null ? `${cf.p_fcf.toFixed(2)}x` : '—'} />
+                  <MetricRow
+                    label="FCF Yield"
+                    value={cf.fcf_yield != null ? `${cf.fcf_yield.toFixed(2)}%` : '—'}
+                    sub={cf.free_cash_flow != null && cf.free_cash_flow < 0 ? 'negative FCF' : undefined}
+                  />
+                  {/* A price multiple over NEGATIVE cash flow is undefined, not a
+                      small number — render n/m with the reason (WO-ASA-002.2) */}
+                  <MetricRow
+                    label="P/FCF"
+                    value={cf.p_fcf != null ? `${cf.p_fcf.toFixed(2)}x` : (cf.free_cash_flow != null && cf.free_cash_flow < 0 ? 'n/m' : '—')}
+                    sub={cf.p_fcf == null && cf.free_cash_flow != null && cf.free_cash_flow < 0 ? 'negative FCF' : undefined}
+                  />
                   <MetricRow
                     label="OCF/NI Ratio"
                     value={cf.ocf_to_ni_ratio != null ? `${cf.ocf_to_ni_ratio.toFixed(2)}x` : '—'}
-                    sub={cf.ocf_to_ni_ratio != null ? (cf.ocf_to_ni_ratio >= 1.0 ? 'Strong' : 'Weak') : undefined}
+                    sub={cf.ocf_to_ni_ratio != null ? (cf.ocf_to_ni_ratio >= 1.0 ? 'Quality' : cf.ocf_to_ni_ratio >= 0.8 ? 'Caution' : 'Red Flag') : undefined}
                   />
                   <MetricRow label="Free Cash Flow" value={humanMoney(cf.free_cash_flow)} />
                   <MetricRow label="Operating CF" value={humanMoney(cf.operating_cash_flow)} />

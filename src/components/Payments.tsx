@@ -148,9 +148,11 @@ export default function Payments({ user, userProfile, onAuthRequired, onBack }: 
       {/* Trust signals */}
       <div className="mt-12 text-center space-y-2">
         <div className="flex items-center justify-center gap-6 text-xs text-[var(--color-text-muted)]">
+          {/* "100% Money-Back Guarantee" removed (WO-ASA-002.14): the claim had
+              no fulfillment flow behind it. Reinstate only WITH a real refund
+              path (Stripe refund + policy page + support macro). */}
           <span className="flex items-center gap-1"><DollarSign className="w-3 h-3" /> Secure payment via Stripe</span>
-          <span>100% Money-Back Guarantee</span>
-          <span>No subscription</span>
+          <span>No subscription — buy credits only when you need them</span>
         </div>
       </div>
     </div>

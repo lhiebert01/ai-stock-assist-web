@@ -101,14 +101,16 @@ export default function ExecutiveSummary({ snapshots, recommendations, methodolo
           })}
         </div>
 
-        {/* Key Highlights */}
+        {/* Key Highlights. At N=2, "Best" over a two-horse race is technically
+            true and rhetorically misleading — label as a two-way comparison
+            (WO-ASA-002.19 #6). Never shown at N=1. */}
         {snapshots.length >= 2 && (
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             {bestPerformer && (
               <div className="flex items-center gap-3 px-4 py-3 bg-[var(--color-surface-1)] rounded-xl border border-[var(--color-border)]/50">
                 <TrendingUp className="w-5 h-5 text-emerald-400 shrink-0" />
                 <div className="min-w-0">
-                  <div className="text-xs text-[var(--color-text-muted)]">Best Performer (YTD)</div>
+                  <div className="text-xs text-[var(--color-text-muted)]">{snapshots.length === 2 ? 'Stronger YTD (of the two)' : 'Best Performer (YTD)'}</div>
                   <div className="font-bold text-sm truncate">
                     {bestPerformer.ticker}{' '}
                     <span className="text-emerald-400 font-mono">{pctFmt(bestPerformer.changes.ytd_pct)}</span>
@@ -120,7 +122,7 @@ export default function ExecutiveSummary({ snapshots, recommendations, methodolo
               <div className="flex items-center gap-3 px-4 py-3 bg-[var(--color-surface-1)] rounded-xl border border-[var(--color-border)]/50">
                 <DollarSign className="w-5 h-5 text-yellow-400 shrink-0" />
                 <div className="min-w-0">
-                  <div className="text-xs text-[var(--color-text-muted)]">Best Value (P/E)</div>
+                  <div className="text-xs text-[var(--color-text-muted)]">{snapshots.length === 2 ? 'Lower P/E (of the two)' : 'Best Value (P/E)'}</div>
                   <div className="font-bold text-sm truncate">
                     {bestValue.ticker}{' '}
                     <span className="text-yellow-400 font-mono">{bestValue.trailing_pe?.toFixed(1)}x</span>
@@ -132,7 +134,7 @@ export default function ExecutiveSummary({ snapshots, recommendations, methodolo
               <div className="flex items-center gap-3 px-4 py-3 bg-[var(--color-surface-1)] rounded-xl border border-[var(--color-border)]/50">
                 <Banknote className="w-5 h-5 text-cyan-400 shrink-0" />
                 <div className="min-w-0">
-                  <div className="text-xs text-[var(--color-text-muted)]">Strongest Cash Flow</div>
+                  <div className="text-xs text-[var(--color-text-muted)]">{snapshots.length === 2 ? 'Higher FCF Yield (of the two)' : 'Strongest Cash Flow'}</div>
                   <div className="font-bold text-sm truncate">
                     {bestCashFlow.ticker}{' '}
                     <span className="text-cyan-400 font-mono">{bestCashFlow.cash_flow.fcf_yield?.toFixed(2)}% FCF</span>

@@ -125,15 +125,17 @@ export default function StockAnalyzer({ userId, userProfile, onCreditsUsed, onNe
         return;
       }
 
-      // Step 2: Comparative analysis (if 2+ stocks)
+      // Step 2: Comparative analysis + Bottom Line. At N=1 the backend returns
+      // no comparative text (nothing to rank) and a single-stock-voice Bottom
+      // Line instead (WO-ASA-002.19).
       let comparativeText: string | null = null; // kept ONLY for the history save
       let plainSummaryText: string | null = null;
-      if (result.snapshots.length >= 2) {
-        setLoadingStep('Generating comparative analysis...');
+      if (result.snapshots.length >= 1) {
+        setLoadingStep(result.snapshots.length >= 2 ? 'Generating comparative analysis...' : 'Writing the Bottom Line...');
         const comp = await getComparativeAnalysis(result.snapshots);
-        setComparativeAnalysis(comp.analysis);
+        setComparativeAnalysis(comp.analysis || null);
         setPlainSummary(comp.plain_summary || null);
-        comparativeText = comp.analysis; // NOT passed to per-stock recs — decouple stays intact
+        comparativeText = comp.analysis || null; // NOT passed to per-stock recs — decouple stays intact
         plainSummaryText = comp.plain_summary || null;
       }
 
