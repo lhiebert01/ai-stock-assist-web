@@ -6,7 +6,7 @@ import {
   ExternalLink, AlertTriangle, Bookmark,
 } from 'lucide-react';
 import type { StockSnapshot, AIRecommendation, Methodology } from '../types/stock';
-import { formatPrice, humanMoney, pctFmt, changeColor, ratingColor, isFiniteNum } from '../lib/formatters';
+import { formatPrice, humanMoney, pctFmt, changeColor, ratingColor, isFiniteNum, formatDebtEquity } from '../lib/formatters';
 import PriceChart from './PriceChart';
 import RecommendationCard from './RecommendationCard';
 import TimingPanel from './TimingPanel';
@@ -302,7 +302,7 @@ export default function StockCard({ snapshot, recommendation, methodology, hideC
                   </div>
                   <MetricRow label="Health Grade" value={bsGrade} sub={bsHealth != null ? `${bsHealth}/100` : undefined} />
                   <MetricRow label="Current Ratio" value={sm.current_ratio != null ? `${sm.current_ratio.toFixed(2)}x` : '—'} />
-                  <MetricRow label="Debt/Equity" value={sm.debt_to_equity != null ? `${sm.debt_to_equity.toFixed(2)}` : '—'} />
+                  <MetricRow label="Debt/Equity" value={formatDebtEquity(sm.debt_to_equity)} />
                   <MetricRow label="Quick Ratio" value={sm.quick_ratio != null ? `${sm.quick_ratio.toFixed(2)}x` : '—'} />
                   <MetricRow label="Div Yield" value={sm.dividend_yield != null ? `${(sm.dividend_yield * 100).toFixed(2)}%` : '—'} />
                   <MetricRow

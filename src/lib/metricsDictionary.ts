@@ -27,7 +27,7 @@
  *  - Payout Ratio ADDED to the sidebar (the "is the dividend safe" check)
  */
 
-export const DEFINITIONS_VERSION = 'v1.1';
+export const DEFINITIONS_VERSION = 'v1.2';
 
 export type TierColor = 'green' | 'yellow' | 'red';
 export interface MetricTier {
@@ -235,12 +235,12 @@ export const METRICS: MetricDef[] = [
     oneLiner: 'How leveraged the company is. Lower = safer.',
     interpretation: 'How leveraged the company is. Lower = safer. Software/Tech: 0.0-0.5 typical. Utilities/REITs: 1.0-2.0 typical (capital intensive). Rising debt + falling revenue = danger.',
     tiers: [
-      { color: 'green', text: '< 0.5 Low debt' },
-      { color: 'yellow', text: '0.5–1.0 Moderate' },
-      { color: 'red', text: '> 2.0 High risk' },
+      { color: 'green', text: '< 0.5x Low debt' },
+      { color: 'yellow', text: '0.5–1.0x Moderate' },
+      { color: 'red', text: '> 2.0x High risk' },
     ],
-    proTip: 'Note: some analysis cards currently display D/E as a percentage — 623.75 there means 6.24x here. A display update to one convention is in progress.',
-    framework: 'feeds Health Score',
+    proTip: 'Shown everywhere as a ratio with an "x" (1.32x means the company owes $1.32 of debt per $1 of equity). Compare within a sector — utilities and REITs carry more debt by nature than software. This is a general guide; D/E feeds the Health Score rather than scoring directly.',
+    framework: 'feeds Health Score (general guide)',
   },
   {
     id: 'current', name: 'Current Ratio',

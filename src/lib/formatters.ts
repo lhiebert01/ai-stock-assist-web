@@ -74,6 +74,15 @@ export const FRAMEWORK_EXPLAINERS: Record<string, string> = {
     'standards and can rate most large modern companies HOLD or SELL; useful for comparison, not the only word.',
 };
 
+/** Debt/Equity — ONE convention everywhere (WO-ASA-METRICS-QUALITY): the ratio
+ * with an "x" (e.g. 1.32x). The upstream value is a PERCENT (yfinance style:
+ * 132.33 = 132.33% = 1.32x), so divide by 100. Cards, tables, guide, and reports
+ * all format through here so the convention can never diverge again. */
+export function formatDebtEquity(x: number | null | undefined): string {
+  if (x == null || !isFinite(x)) return '—';
+  return `${(x / 100).toFixed(2)}x`;
+}
+
 /** Format price: $123.45 */
 export function formatPrice(x: number | null | undefined): string {
   if (x == null || !isFinite(x)) return '—';
