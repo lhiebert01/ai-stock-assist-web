@@ -16,22 +16,35 @@
   comment (the story), 3–6 gallery images, and a launch-day heartbeat across channels.
 - PH day = drop the regular heartbeat post and point all channels at the PH page.
 
-## Recommended queue (order + rationale)
-1. **AI Stock Assist** — package READY, ride the relaunch-week momentum (submit the
-   Tue/Wed after the announcement publishes; refresh copy first).
-2. **AEO Analyzers** — timely category (AI search), strong self-demo hook ("we scored
-   our own PH page").
-3. **AdFlash** — clean 30-second wow demo; SMB audience is PH-native.
-4. **SanctumShield** — B2B governance angle; pair with an Academy cross-mention in
-   the maker comment (don't launch both separately in the same month).
-5. **SanctumShield Academy** — 3–4 weeks after SanctumShield, as the "learn the
+## Traction signals (from Stripe, Jul 8 review) — lean into what's moving
+- **QuizShowdown: a REAL organic purchase THIS WEEK** (stranger bought a $4.99
+  starter pack Jul 7). Freshest paying-customer signal in the portfolio.
+- **AI Stock Assist: repeat organic buyers** (one customer bought 3 packs over
+  May; another $9.99 in June) + the relaunch story.
+- **BeyondPoise: most recent API activity in the portfolio** (key used Jul 6;
+  active subscriptions) — Lindsay reads real interest here.
+- BookMobile: organic trial signup (own launch track, not this queue).
+- Everything else: activity is mostly self-testing — launch to CREATE interest,
+  after the traction apps have ridden theirs.
+
+## Recommended queue (traction-weighted)
+1. **AI Stock Assist** — package READY; ride relaunch-week momentum (refresh copy
+   with the trust-layer rebuild first).
+2. **QuizShowdown Live** — strike while there's a paying stranger this week;
+   demo-able and fun; fastest package to build.
+3. **BeyondPoise** — lean into the current interest; the presence/practice story
+   is strong maker-comment material.
+4. **AEO Analyzers** — timely category (AI search); "we scored our own PH page" hook.
+5. **AdFlash** — clean 30-second wow demo; SMB audience is PH-native.
+6. **SanctumShield** — B2B governance angle; Academy cross-mentioned in the maker
+   comment (don't launch both separately in the same month).
+7. **SanctumShield Academy** — 3–4 weeks after SanctumShield, as the "learn the
    skill" follow-up.
-6. **Character Canvas** — creator audience; gallery images are the product.
-7. **QuizShowdown Live** — demo-able, fun, good for a lighter slot.
-8. **MacroLens** — newsletter/data product; time near a big macro week if possible.
-9. **CheckRide107** — niche but passionate audience; PH aviation/drone tags.
-10. **BeyondPoise / HeroicVerse / Neo-Aesop / iAppreciateYou** — season 2 of the
-    queue; decide combined vs separate when reached.
+8. **Character Canvas** — creator audience; gallery images are the product.
+9. **MacroLens** — time near a big macro week if possible.
+10. **CheckRide107** — niche but passionate audience; PH aviation/drone tags.
+11. **HeroicVerse / Neo-Aesop / iAppreciateYou** — season 2 of the queue; decide
+    combined vs separate when reached.
 - **BookMobile** — after its own dedicated launch, on its own schedule.
 - Joy of Chemistry / LifeSci-Shield — join the queue at their launches.
 
