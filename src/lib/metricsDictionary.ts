@@ -27,7 +27,7 @@
  *  - Payout Ratio ADDED to the sidebar (the "is the dividend safe" check)
  */
 
-export const DEFINITIONS_VERSION = 'v1.0';
+export const DEFINITIONS_VERSION = 'v1.1';
 
 export type TierColor = 'green' | 'yellow' | 'red';
 export interface MetricTier {
@@ -48,7 +48,7 @@ export interface MetricDef {
   proTip?: string;
   /** Which framework check consumes it (display copy). */
   framework?: string;
-  section: 'valuation' | 'cashflow' | 'profitability' | 'balance';
+  section: 'valuation' | 'cashflow' | 'profitability' | 'balance' | 'timing';
 }
 
 export const METRICS: MetricDef[] = [
@@ -266,6 +266,79 @@ export const METRICS: MetricDef[] = [
     ],
     framework: 'feeds Health Score',
   },
+
+  // ── Timing Signals (WO-ASA-TIMING-COPY Rev B) ─────────────────────
+  {
+    id: 'timing-overview', name: 'Timing Signals (BETA)', shortName: 'Timing', section: 'timing',
+    oneLiner: 'A separate "when" read shown beside the verdict — it may agree or disagree.',
+    interpretation: 'Timing describes named signals and their evidence — not advice, not a prediction. The verdict answers what and why; timing describes when. Signals still being tested carry a BETA badge while the validation study is in progress. Signals we cannot yet compute for a stock are hidden, and a footnote shows how many of five are being checked.',
+    tiers: [
+      { color: 'green', text: 'No warning signs' },
+      { color: 'yellow', text: 'Several warning signs on' },
+      { color: 'green', text: 'Entry conditions aligned' },
+    ],
+    framework: 'Timing · beta',
+  },
+  {
+    id: 'better-price-range', name: 'Better-price range', section: 'timing',
+    oneLiner: 'The price band the framework treats as a more constructive place to enter.',
+    interpretation: "A range around the stock's recent typical price. When today's price sits above the top of the range, the stock is extended and a lower entry may become available if it returns to the range. Shown in dollars with a marker for the current price.",
+    tiers: [
+      { color: 'green', text: 'In or below the range' },
+      { color: 'yellow', text: 'Above the range (extended)' },
+    ],
+    framework: 'Timing',
+  },
+  {
+    id: 'tracking-anchor', name: 'Tracking starting point', section: 'timing',
+    oneLiner: "One click marks today's price as your starting point — no typing.",
+    interpretation: 'From your start, we show how the stock trades versus the average price paid since then, weighted by trading volume. This is a volume-weighted average of prices since your start — not a 50-day average, and not a statement of over- or under-valuation. Reset anytime: Stop, then Begin again.',
+    tiers: [
+      { color: 'green', text: 'Holding above your starting point' },
+      { color: 'yellow', text: 'Below your starting point' },
+    ],
+    framework: 'Timing',
+  },
+  {
+    id: 'timing-bargain', name: 'Still a bargain / No longer a bargain', section: 'timing',
+    oneLiner: 'Whether price has caught up to what the framework estimates the business is worth.',
+    interpretation: "Green when a margin of safety remains; amber when price is at or above the framework's estimate of fair value (shown as a percentage of that estimate).",
+    tiers: [
+      { color: 'green', text: 'Still a bargain' },
+      { color: 'yellow', text: 'No longer a bargain' },
+    ],
+    framework: 'Timing · exit signal',
+  },
+  {
+    id: 'timing-trend', name: 'Long-term trend', section: 'timing',
+    oneLiner: 'Whether the stock is above its long-term average and keeping pace with the market.',
+    interpretation: 'Green when the trend is healthy; amber on a downtrend — below its long-term average and losing ground against the market.',
+    tiers: [
+      { color: 'green', text: 'Long-term trend healthy' },
+      { color: 'yellow', text: 'Downtrend' },
+    ],
+    framework: 'Timing',
+  },
+  {
+    id: 'timing-rated', name: 'Rated attractive', section: 'timing',
+    oneLiner: 'Whether the framework currently rates the stock attractive.',
+    interpretation: "A green light for entry when the framework's rating is attractive; otherwise it shows the current rating.",
+    tiers: [
+      { color: 'green', text: 'Rated attractive' },
+      { color: 'yellow', text: 'Not currently attractive' },
+    ],
+    framework: 'Timing · entry signal',
+  },
+  {
+    id: 'timing-overstretched', name: 'Price not overstretched', section: 'timing',
+    oneLiner: 'Whether price is near its typical recent level rather than stretched above it.',
+    interpretation: 'A green light when price is near its typical recent level (roughly within five percent of its 50-day average); amber when stretched above its usual level.',
+    tiers: [
+      { color: 'green', text: 'Not overstretched' },
+      { color: 'yellow', text: 'Stretched above usual' },
+    ],
+    framework: 'Timing · entry signal',
+  },
 ];
 
 export const SECTIONS: { id: MetricDef['section']; title: string; emoji: string; chip: string }[] = [
@@ -273,6 +346,7 @@ export const SECTIONS: { id: MetricDef['section']; title: string; emoji: string;
   { id: 'cashflow', title: 'Cash Flow Metrics', emoji: '2️⃣', chip: 'FCF yield ≥ 5% and OCF/NI ≥ 1.0 — two of the six points live here. Cash is the heart of this framework.' },
   { id: 'profitability', title: 'Profitability & Efficiency', emoji: '3️⃣', chip: 'ROE > 15% and profit margin > 10%. High ROE next to high debt gets flagged, not celebrated.' },
   { id: 'balance', title: 'Balance Sheet Health', emoji: '4️⃣', chip: 'Health score ≥ 70 of 100. This is the check most otherwise-strong stocks fail.' },
+  { id: 'timing', title: 'Timing Signals', emoji: '⏱️', chip: 'A separate "when" read beside the verdict (BETA). State-dependent titles; jargon lives in tooltips; signals not yet computable are hidden.' },
 ];
 
 /** "Two Lenses" header (sidebar + tooltip surfaces). */
