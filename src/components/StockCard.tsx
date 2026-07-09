@@ -382,7 +382,7 @@ export default function StockCard({ snapshot, recommendation, methodology, hideC
               {/* Timing — separate, side-by-side dimension (WO-ASA-TIMING). Never
                   merged with the verdict; may agree or disagree. */}
               {recommendation?.timing && (
-                <TimingPanel timing={recommendation.timing} />
+                <TimingPanel timing={recommendation.timing} snapshot={snapshot} methodology={methodology} />
               )}
             </div>
           </motion.div>
