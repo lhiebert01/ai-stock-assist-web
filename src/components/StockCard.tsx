@@ -9,6 +9,7 @@ import type { StockSnapshot, AIRecommendation, Methodology } from '../types/stoc
 import { formatPrice, humanMoney, pctFmt, changeColor, ratingColor, isFiniteNum } from '../lib/formatters';
 import PriceChart from './PriceChart';
 import RecommendationCard from './RecommendationCard';
+import TimingPanel from './TimingPanel';
 import VerdictReconciliation from './VerdictReconciliation';
 
 interface StockCardProps {
@@ -376,6 +377,12 @@ export default function StockCard({ snapshot, recommendation, methodology, hideC
               {/* AI Recommendation */}
               {recommendation && (
                 <RecommendationCard recommendation={recommendation} methodology={methodology} />
+              )}
+
+              {/* Timing — separate, side-by-side dimension (WO-ASA-TIMING). Never
+                  merged with the verdict; may agree or disagree. */}
+              {recommendation?.timing && (
+                <TimingPanel timing={recommendation.timing} />
               )}
             </div>
           </motion.div>

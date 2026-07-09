@@ -102,6 +102,44 @@ export interface AIRecommendation {
   state?: string;
   /** Engine-emitted scoring version (provenance rule — never inferred). */
   scoring_version?: string;
+  /** WO-ASA-TIMING — separate, side-by-side timing dimension (never merged with
+   *  the verdict). Best-effort on the backend; may be null. */
+  timing?: TimingData | null;
+}
+
+/** One timing condition (exit E1–E5 or entry N1–N4). Mirrors the backend
+ *  `to_dict()` projection; the frontend renders these, never re-derives them. */
+export interface TimingCondition {
+  id: string;
+  label: string;
+  class: string;
+  status: 'active' | 'inactive' | 'not_available';
+  evidence: string;
+  persistence_days?: number | null;
+}
+
+/** Tier-1 Patience Refinement — entry zone in price terms. */
+export interface TimingEntryZone {
+  low: number;
+  high: number;
+  current: number;
+  /** signed: > 0 above the zone (extended), < 0 below, 0 inside. */
+  distance_pct: number;
+}
+
+export interface TimingData {
+  state: string;
+  headline: string;
+  exit_conditions: TimingCondition[];
+  entry_conditions: TimingCondition[];
+  exit_active: number;
+  exit_tracked: number;
+  entry_active: number;
+  entry_tracked: number;
+  entry_zone?: TimingEntryZone | null;
+  timing_version: string;
+  /** "in_progress" until WO-VAL-Timing publishes — gates all "signal" language. */
+  validation_state: string;
 }
 
 /** Server-side credit accounting attached to /api/analyze responses.
