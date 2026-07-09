@@ -9,7 +9,11 @@
 
 # The Rebuild: One Week, Every Number Accountable
 
-On the morning of July 8th, we did what we ask our users to do: we checked our own math.
+AI Stock Assist exists to do one job for you: compress the research legwork of fundamental analysis — pulling the figures, computing the ratios, cross-checking periods and currencies, organizing it all into a decision-ready card — from hours per ticker into about a minute for up to ten at once. Value, growth, income, and momentum investors read the same card differently, and it's built to serve all of them: framework verdicts for the disciplined, raw verified metrics for the do-it-yourselfers, precomputed watch levels for the patient, Wall Street's consensus alongside for contrast.
+
+For any of that to be worth your minute, every number on the card has to be trustworthy — grounded, checked, dated, and reproducible by you. This post is about the week we spent making that promise enforceable instead of aspirational. It starts with us doing what we ask you to do.
+
+On the morning of July 8th, we checked our own math.
 
 We ran two reports through AI Stock Assist and read them the way a skeptical reader would — recomputing the ratios from the raw figures on the page. Most of it held. Some of it didn't. One foreign stock's revenue was displayed in its home currency but labeled as dollars, which made the company look several times cheaper than it is. One card mixed figures from different reporting periods, producing ratios that looked precise and meant nothing. And a ticker that doesn't exist — "AWS" is a business segment, not a listed security — had been scored anyway, converting an empty data feed into a verdict.
 
@@ -42,6 +46,12 @@ Fixes claimed are not fixes proven, so we re-ran everything. The batches that fa
 The claim this product makes is narrow and checkable: **the card does the arithmetic; you make the decision.** For that to mean anything, you have to be able to check the arithmetic — so every card shows its data date, its currency handling, its per-check results, what's missing, and what would change the verdict. A reader with a spreadsheet can reproduce any score on any card. That's the standard, and this week it stopped being an aspiration and became enforcement: gates in the code, one dictionary for every number, and a log that can't be quietly edited.
 
 Two honest limits, so this doesn't read like a victory lap. First, data feeds will fail again — that's their nature; what changed is that failures now degrade loudly instead of lying quietly. Second, the scoring thresholds themselves are judgment, not physics. We think some of them are too strict for how modern balance sheets work, and rather than assert that, we're preparing to test it — publicly, with the success criteria written down before the results exist. More on that when the pre-registration is ready.
+
+## What this means for you
+
+Strip away the engineering and here's the bottom line. **Hours become minutes** — the legwork that takes an afternoon per ticker by hand now takes about a minute for ten, and the output isn't a summary, it's the worked arithmetic. **One set of verified facts serves every decision style** — whether you screen on value, growth, income, or momentum, the card gives you the framework verdict, the raw metrics for your own thresholds, and the analyst consensus for contrast, all from one dated snapshot. **Your watch levels come precomputed** — every HOLD and SELL states the exact price at which the verdict would flip under today's numbers, so you can circle a figure and bring the waiting. And **you always know how much weight a verdict can bear** — when data is missing, the card says so, names the gap, and lowers its stated confidence rather than bluffing.
+
+None of this predicts anything, and none of it is advice. It's assisted expertise: the tool gets you to the informed-judgment stage faster, and the judgment — horizon, temperament, position size — stays yours.
 
 ## What's next in this series
 
@@ -101,6 +111,19 @@ There's a management-theory angle to where this product goes next — Sloan adjo
 6. Sidebar + guide footers both showing "Definitions v1.0"
 7. Pre-flight panel: "2 symbols need your attention — no credits were used"
 8. History view: "Saved analysis from [date] — prices reflect that point in time" banner
+
+## §5 — IMAGE PLAN
+
+**HERO (also OG/social card):** hero-relaunch-1200x630.svg (delivered alongside this file; convert to PNG for Substack/LinkedIn upload). Motif: receipt checklist + stylized verified card in app palette.
+Alt text: "Dark analysis card labeled CHECKED with a dated data stamp, beside a receipt of verification promises: one clock, one currency, gaps named, scores reproducible."
+Optional illustrated alternate (if you prefer your AI-image style): PROMPT — "A clean modern financial analysis card glowing on a dark navy desk, a vintage paper receipt curling beside it with green checkmarks, single desk lamp, cyan and emerald accents, minimal, editorial illustration, no text" — then overlay the title in your header workflow.
+
+**EMBEDDED (in order of appearance, all from §4 shot-list):**
+1. After "one currency" paragraph → NVO card FX footnote (shot 1). Caption: "One dated conversion, printed on the card."
+2. After "Always an answer" paragraph → caveated-card screenshot (shot 3). Caption: "Scored on what verified; gaps named; confidence stated."
+3. After "smaller things" paragraph → framework banner in a printed PDF (shot 5). Caption: "The methodology travels with the page."
+4. Before the CTA close → pre-flight panel (shot 7). Caption: "Two problems, one panel, zero credits."
+LinkedIn short version: hero only. Changelog: no image.
 
 ## CLAIMS CHECK NOTES (for register grep)
 - No superlatives, no "only app," no predictions, no urgency. ✓

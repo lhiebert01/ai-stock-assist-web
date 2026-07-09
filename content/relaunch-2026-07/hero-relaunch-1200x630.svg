@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0b1220"/>
+      <stop offset="1" stop-color="#101b30"/>
+    </linearGradient>
+    <linearGradient id="cardEdge" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#22d3ee"/>
+      <stop offset="1" stop-color="#34d399"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="630" fill="url(#bg)"/>
+
+  <!-- faint grid -->
+  <g stroke="#1c2a44" stroke-width="1" opacity="0.55">
+    <line x1="0" y1="140" x2="1200" y2="140"/>
+    <line x1="0" y1="260" x2="1200" y2="260"/>
+    <line x1="0" y1="380" x2="1200" y2="380"/>
+    <line x1="0" y1="500" x2="1200" y2="500"/>
+    <line x1="200" y1="0" x2="200" y2="630"/>
+    <line x1="440" y1="0" x2="440" y2="630"/>
+    <line x1="680" y1="0" x2="680" y2="630"/>
+    <line x1="920" y1="0" x2="920" y2="630"/>
+  </g>
+
+  <!-- headline -->
+  <text x="80" y="150" font-family="Georgia, 'Times New Roman', serif" font-size="58" font-weight="bold" fill="#f1f5f9">The Rebuild</text>
+  <text x="80" y="215" font-family="Georgia, 'Times New Roman', serif" font-size="34" fill="#94a3b8">One week. Every number accountable.</text>
+
+  <!-- underline accent -->
+  <rect x="80" y="240" width="220" height="4" rx="2" fill="url(#cardEdge)"/>
+
+  <!-- receipt lines -->
+  <g font-family="'Courier New', monospace" font-size="24" fill="#cbd5e1">
+    <g transform="translate(80,310)">
+      <circle cx="12" cy="-8" r="12" fill="none" stroke="#34d399" stroke-width="2.5"/>
+      <path d="M6 -8 l4 4 l8 -9" fill="none" stroke="#34d399" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="38" y="0">One card, one clock — single dated period</text>
+    </g>
+    <g transform="translate(80,362)">
+      <circle cx="12" cy="-8" r="12" fill="none" stroke="#34d399" stroke-width="2.5"/>
+      <path d="M6 -8 l4 4 l8 -9" fill="none" stroke="#34d399" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="38" y="0">One currency, converted and dated</text>
+    </g>
+    <g transform="translate(80,414)">
+      <circle cx="12" cy="-8" r="12" fill="none" stroke="#34d399" stroke-width="2.5"/>
+      <path d="M6 -8 l4 4 l8 -9" fill="none" stroke="#34d399" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="38" y="0">Gaps named, never guessed</text>
+    </g>
+    <g transform="translate(80,466)">
+      <circle cx="12" cy="-8" r="12" fill="none" stroke="#34d399" stroke-width="2.5"/>
+      <path d="M6 -8 l4 4 l8 -9" fill="none" stroke="#34d399" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="38" y="0">Every score reproducible by you</text>
+    </g>
+  </g>
+
+  <!-- stylized analysis card -->
+  <g transform="translate(700,270)">
+    <rect x="0" y="0" width="420" height="280" rx="16" fill="#0f1a2e" stroke="#233657" stroke-width="1.5"/>
+    <rect x="0" y="0" width="6" height="280" rx="3" fill="url(#cardEdge)"/>
+    <text x="30" y="46" font-family="'Courier New', monospace" font-size="26" font-weight="bold" fill="#f1f5f9">TICKER</text>
+    <rect x="140" y="24" width="86" height="32" rx="8" fill="#0d3b2e" stroke="#34d399" stroke-width="1.5"/>
+    <text x="183" y="46" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="bold" fill="#34d399" text-anchor="middle">CHECKED</text>
+
+    <g font-family="Arial, Helvetica, sans-serif" font-size="17" fill="#94a3b8">
+      <text x="30" y="92">FCF Yield</text><text x="390" y="92" text-anchor="end" fill="#e2e8f0" font-family="'Courier New', monospace">5.29%</text>
+      <text x="30" y="126">P/FCF</text><text x="390" y="126" text-anchor="end" fill="#e2e8f0" font-family="'Courier New', monospace">18.9x</text>
+      <text x="30" y="160">OCF/NI</text><text x="390" y="160" text-anchor="end" fill="#e2e8f0" font-family="'Courier New', monospace">1.78x</text>
+    </g>
+    <line x1="30" y1="184" x2="390" y2="184" stroke="#233657" stroke-width="1"/>
+    <text x="30" y="216" font-family="Arial, Helvetica, sans-serif" font-size="15" fill="#22d3ee">Data as of 2026-03-31 (TTM)</text>
+    <text x="30" y="244" font-family="Arial, Helvetica, sans-serif" font-size="15" fill="#22d3ee">Analyzed with: Growth &amp; Quality</text>
+  </g>
+
+  <!-- footer line -->
+  <text x="80" y="580" font-family="Georgia, 'Times New Roman', serif" font-size="24" font-style="italic" fill="#64748b">The card does the arithmetic; you make the decision.</text>
+  <text x="1120" y="580" font-family="Arial, Helvetica, sans-serif" font-size="18" fill="#475569" text-anchor="end">aistockassist.com</text>
+</svg>
