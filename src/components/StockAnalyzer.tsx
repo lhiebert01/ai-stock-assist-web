@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { motion } from 'motion/react';
 import { Search, Loader2, BarChart3, BookOpen, Sparkles, X, AlertCircle, HelpCircle } from 'lucide-react';
 import { frameworkLabel, FRAMEWORK_EXPLAINERS } from '../lib/formatters';
+import { CHOOSING_A_LENS } from '../lib/metricsDictionary';
 import type { StockSnapshot, AIRecommendation, Methodology } from '../types/stock';
 import type { UserProfile } from '../types/user';
 import { analyzeStocks, getRecommendation, getComparativeAnalysis, validateSymbols, friendlyErrorMessage } from '../services/stockApi';
@@ -308,25 +309,35 @@ export default function StockAnalyzer({ userId, userProfile, onCreditsUsed, onNe
           <div className="flex bg-[var(--color-surface-2)] border border-[var(--color-border)] rounded-lg p-1">
             <button
               onClick={() => setMethodology('Growth & Quality')}
-              className={`flex items-center gap-1.5 px-4 py-2 rounded-md text-sm font-medium transition-all ${
+              className={`flex flex-col items-center px-4 py-1.5 rounded-md transition-all ${
                 methodology === 'Growth & Quality'
                   ? 'bg-[var(--color-accent)]/15 text-[var(--color-accent)]'
                   : 'text-[var(--color-text-secondary)] hover:text-white'
               }`}
             >
-              <Sparkles className="w-3.5 h-3.5" />
-              Growth & Quality
+              <span className="flex items-center gap-1.5 text-sm font-medium">
+                <Sparkles className="w-3.5 h-3.5" />
+                Growth &amp; Quality
+              </span>
+              <span className="text-[10px] font-normal opacity-80 leading-tight">
+                {CHOOSING_A_LENS.sublabels['Growth & Quality']}
+              </span>
             </button>
             <button
               onClick={() => setMethodology('Graham Value Investing')}
-              className={`flex items-center gap-1.5 px-4 py-2 rounded-md text-sm font-medium transition-all ${
+              className={`flex flex-col items-center px-4 py-1.5 rounded-md transition-all ${
                 methodology === 'Graham Value Investing'
                   ? 'bg-[var(--color-accent)]/15 text-[var(--color-accent)]'
                   : 'text-[var(--color-text-secondary)] hover:text-white'
               }`}
             >
-              <BookOpen className="w-3.5 h-3.5" />
-              Graham Classic
+              <span className="flex items-center gap-1.5 text-sm font-medium">
+                <BookOpen className="w-3.5 h-3.5" />
+                Graham Classic
+              </span>
+              <span className="text-[10px] font-normal opacity-80 leading-tight">
+                {CHOOSING_A_LENS.sublabels['Graham Value Investing']}
+              </span>
             </button>
           </div>
           {/* Framework explainer (WO-ASA-005.2): hover via title, tap via ⓘ */}
@@ -348,14 +359,18 @@ export default function StockAnalyzer({ userId, userProfile, onCreditsUsed, onNe
         </div>
 
         {frameworkInfoOpen && (
-          <div className="mt-3 max-w-xl mx-auto px-4 py-3 bg-[var(--color-surface-2)] border border-[var(--color-border)] rounded-xl text-xs text-[var(--color-text-secondary)] leading-relaxed">
-            <span className="font-bold text-[var(--color-text-primary)]">{frameworkLabel(methodology)}: </span>
-            {FRAMEWORK_EXPLAINERS[methodology]}{' '}
-            <a
-              href={methodology === 'Graham Value Investing' ? '/?view=metrics#choosing-a-lens' : '/?view=metrics#how-verdicts-are-scored'}
-              className="text-[var(--color-accent)] font-medium hover:underline"
-            >
-              Full methodology →
+          <div className="mt-3 max-w-xl mx-auto px-4 py-4 bg-[var(--color-surface-2)] border border-[var(--color-border)] rounded-xl text-xs text-[var(--color-text-secondary)] leading-relaxed space-y-2">
+            <div className="text-sm font-bold text-[var(--color-text-primary)]">{CHOOSING_A_LENS.title}</div>
+            <p className="font-semibold text-[var(--color-text-primary)]">{CHOOSING_A_LENS.recommendation}</p>
+            {CHOOSING_A_LENS.lenses.map((l) => (
+              <p key={l.name}>
+                <span className="font-bold text-[var(--color-text-primary)]">{l.name}</span> asks: &ldquo;{l.question}&rdquo; — {l.detail}
+              </p>
+            ))}
+            <p>{CHOOSING_A_LENS.bothProduce}</p>
+            <p className="opacity-90">{CHOOSING_A_LENS.honestNote}</p>
+            <a href={CHOOSING_A_LENS.footerLinkHref} className="text-[var(--color-accent)] font-medium hover:underline">
+              {CHOOSING_A_LENS.footerLinkText}
             </a>
           </div>
         )}

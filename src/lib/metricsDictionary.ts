@@ -355,6 +355,48 @@ export const TWO_LENSES = [
   { name: 'Graham Classic', body: "Benjamin Graham's 1949 criteria, unmodified. A strict historical lens; a useful sparring partner for any modern verdict." },
 ];
 
+/** "Choosing a Lens" — single source for the framework-picker ⓘ panel AND the
+ * guide section (WO-ASA-FRAMEWORK-PICKER). Names are canon and unchanged;
+ * "(Recommended)" is a product default, not advice. */
+export const CHOOSING_A_LENS = {
+  title: 'Not sure which framework to use?',
+  sublabels: {
+    'Growth & Quality': '(Recommended)',
+    'Graham Value Investing': '(Strict 1949 deep-value method)',
+  } as Record<string, string>,
+  recommendation:
+    'Most people should start with Growth & Quality. If you specifically want ' +
+    "Benjamin Graham's strict 1949 deep-value test, choose Graham Classic.",
+  lenses: [
+    {
+      name: 'Growth & Quality',
+      question: 'Is this a well-run business generating real cash at a sane price today?',
+      detail:
+        'Six checks — cash yield, price vs. cash, earnings honesty, balance-sheet ' +
+        'strength, returns, margins — scored 0–6; BUY ≥ 4.5.',
+    },
+    {
+      name: 'Graham Classic',
+      question: "Is this statistically cheap by Graham's unmodified 1949 standards?",
+      detail:
+        'Thresholds so strict most modern companies fail them. That’s the point: it ' +
+        'shows what "cheap" meant when value investing was invented, and makes a useful ' +
+        'sparring partner for any modern verdict.',
+    },
+  ],
+  bothProduce:
+    'Both produce the same outputs: a BUY/HOLD/SELL verdict, a score, key strengths ' +
+    'and risks, and the "what would change this verdict" arithmetic. Different question, ' +
+    'same evidence card — and when the two disagree on a stock, the card says so.',
+  honestNote:
+    'One honest note: neither framework scores growth. Revenue and earnings growth ' +
+    'appear on every card as context, but they don’t feed either score — so a fast-' +
+    'growing stock can rate HOLD or SELL here while the market loves it. A growth-focused ' +
+    'lens is on our roadmap.',
+  footerLinkText: 'Full comparison → Metrics Guide: Choosing a Lens',
+  footerLinkHref: '/?view=metrics#choosing-a-lens',
+};
+
 /** "Reading the Card" micro-entries (sidebar; the guide has the full section). */
 export const READING_THE_CARD_MICRO = [
   { title: '"Data as of"', body: 'One card, one clock: every number on a card comes from the same period, converted to one currency.' },
