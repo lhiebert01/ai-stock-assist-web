@@ -71,12 +71,14 @@ export async function analyzeStocks(
 export async function getRecommendation(
   snapshot: StockSnapshot,
   methodology: Methodology,
-  comparativeContext?: string
+  comparativeContext?: string,
+  timingAnchor?: { date: string; price?: number } | null
 ): Promise<AIRecommendation> {
   return apiPost('/api/recommendation', {
     snapshot,
     methodology,
     comparative_context: comparativeContext,
+    timing_anchor: timingAnchor ?? undefined,
   });
 }
 
