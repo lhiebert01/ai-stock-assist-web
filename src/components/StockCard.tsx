@@ -6,7 +6,7 @@ import {
   ExternalLink, AlertTriangle, Bookmark,
 } from 'lucide-react';
 import type { StockSnapshot, AIRecommendation, Methodology } from '../types/stock';
-import { formatPrice, humanMoney, pctFmt, changeColor, ratingColor, isFiniteNum, formatDebtEquity, formatDate } from '../lib/formatters';
+import { formatPrice, humanMoney, pctFmt, changeColor, ratingColor, isFiniteNum, formatDebtEquity, formatDate, formatGrowthPct, SMALL_BASE_GROWTH_NOTE } from '../lib/formatters';
 import PriceChart from './PriceChart';
 import RecommendationCard from './RecommendationCard';
 import TimingPanel from './TimingPanel';
@@ -32,10 +32,10 @@ function ratingAccentBorder(rating: string | undefined): string {
   return 'border-l-[var(--color-border-light)]';
 }
 
-function MetricRow({ label, value, sub }: { label: string; value: string; sub?: string }) {
+function MetricRow({ label, value, sub, tooltip }: { label: string; value: string; sub?: string; tooltip?: string }) {
   return (
-    <div className="flex justify-between items-center py-2 border-b border-[var(--color-border)]/50 last:border-0">
-      <span className="text-sm text-[var(--color-text-secondary)]">{label}</span>
+    <div className="flex justify-between items-center py-2 border-b border-[var(--color-border)]/50 last:border-0" title={tooltip}>
+      <span className="text-sm text-[var(--color-text-secondary)]">{label}{tooltip ? ' ⓘ' : ''}</span>
       <div className="text-right">
         <span className="text-sm font-medium">{value}</span>
         {sub && <span className="text-xs text-[var(--color-text-muted)] ml-1">{sub}</span>}
@@ -329,11 +329,11 @@ export default function StockCard({ snapshot, recommendation, methodology, hideC
                       <h4 className="text-sm font-bold">Growth</h4>
                     </div>
                     {/* cagr_* arrive as percents already (backend ×100) — no second ×100 */}
-                    <MetricRow label="CAGR 3yr" value={s.growth.cagr_3yr != null ? `${s.growth.cagr_3yr.toFixed(1)}%` : '—'} />
-                    <MetricRow label="CAGR 5yr" value={s.growth.cagr_5yr != null ? `${s.growth.cagr_5yr.toFixed(1)}%` : '—'} />
-                    <MetricRow label="Rev Growth" value={s.growth.revenue_growth != null ? `${(s.growth.revenue_growth * 100).toFixed(1)}%` : '—'} />
-                    <MetricRow label="Earn Growth" value={s.growth.earnings_growth != null ? `${(s.growth.earnings_growth * 100).toFixed(1)}%` : '—'} />
-                    <MetricRow label="Earn 5yr" value={s.growth.earnings_growth_5yr != null ? `${(s.growth.earnings_growth_5yr * 100).toFixed(1)}%` : '—'} />
+                    <MetricRow label="CAGR 3yr" value={s.growth.cagr_3yr != null ? formatGrowthPct(s.growth.cagr_3yr) : '—'} />
+                    <MetricRow label="CAGR 5yr" value={s.growth.cagr_5yr != null ? formatGrowthPct(s.growth.cagr_5yr) : '—'} />
+                    <MetricRow label="Rev Growth" value={s.growth.revenue_growth != null ? formatGrowthPct(s.growth.revenue_growth * 100) : '—'} />
+                    <MetricRow label="Earn Growth" value={s.growth.earnings_growth != null ? formatGrowthPct(s.growth.earnings_growth * 100) : '—'} tooltip={s.growth.earnings_growth * 100 > 999 ? SMALL_BASE_GROWTH_NOTE : undefined} />
+                    <MetricRow label="Earn 5yr" value={s.growth.earnings_growth_5yr != null ? formatGrowthPct(s.growth.earnings_growth_5yr * 100) : '—'} tooltip={s.growth.earnings_growth_5yr! * 100 > 999 ? SMALL_BASE_GROWTH_NOTE : undefined} />
                   </div>
                 )}
               </div>

@@ -83,6 +83,17 @@ export function formatDebtEquity(x: number | null | undefined): string {
   return `${(x / 100).toFixed(2)}x`;
 }
 
+/** WO-ASA-QA-001 §7.1: cap four-digit growth (small-base artifact) so 2972.7%
+ *  doesn't read as a data error. `pct` is the already-×100 percentage. */
+export function formatGrowthPct(pct: number | null | undefined): string {
+  if (pct == null || !isFinite(pct)) return '—';
+  if (pct > 999) return '>999%';
+  if (pct < -999) return '<-999%';
+  return `${pct.toFixed(1)}%`;
+}
+export const SMALL_BASE_GROWTH_NOTE =
+  'Growth from a small base year — the percentage is arithmetically correct but not meaningful for comparison.';
+
 /** WO-ASA-QA-001 §3: the ONE date format across every surface — "Jul 10, 2026".
  *  Pass the feed's own timestamp (never `new Date()`), so a stale price is shown
  *  with its true date rather than relabeled as today. */
