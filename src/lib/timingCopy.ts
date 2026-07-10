@@ -8,7 +8,7 @@
  * - State-dependent titles: a signal's visible title changes with its state so
  *   color always agrees with meaning (green title = good, amber = warning).
  * - Jargon names live ONLY in tooltips, never as visible titles.
- * - not_available signals are hidden; a per-card footnote counts what's coming.
+ * - not_available signals are hidden; a per-card footnote counts what's checked.
  * - Chips: exit card → green "OK" / amber "WARNING"; entry card → green "YES" /
  *   neutral "NOT YET". Never the word "Clear".
  * - No imperative or predictive language; no probabilities.
@@ -32,16 +32,33 @@ export interface SignalView {
 
 export interface HeaderView { title: string; body: string }
 
-/** Header copy per state (color agrees with tone). */
-export function headerView(state: string): HeaderView {
+/** Price position relative to the better-price range (WO-ASA-QA-001 §1). */
+export type PricePosition = 'above' | 'in' | 'below' | null;
+
+/** Body copy for the not-yet-aligned entry state, driven by the ACTUAL price
+ * position — never assumes "extended" (VERBATIM per WO-ASA-QA-001 §1). */
+export function entryPositionBody(pos: PricePosition): string {
+  switch (pos) {
+    case 'above':
+      return 'Price is above the better-price range right now — a lower entry may become available if it returns toward its typical range.';
+    case 'in':
+      return 'Price is inside the better-price range right now.';
+    case 'below':
+      return 'Price is below the better-price range right now — the conditions not yet aligned are listed below.';
+    default:
+      return 'The conditions not yet aligned are listed below.';
+  }
+}
+
+/** Header copy per state (color agrees with tone). For the not-aligned entry
+ * state, `pos` selects position-accurate body copy — never "extended" on a
+ * below-range price. */
+export function headerView(state: string, pos: PricePosition = null): HeaderView {
   switch (state) {
     case 'WATCH':
       return {
         title: "What's the best entry price?",
-        body:
-          'Signals suggest the price is extended right now — a lower entry may become ' +
-          'available if it returns to its typical range. Many investors read this as a ' +
-          'moment for patience.',
+        body: entryPositionBody(pos),
       };
     case 'ENTRY_WINDOW':
       return { title: 'Conditions for a reasonable entry are aligned.', body: '' };
@@ -103,7 +120,7 @@ function entryView(c: TimingCondition): SignalView {
   }
 }
 
-/** Visible signals for a card (not_available hidden) + the "coming soon" footnote. */
+/** Visible signals for a card (not_available hidden) + the k-of-n footnote. */
 export function cardSignals(data: TimingData, kind: CardKind) {
   const conds = kind === 'exit' ? data.exit_conditions : data.entry_conditions;
   const visible = conds.filter((c) => c.status !== 'not_available');
@@ -111,12 +128,11 @@ export function cardSignals(data: TimingData, kind: CardKind) {
   const hidden = conds.filter((c) => c.status === 'not_available');
   const shown = visible.length;
   const onCount = visible.filter((c) => c.status === 'active').length;
+  // Honest k-of-n coverage — present tense only (never "coming soon").
   const footnote =
-    shown < TOTAL_SIGNALS
-      ? `Checking ${shown} of ${TOTAL_SIGNALS} signals — ${TOTAL_SIGNALS - shown} more coming soon`
-      : '';
+    shown < TOTAL_SIGNALS ? `Checking ${shown} of ${TOTAL_SIGNALS} signals` : '';
   const footnoteTip = hidden.length
-    ? 'Coming soon: ' + hidden.map((c) => TOOLTIP[c.id] ?? c.label).join(' · ')
+    ? 'Not yet available: ' + hidden.map((c) => TOOLTIP[c.id] ?? c.label).join(' · ')
     : '';
   return { views, onCount, shown, footnote, footnoteTip };
 }

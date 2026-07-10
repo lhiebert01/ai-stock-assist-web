@@ -21,7 +21,37 @@ interface TimingPanelProps {
   methodology: Methodology;
 }
 
-interface Anchor { date: string; price: number; gapPct: number }
+interface Anchor { date: string; price: number; gapPct: number; zoneLow?: number; zoneHigh?: number }
+
+/** Position of a price vs [low, high]: 'in' | 'below' | 'above' + a distance %.
+ * Distance is measured from the crossed BOUND (below→low, above→high). */
+function pricePosition(price: number, low?: number, high?: number):
+  { pos: 'in' | 'below' | 'above'; pct: number } {
+  if (low == null || high == null) return { pos: 'in', pct: 0 };
+  if (price < low) return { pos: 'below', pct: Math.round(((low - price) / low) * 100) };
+  if (price > high) return { pos: 'above', pct: Math.round(((price - high) / high) * 100) };
+  return { pos: 'in', pct: 0 };
+}
+
+/** Anchor parenthetical — position vs the range BOUNDS at set time (WO-ASA-QA-001 §5). */
+function anchorPositionNote(a: Anchor): string {
+  // Prefer set-time bounds; fall back for legacy anchors that only stored gapPct.
+  if (a.zoneLow == null || a.zoneHigh == null) {
+    return a.gapPct > 0
+      ? `(${Math.abs(a.gapPct)}% above the better-price range when set)`
+      : '(within the better-price range when set)';
+  }
+  const { pos, pct } = pricePosition(a.price, a.zoneLow, a.zoneHigh);
+  if (pos === 'in') return '(within the better-price range when set)';
+  return `(${pct}% ${pos} the better-price range when set)`;
+}
+
+/** Live position note beneath the range bar, for ALL three positions (§1 rider). */
+function rangePositionNote(ticker: string, current: number, low: number, high: number): string {
+  const { pos, pct } = pricePosition(current, low, high);
+  if (pos === 'in') return `(Today, ${ticker} is inside this range.)`;
+  return `(Today, ${ticker} is ${pct}% ${pos} the ${pos === 'above' ? 'top' : 'bottom'} of this range.)`;
+}
 
 const CHIP: Record<ChipTone, string> = {
   ok: 'bg-emerald-500/15 text-emerald-200 border-emerald-500/40',
@@ -100,7 +130,7 @@ export default function TimingPanel({ timing, snapshot, methodology }: TimingPan
     const cur = data?.entry_zone?.current ?? 0;
     const zone = data?.entry_zone;
     const gapPct = zone && zone.high > 0 ? Math.round(((cur - zone.high) / zone.high) * 100) : 0;
-    const a: Anchor = { date: today, price: cur, gapPct };
+    const a: Anchor = { date: today, price: cur, gapPct, zoneLow: zone?.low, zoneHigh: zone?.high };
     try { localStorage.setItem(anchorKey, JSON.stringify(a)); } catch { /* ignore */ }
     setAnchor(a);
     void refetch(today);
@@ -114,9 +144,14 @@ export default function TimingPanel({ timing, snapshot, methodology }: TimingPan
 
   if (!data) return null;
 
-  const hv = headerView(data.state);
-  const headerTone = data.state === 'HOLD' || data.state === 'ENTRY_WINDOW' ? 'text-emerald-300' : 'text-amber-300';
   const zone = data.entry_zone;
+  // Price position vs the better-price range (WO-ASA-QA-001 §1) — drives the
+  // not-aligned entry title so a below-range price is never called "extended".
+  const pricePos = zone
+    ? (zone.current < zone.low ? 'below' : zone.current > zone.high ? 'above' : 'in')
+    : null;
+  const hv = headerView(data.state, pricePos);
+  const headerTone = data.state === 'HOLD' || data.state === 'ENTRY_WINDOW' ? 'text-emerald-300' : 'text-amber-300';
   const exit = cardSignals(data, 'exit');
   const entry = cardSignals(data, 'entry');
 
@@ -125,8 +160,6 @@ export default function TimingPanel({ timing, snapshot, methodology }: TimingPan
   if (zone && zone.high > zone.low) {
     markerPct = Math.max(0, Math.min(100, ((zone.current - zone.low) / (zone.high - zone.low)) * 100));
   }
-  const gapAboveTop = zone && zone.current > zone.high
-    ? Math.round(((zone.current - zone.high) / zone.high) * 100) : 0;
 
   return (
     <motion.div
@@ -164,12 +197,12 @@ export default function TimingPanel({ timing, snapshot, methodology }: TimingPan
             <div className="flex items-center justify-between gap-3">
               <div className="text-xs text-zinc-200 leading-relaxed">
                 Tracking from <span className="font-bold">{money(anchor.price)}</span>, set {anchor.date}
-                {' '}(price was {Math.abs(anchor.gapPct)}% {anchor.gapPct >= 0 ? 'above' : 'below'} the better-price range when set)
+                {' '}{anchorPositionNote(anchor)}
                 {zone && <> · current: <span className="font-bold">{money(zone.current)}</span></>}
               </div>
               <button onClick={stopTracking} disabled={busy}
                 className="shrink-0 rounded-md border border-[var(--color-border)] px-3 py-1.5 text-[11px] font-semibold text-zinc-200 hover:text-white disabled:opacity-50">
-                {busy ? '…' : 'Stop'}
+                {busy ? '…' : 'Stop tracking'}
               </button>
             </div>
           ) : (
@@ -178,7 +211,7 @@ export default function TimingPanel({ timing, snapshot, methodology }: TimingPan
                 Want to track this stock from today’s price? One click marks the current price
                 {zone && <> (<span className="font-semibold text-zinc-100">{money(zone.current)}</span>)</>} as your
                 starting point — no typing needed. From then on we’ll show how the stock trades versus the average
-                price paid since your start (weighted by trading volume). Reset anytime: Stop, then Begin again.
+                price paid since your start (weighted by trading volume). Reset anytime: Stop tracking, then Begin again.
               </div>
               <button onClick={beginTracking} disabled={busy}
                 className="shrink-0 rounded-md border border-sky-500/40 bg-sky-500/10 px-3 py-1.5 text-[11px] font-bold text-sky-200 hover:bg-sky-500/20 disabled:opacity-50">
@@ -195,11 +228,9 @@ export default function TimingPanel({ timing, snapshot, methodology }: TimingPan
             <div className="text-sm text-[var(--color-text-primary)]">
               {money(zone.low)} – {money(zone.high)} · current <span className="font-bold">{money(zone.current)}</span>
             </div>
-            {gapAboveTop > 0 && (
-              <div className="text-xs text-zinc-300 mt-1">
-                <span className="font-bold">(Today, {ticker} is {gapAboveTop}% above the top of this range.)</span>
-              </div>
-            )}
+            <div className="text-xs text-zinc-300 mt-1">
+              <span className="font-bold">{rangePositionNote(ticker, zone.current, zone.low, zone.high)}</span>
+            </div>
             {/* horizontal range bar with current-price marker */}
             <div className="relative mt-3 h-2 rounded-full bg-zinc-700/60">
               <div className="absolute inset-y-0 left-[15%] right-[15%] rounded-full bg-emerald-500/40" />
