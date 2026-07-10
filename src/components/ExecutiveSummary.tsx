@@ -1,7 +1,7 @@
 import { motion } from 'motion/react';
 import { Award, TrendingUp, DollarSign, Banknote, Calendar, Sparkles, BookOpen } from 'lucide-react';
 import type { StockSnapshot, AIRecommendation, Methodology } from '../types/stock';
-import { formatPrice, pctFmt, ratingColor, frameworkLabel } from '../lib/formatters';
+import { formatPrice, pctFmt, ratingColor, frameworkLabel, formatDate } from '../lib/formatters';
 
 interface ExecutiveSummaryProps {
   snapshots: StockSnapshot[];
@@ -41,8 +41,10 @@ export default function ExecutiveSummary({ snapshots, recommendations, methodolo
     .filter((s) => s.cash_flow.fcf_yield != null)
     .sort((a, b) => (b.cash_flow.fcf_yield ?? -Infinity) - (a.cash_flow.fcf_yield ?? -Infinity))[0];
 
-  const now = new Date();
-  const dateStr = now.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+  // WO-ASA-QA-001 §3: the report date is the DATA's own date (the feed timestamp
+  // shared across the snapshots), one format — never today's date.
+  const dataAsOf = snapshots.find((s) => s?.as_of)?.as_of;
+  const dateStr = formatDate(dataAsOf ?? new Date());
 
   return (
     <motion.div

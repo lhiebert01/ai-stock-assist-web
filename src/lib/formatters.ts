@@ -83,6 +83,16 @@ export function formatDebtEquity(x: number | null | undefined): string {
   return `${(x / 100).toFixed(2)}x`;
 }
 
+/** WO-ASA-QA-001 §3: the ONE date format across every surface — "Jul 10, 2026".
+ *  Pass the feed's own timestamp (never `new Date()`), so a stale price is shown
+ *  with its true date rather than relabeled as today. */
+export function formatDate(iso: string | number | Date | null | undefined): string {
+  if (iso == null) return '—';
+  const d = new Date(iso);
+  if (isNaN(d.getTime())) return '—';
+  return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+}
+
 /** Format price: $123.45 */
 export function formatPrice(x: number | null | undefined): string {
   if (x == null || !isFinite(x)) return '—';

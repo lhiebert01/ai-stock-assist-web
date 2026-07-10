@@ -6,7 +6,7 @@ import {
   ExternalLink, AlertTriangle, Bookmark,
 } from 'lucide-react';
 import type { StockSnapshot, AIRecommendation, Methodology } from '../types/stock';
-import { formatPrice, humanMoney, pctFmt, changeColor, ratingColor, isFiniteNum, formatDebtEquity } from '../lib/formatters';
+import { formatPrice, humanMoney, pctFmt, changeColor, ratingColor, isFiniteNum, formatDebtEquity, formatDate } from '../lib/formatters';
 import PriceChart from './PriceChart';
 import RecommendationCard from './RecommendationCard';
 import TimingPanel from './TimingPanel';
@@ -211,7 +211,7 @@ export default function StockCard({ snapshot, recommendation, methodology, hideC
               {hideChart ? (
                 <div className="flex items-center gap-2 px-4 py-3 bg-[var(--color-surface-1)] rounded-xl border border-[var(--color-border)]/50 text-sm text-[var(--color-text-muted)]">
                   Price: <span className="font-mono font-bold text-[var(--color-text-primary)]">{formatPrice(s.price)}</span>
-                  <span className="ml-1">as of {new Date(s.as_of).toLocaleDateString()}</span>
+                  <span className="ml-1">as of {formatDate(s.as_of)}</span>
                 </div>
               ) : (
                 <PriceChart ticker={s.ticker} />
