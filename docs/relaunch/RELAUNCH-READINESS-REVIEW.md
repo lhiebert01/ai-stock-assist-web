@@ -41,10 +41,12 @@ Facebook (link in the FIRST comment) → single X post. Plus a portfolio **"hear
 
 ## Verify before publishing (market figures — same rule as the Macro Lens oil figure)
 
-1. **NVO USD revenue is inconsistent across docs** — flagship says **~$50B**, series bible says
-   **~$47B**, shot-list says **"$47–50B."** Pin **one** number, and it must match the NVO card
-   **screenshot captured on publish day** (Novo reports in DKK; the card's dated conversion is the
-   source of truth). Do not ship two different figures.
+1. ~~**NVO USD revenue is inconsistent across docs**~~ — **RESOLVED 2026-07-18: ~$50B everywhere.**
+   The live card reads **Revenue $50.17B** (TTM to 2026-03-31; DKK→USD at 0.1531, FX as of
+   2026-07-18), so the flagship was right. The stray **~$47B** was the analyst **price target**
+   ($47.57 per share) mistaken for revenue — two different quantities. Bible + shot-lists updated.
+   Still re-check the figure against the publish-day card: it moves when Novo files its next
+   quarterly (the FX drift alone won't shift the "~$50B" rounding).
 2. **Free-tier + pricing:** "3 free analyses, then ~25¢/stock." Confirm free count = 3 and ~25¢
    (Starter $4.99 / 20 = 25¢; Pro $9.99 / 50 = 20¢) against the live paywall.
 3. **Incident examples** (AWS non-ticker, ExxonMobil NOT RATED, XOM capex): all are framed as
