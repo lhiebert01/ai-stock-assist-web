@@ -19,6 +19,7 @@ import MetricsGuide from './components/MetricsGuide';
 import SetNewPassword from './components/SetNewPassword';
 import Footer from './components/Footer';
 import { healthCheck } from './services/stockApi';
+import { track, trackOnce } from './lib/analytics';
 
 type View = 'landing' | 'analyzer' | 'discovery' | 'watchlist' | 'history' | 'payments' | 'admin' | 'auth' | 'learn' | 'metrics' | 'privacy' | 'terms' | 'reset-password';
 
@@ -100,7 +101,12 @@ export default function App() {
           is_admin: isAdmin,
         }).select().single();
         console.log('[Profile] Insert result:', { newProfile, insertError });
-        if (newProfile) setUserProfile(newProfile);
+        if (newProfile) {
+          setUserProfile(newProfile);
+          // GOAL 1 — a profile row is created exactly once, on the first sign-in
+          // of a brand-new account, for both Google and email paths.
+          trackOnce('signup');
+        }
       } else if (error) {
         console.error('[Profile] Unexpected error:', JSON.stringify(error));
       } else if (profile) {
@@ -205,6 +211,12 @@ export default function App() {
         console.error('[Credits] Deduction returned no data — RLS may be blocking the update');
       } else {
         console.log('[Credits] Deduction confirmed — DB now shows:', data.credits_remaining);
+        // GOAL 2 — activation. Read the lifetime counter BEFORE this run was added:
+        // zero means the analysis we just charged for was the account's first.
+        if ((userProfile.analyses_total_lifetime || 0) === 0) {
+          trackOnce('first_analysis_run', { stocks: count });
+        }
+        track('analysis_run', { stocks: count });
         setUserProfile(prev => prev ? { ...prev, credits_remaining: data.credits_remaining, analyses_total_lifetime: data.analyses_total_lifetime } : null);
       }
     } catch (err) {
@@ -221,6 +233,9 @@ export default function App() {
     if (sessionId && user) {
       // Clear URL params now that we have the user
       window.history.replaceState({}, '', '/');
+      // GOAL 3 — Stripe returned the buyer here with a session_id, and the URL is
+      // stripped immediately after, so this fires once per completed checkout.
+      track('purchase');
       setPaymentMessage('Payment successful! Your credits are being added...');
       setView('analyzer');
       // Refresh profile after webhook has time to process

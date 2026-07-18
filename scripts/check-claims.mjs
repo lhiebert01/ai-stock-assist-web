@@ -11,6 +11,14 @@ const SURFACES = [
   'src/components/SEO.tsx',
   'src/components/MetricsGuide.tsx',
   'index.html',
+  // Campaign copy that publishes outside the app (relaunch series + social).
+  // Meta-docs about the campaign (the work order, the readiness review) are
+  // deliberately excluded — they quote prohibited terms in order to ban them.
+  'docs/relaunch/ANNOUNCE-relaunch.md',
+  'docs/relaunch/IMAGE-PROMPTS-SERIES.md',
+  'docs/relaunch/POST-1-one-card-one-clock-social-COPY-PASTE.md',
+  'docs/relaunch/POST-2-always-an-answer-social-COPY-PASTE.md',
+  'docs/relaunch/POST-3-the-bridge-social-COPY-PASTE.md',
 ];
 
 // Patterns are product-claim framings; plain-English disclaimers ("does not

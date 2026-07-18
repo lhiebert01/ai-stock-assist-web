@@ -62,7 +62,7 @@ Try the tool (3 free analyses): https://aistockassist.com
 X (single post + hero image)
 ========================================================================
 
-A company spending 60% of its operating cash on its future looks exactly like one in decline — on most screens. One sentence fixes that. The Bridge — new post: [SUBSTACK-URL]
+A company spending 40% of its operating cash on its future looks exactly like one in decline — on most screens. One sentence fixes that. The Bridge — new post: [SUBSTACK-URL]
 
 ========================================================================
 SUBSTACK NOTES
