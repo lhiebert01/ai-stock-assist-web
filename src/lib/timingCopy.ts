@@ -16,7 +16,12 @@
 import type { TimingData, TimingCondition } from '../types/stock';
 
 export const TOTAL_SIGNALS = 5; // signals tracked per card at full coverage
-export const ENTRY_ZONE_LABEL = 'Better-price range';
+// "Recent trading range" — NOT "better-price range". The band is EMA(recent) ±
+// a few %, i.e. WHERE the stock has been trading, not WHAT it's worth. The old
+// name implied "a good price to pay", which then contradicted the fair-value
+// signal ("no longer a bargain") on the same card. Renamed so the timing lens
+// (where it trades) and the value lens (what it's worth) read as distinct.
+export const ENTRY_ZONE_LABEL = 'Recent trading range';
 
 export type ChipTone = 'ok' | 'warn' | 'yes' | 'muted';
 export type CardKind = 'exit' | 'entry';
@@ -40,11 +45,11 @@ export type PricePosition = 'above' | 'in' | 'below' | null;
 export function entryPositionBody(pos: PricePosition): string {
   switch (pos) {
     case 'above':
-      return 'Price is above the better-price range right now — a lower entry may become available if it returns toward its typical range.';
+      return 'Price is above its recent trading range right now — a pullback toward that range would be a lower entry. Whether it is a good VALUE is a separate question — see the value signals below.';
     case 'in':
-      return 'Price is inside the better-price range right now.';
+      return 'Price is within its recent trading range right now. That is a timing view only — whether it is a bargain on VALUE is shown separately in the signals below.';
     case 'below':
-      return 'Price is below the better-price range right now — the conditions not yet aligned are listed below.';
+      return 'Price is below its recent trading range right now — the conditions not yet aligned are listed below.';
     default:
       return 'The conditions not yet aligned are listed below.';
   }

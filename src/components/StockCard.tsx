@@ -66,8 +66,17 @@ export default function StockCard({ snapshot, recommendation, methodology, hideC
         onClick={() => setExpanded(!expanded)}
       >
         <div className="flex items-center gap-4 min-w-0">
-          <div className="shrink-0 w-12 h-12 rounded-xl bg-[var(--color-accent)]/10 flex items-center justify-center">
-            <span className="text-sm font-bold text-[var(--color-accent)]">{s.ticker.slice(0, 3)}</span>
+          <div className="shrink-0 w-12 h-12 rounded-xl bg-[var(--color-accent)]/10 flex items-center justify-center px-1">
+            {/* Full ticker, not a 3-char slice (which showed CSCO as "CSC",
+                GOOGL as "GOO"). Shrink the font for longer symbols so 5-char
+                and class-share tickers (BRK-B) fit the badge. */}
+            <span
+              className={`font-bold text-[var(--color-accent)] leading-none tracking-tight ${
+                s.ticker.length <= 4 ? 'text-sm' : 'text-[11px]'
+              }`}
+            >
+              {s.ticker}
+            </span>
           </div>
           <div className="min-w-0">
             <div className="flex items-center gap-2">

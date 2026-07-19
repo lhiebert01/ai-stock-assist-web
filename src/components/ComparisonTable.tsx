@@ -65,6 +65,7 @@ export default function ComparisonTable({
                 <th className="text-right px-4 py-3 font-medium text-[var(--color-text-muted)] text-xs uppercase tracking-wider">1Y</th>
                 <th className="text-right px-4 py-3 font-medium text-[var(--color-text-muted)] text-xs uppercase tracking-wider hidden lg:table-cell">P/E</th>
                 <th className="text-right px-4 py-3 font-medium text-[var(--color-text-muted)] text-xs uppercase tracking-wider hidden lg:table-cell">FCF Yield</th>
+                <th className="text-right px-4 py-3 font-medium text-[var(--color-text-muted)] text-xs uppercase tracking-wider hidden lg:table-cell">Div Yield</th>
                 <th className="text-right px-4 py-3 font-medium text-[var(--color-text-muted)] text-xs uppercase tracking-wider hidden lg:table-cell">Target</th>
                 <th className="text-right px-4 py-3 font-medium text-[var(--color-text-muted)] text-xs uppercase tracking-wider hidden md:table-cell">Mkt Cap</th>
               </tr>
@@ -101,6 +102,9 @@ export default function ComparisonTable({
                     </td>
                     <td className={`text-right px-4 py-3 font-mono hidden lg:table-cell ${highlightClass(s.ticker, bestFcf)}`}>
                       {s.cash_flow.fcf_yield != null ? `${s.cash_flow.fcf_yield.toFixed(2)}%` : '—'}
+                    </td>
+                    <td className="text-right px-4 py-3 font-mono hidden lg:table-cell">
+                      {s.screening_metrics.dividend_yield != null ? `${(s.screening_metrics.dividend_yield * 100).toFixed(2)}%` : '—'}
                     </td>
                     <td className={`text-right px-4 py-3 font-mono hidden lg:table-cell ${highlightClass(s.ticker, bestUpside)}`}>
                       {upside != null ? (
