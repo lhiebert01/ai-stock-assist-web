@@ -78,7 +78,7 @@ const features = [
 
 const faqs = [
   { question: 'Is AI Stock Assist free?', answer: 'You get 3 free analyses when you sign up. After that, purchase analysis packs starting at $4.99 for 20 analyses.' },
-  { question: 'What AI model powers the analysis?', answer: 'We use Google Gemini 3.5 Flash for primary analysis with Groq Llama 3.3 70B as a reliable backup, ensuring 99.9% uptime.' },
+  { question: 'What AI model powers the analysis?', answer: 'We use Google Gemini 3.5 Flash for primary analysis with Groq Llama 3.3 70B as a reliable backup for consistent availability.' },
   { question: 'How accurate are the recommendations?', answer: 'Our AI analyzes real financial data from Yahoo Finance including cash flow, balance sheet, and valuation metrics. Recommendations are data-driven, not predictions. Always do your own due diligence.' },
   { question: 'Can I export my analysis?', answer: 'Yes. Export any analysis as a formatted Word document with all metrics, charts, and AI recommendations included.' },
 ];
@@ -447,7 +447,7 @@ export default function MarketingLanding({ onGetStarted }: LandingProps) {
         <div className="bg-gradient-to-r from-[var(--color-accent)]/10 to-[var(--color-accent)]/5 border border-[var(--color-accent)]/20 rounded-3xl p-10 sm:p-16 text-center">
           <h2 className="text-3xl sm:text-4xl font-bold mb-4">Ready to Invest Smarter?</h2>
           <p className="text-[var(--color-text-secondary)] text-lg mb-8 max-w-lg mx-auto">
-            Join thousands of investors using AI to make data-driven decisions.
+            Use AI to make data-driven investment decisions.
           </p>
           <button
             onClick={onGetStarted}

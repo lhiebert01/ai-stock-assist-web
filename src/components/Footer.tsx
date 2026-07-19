@@ -154,7 +154,7 @@ export default function Footer({ onNavigate }: FooterProps) {
         <div className="mt-6 text-center">
           <p className="text-xs text-[var(--color-text-muted)] leading-relaxed max-w-2xl mx-auto">
             AI Stock Assist provides AI-generated analysis for educational purposes only.
-            This is not financial advice. Always do your own research before making investment decisions.
+            This is not financial advice and not a prediction. Always do your own research before making investment decisions.
             Past performance does not guarantee future results.
           </p>
         </div>

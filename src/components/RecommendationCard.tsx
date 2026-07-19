@@ -121,6 +121,13 @@ export default function RecommendationCard({ recommendation, methodology }: Reco
           </div>
         </div>
       )}
+
+      {/* Disclaimer — shown directly beneath every BUY/HOLD/SELL verdict */}
+      <div className="px-6 pb-4">
+        <p className="text-[11px] leading-relaxed text-[var(--color-text-muted)]">
+          AI-generated analysis for educational purposes — not financial advice and not a prediction.
+        </p>
+      </div>
     </motion.div>
   );
 }
