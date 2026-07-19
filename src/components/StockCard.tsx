@@ -338,6 +338,30 @@ export default function StockCard({ snapshot, recommendation, methodology, hideC
                 )}
               </div>
 
+              {/* Stale-data marker. The "Data as of" line below always stated
+                  the true date, but a year-old date in small grey text reads
+                  the same as a current one — and Yahoo's TTM statements for the
+                  big US banks ran ~12 months behind while other sectors were
+                  current. Data problems degrade LOUDLY: this is the visible
+                  half; the verdict engine drops a confidence tier for the same
+                  fact. Bound lives on the backend (verdict.STALE_AFTER_MONTHS). */}
+              {s.data_vintage?.stale && (
+                <div
+                  role="status"
+                  className="flex items-start gap-2 rounded-md border border-amber-500/40 bg-amber-500/10 px-3 py-2 mx-1"
+                >
+                  <AlertTriangle className="h-4 w-4 shrink-0 text-amber-500 mt-px" aria-hidden="true" />
+                  <p className="text-xs leading-relaxed text-amber-200">
+                    <span className="font-semibold">
+                      Financial statements are about {Math.round(s.data_vintage.age_months ?? 0)} months old.
+                    </span>{' '}
+                    The data provider has not published newer figures for {s.ticker}. Every number below is
+                    accurate for that period — but it describes the business as it was then, not today.
+                    Confidence is lowered accordingly.
+                  </p>
+                </div>
+              )}
+
               {/* Data vintage + FX provenance (WO-ASA-001.1 / 001.4) */}
               {(s.data_vintage?.statement_date || s.data_vintage?.period ||
                 (s.currency?.financial_currency && s.currency.financial_currency !== 'USD')) && (

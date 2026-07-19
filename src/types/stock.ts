@@ -78,6 +78,10 @@ export interface StockSnapshot {
     period: string | null;
     statement_date: string | null;
     prices_as_of: string | null;
+    /** Months between the statement date and the run. Backend-computed so the
+     *  staleness bound lives in exactly one place (verdict.STALE_AFTER_MONTHS). */
+    age_months?: number | null;
+    stale?: boolean;
   };
   /** Cross-consistency validator result (WO-ASA-001.1) — FAIL means the
    * card's numbers contradict each other and the verdict is NOT_RATED. */
