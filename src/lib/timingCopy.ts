@@ -125,6 +125,18 @@ function entryView(c: TimingCondition): SignalView {
   }
 }
 
+/** Why a signal isn't available yet — three honestly-distinct reasons, so a
+ * reader isn't told "coming soon" about a signal they can turn on right now.
+ * VWAP is USER-ENABLABLE (Begin tracking); the rest are ours to build/wire. */
+const NOT_AVAILABLE_REASON: Record<string, string> = {
+  E4: 'Entry-anchored VWAP — turn on “Begin tracking” above to enable this; it needs your baseline price to measure against',
+  E2: 'Thesis decay — in development; needs verdict history we are not yet storing',
+  E5: 'Sector rotation — in development; the sector-leadership feed is not enabled in this build',
+  N4: 'Event window — in development; needs an earnings-date calendar',
+  E3: 'Trend regime — needs more price history or a market benchmark for this ticker',
+  N2: 'Trend regime — needs more price history or a market benchmark for this ticker',
+};
+
 /** Visible signals for a card (not_available hidden) + the k-of-n footnote. */
 export function cardSignals(data: TimingData, kind: CardKind) {
   const conds = kind === 'exit' ? data.exit_conditions : data.entry_conditions;
@@ -133,11 +145,13 @@ export function cardSignals(data: TimingData, kind: CardKind) {
   const hidden = conds.filter((c) => c.status === 'not_available');
   const shown = visible.length;
   const onCount = visible.filter((c) => c.status === 'active').length;
-  // Honest k-of-n coverage — present tense only (never "coming soon").
-  const footnote =
-    shown < TOTAL_SIGNALS ? `Checking ${shown} of ${TOTAL_SIGNALS} signals` : '';
+  // Denominator is THIS card's own signal count (exit has 5, entry has 4) —
+  // a shared "5" mislabelled the entry card's "3 of 4" as "3 of 5".
+  const total = conds.length;
+  const footnote = shown < total ? `Checking ${shown} of ${total} signals` : '';
   const footnoteTip = hidden.length
-    ? 'Not yet available: ' + hidden.map((c) => TOOLTIP[c.id] ?? c.label).join(' · ')
+    ? 'Not yet available — ' +
+      hidden.map((c) => NOT_AVAILABLE_REASON[c.id] ?? TOOLTIP[c.id] ?? c.label).join(' · ')
     : '';
   return { views, onCount, shown, footnote, footnoteTip };
 }

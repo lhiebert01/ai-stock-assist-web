@@ -321,8 +321,8 @@ export const METRICS: MetricDef[] = [
   },
   {
     id: 'timing-rated', name: 'Rated attractive', section: 'timing',
-    oneLiner: 'Whether the framework currently rates the stock attractive.',
-    interpretation: "A green light for entry when the framework's rating is attractive; otherwise it shows the current rating.",
+    oneLiner: 'Whether the framework’s own verdict is its most favorable rating.',
+    interpretation: "\"Attractive\" means the framework's overall score — the 0–6 (or 0–8) Growth & Quality / Graham score shown in the verdict above — clears the threshold it uses for its top rating. It is the SAME verdict shown on the card, surfaced here as one of the entry green lights: green when the score reaches that bar, neutral when it falls short. This is a valuation-and-quality judgment, not a timing one — a stock can be rated attractive yet still be extended on price (and vice-versa).",
     tiers: [
       { color: 'green', text: 'Rated attractive' },
       { color: 'yellow', text: 'Not currently attractive' },
