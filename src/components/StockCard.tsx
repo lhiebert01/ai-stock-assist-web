@@ -369,7 +369,8 @@ export default function StockCard({ snapshot, recommendation, methodology, hideC
                   {(s.data_vintage?.statement_date || s.data_vintage?.period) && (
                     <>
                       Data as of {s.data_vintage?.statement_date ?? '—'} ({s.data_vintage?.period ?? 'latest statements'})
-                      {s.data_vintage?.prices_as_of && <>; prices as of {s.data_vintage.prices_as_of}</>}.{' '}
+                      {s.data_vintage?.prices_as_of && <>; prices as of {s.data_vintage.prices_as_of}</>}
+                      {s.data_vintage?.source && <> · statements from {s.data_vintage.source}</>}.{' '}
                     </>
                   )}
                   {s.currency?.financial_currency && s.currency.financial_currency !== 'USD' &&

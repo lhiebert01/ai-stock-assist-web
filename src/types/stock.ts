@@ -82,6 +82,10 @@ export interface StockSnapshot {
      *  staleness bound lives in exactly one place (verdict.STALE_AFTER_MONTHS). */
     age_months?: number | null;
     stale?: boolean;
+    /** Which pipeline produced the statement figures: 'SEC EDGAR' (primary,
+     *  public-domain filings) or 'Yahoo Finance' (fallback for foreign filers
+     *  and outages). Price/market-cap data is always Yahoo regardless. */
+    source?: string | null;
   };
   /** Cross-consistency validator result (WO-ASA-001.1) — FAIL means the
    * card's numbers contradict each other and the verdict is NOT_RATED. */
