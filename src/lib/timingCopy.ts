@@ -81,7 +81,7 @@ export function headerView(state: string, pos: PricePosition = null): HeaderView
 
 /** Jargon name for the ⓘ tooltip, per signal id. */
 const TOOLTIP: Record<string, string> = {
-  E1: 'Margin of safety — price vs. our framework’s estimate of the business’s worth.',
+  E1: 'Margin of safety — price vs. the framework’s fair value. Fair value = the price at which free-cash-flow yield would reach the framework’s 5% full-value bar (a P/FCF of 20x). It scales with the same free cash flow shown on this card, so you can reproduce it: fair value = current price × (current FCF yield ÷ 5%). No DCF and no analyst target — just the card’s own cash flow.',
   E2: 'Thesis decay — whether the quality/value score is deteriorating.',
   E3: 'Trend regime — price vs. its long-term average and relative strength.',
   E4: 'Entry-anchored VWAP — average price paid since your tracking start, weighted by volume.',

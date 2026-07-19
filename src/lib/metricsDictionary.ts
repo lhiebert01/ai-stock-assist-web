@@ -302,7 +302,7 @@ export const METRICS: MetricDef[] = [
   {
     id: 'timing-bargain', name: 'Still a bargain / No longer a bargain', section: 'timing',
     oneLiner: 'Whether price has caught up to what the framework estimates the business is worth.',
-    interpretation: "Green when a margin of safety remains; amber when price is at or above the framework's estimate of fair value (shown as a percentage of that estimate).",
+    interpretation: "Green when a margin of safety remains; amber when price is at or above the framework's estimate of fair value (shown as a percentage of that estimate, with the dollar figure). HOW FAIR VALUE IS CALCULATED: it is the price at which the stock's free-cash-flow yield would reach the framework's 5% full-value bar — equivalently, a P/FCF of 20x. Because free cash flow is fixed and yield moves inversely with price, fair value = current price × (current FCF yield ÷ 5%). Example: a stock at $112 with a 2.67% FCF yield has a fair value of about $112 × (2.67 ÷ 5) ≈ $60, so it trades at ~187% of fair value. This is derived only from the free cash flow shown on the same card — no discounted-cash-flow model and no analyst price target — so a reader with a calculator can reproduce it.",
     tiers: [
       { color: 'green', text: 'Still a bargain' },
       { color: 'yellow', text: 'No longer a bargain' },
