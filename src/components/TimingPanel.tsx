@@ -38,12 +38,12 @@ function anchorPositionNote(a: Anchor): string {
   // Prefer set-time bounds; fall back for legacy anchors that only stored gapPct.
   if (a.zoneLow == null || a.zoneHigh == null) {
     return a.gapPct > 0
-      ? `(${Math.abs(a.gapPct)}% above the better-price range when set)`
-      : '(within the better-price range when set)';
+      ? `(${Math.abs(a.gapPct)}% above its recent trading range when set)`
+      : '(within its recent trading range when set)';
   }
   const { pos, pct } = pricePosition(a.price, a.zoneLow, a.zoneHigh);
-  if (pos === 'in') return '(within the better-price range when set)';
-  return `(${pct}% ${pos} the better-price range when set)`;
+  if (pos === 'in') return '(within its recent trading range when set)';
+  return `(${pct}% ${pos} its recent trading range when set)`;
 }
 
 /** Live position note beneath the range bar, for ALL three positions (§1 rider). */
@@ -145,7 +145,7 @@ export default function TimingPanel({ timing, snapshot, methodology }: TimingPan
   if (!data) return null;
 
   const zone = data.entry_zone;
-  // Price position vs the better-price range (WO-ASA-QA-001 §1) — drives the
+  // Price position vs the recent trading range (WO-ASA-QA-001 §1) — drives the
   // not-aligned entry title so a below-range price is never called "extended".
   const pricePos = zone
     ? (zone.current < zone.low ? 'below' : zone.current > zone.high ? 'above' : 'in')
@@ -155,7 +155,7 @@ export default function TimingPanel({ timing, snapshot, methodology }: TimingPan
   const exit = cardSignals(data, 'exit');
   const entry = cardSignals(data, 'entry');
 
-  // Better-price range bar marker position (clamped).
+  // Recent-trading-range bar marker position (clamped).
   let markerPct = 50;
   if (zone && zone.high > zone.low) {
     markerPct = Math.max(0, Math.min(100, ((zone.current - zone.low) / (zone.high - zone.low)) * 100));
