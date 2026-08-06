@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import {
   TrendingUp, BarChart3, History, CreditCard, Shield, LogOut,
-  Menu, X, Sparkles, ChevronDown, BookOpen, Bookmark,
+  Menu, X, Sparkles, ChevronDown, BookOpen, Bookmark, Newspaper,
 } from 'lucide-react';
 import type { AppUser, UserProfile } from '../types/user';
 
@@ -72,6 +72,14 @@ export default function Navbar({ user, userProfile, view, onNavigate, onLogout }
                   {item.label}
                 </button>
               ))}
+              {/* Blog is a static page outside the SPA (real URL, own SEO) — plain anchor */}
+              <a
+                href="/blog/"
+                className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium text-[var(--color-text-secondary)] hover:text-white hover:bg-white/5 transition-all"
+              >
+                <Newspaper className="w-4 h-4" />
+                Blog
+              </a>
             </div>
           )}
 
@@ -176,6 +184,12 @@ export default function Navbar({ user, userProfile, view, onNavigate, onLogout }
               </>
             ) : (
               <div className="flex items-center gap-2">
+                <a
+                  href="/blog/"
+                  className="hidden sm:block px-4 py-2 text-sm font-medium text-[var(--color-text-secondary)] hover:text-white transition-colors"
+                >
+                  Blog
+                </a>
                 <button
                   onClick={() => onNavigate('auth')}
                   className="px-4 py-2 text-sm font-medium text-[var(--color-text-secondary)] hover:text-white transition-colors"
@@ -217,6 +231,13 @@ export default function Navbar({ user, userProfile, view, onNavigate, onLogout }
                     {item.label}
                   </button>
                 ))}
+                <a
+                  href="/blog/"
+                  className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-[var(--color-text-secondary)] hover:text-white"
+                >
+                  <Newspaper className="w-4 h-4" />
+                  Blog
+                </a>
                 <button
                   onClick={() => { onNavigate('payments'); setMenuOpen(false); }}
                   className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-[var(--color-text-secondary)] hover:text-white"

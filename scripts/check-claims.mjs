@@ -11,6 +11,9 @@ const SURFACES = [
   'src/components/SEO.tsx',
   'src/components/MetricsGuide.tsx',
   'index.html',
+  // Blog chrome (header/footer/CTA copy) — the verbatim essay bodies live in
+  // content/blog/ and are personal essays, not marketing surfaces.
+  'scripts/build-blog.mjs',
   // Campaign copy that publishes outside the app (relaunch series + social).
   // Meta-docs about the campaign (the work order, the readiness review) are
   // deliberately excluded — they quote prohibited terms in order to ban them.
