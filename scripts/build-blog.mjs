@@ -35,9 +35,11 @@ const POSTS = [
     // longer, so it rides along as alternativeHeadline).
     headline: 'Every signal was green. My blue chip nosedived anyway.',
     datePublished: '2026-08-06',
-    ogImage: `/blog/every-signal-was-green/og.png`,
+    // One file, two jobs: the og:image in the head AND the first in-body image
+    // below the title — so every share card matches what readers see.
+    ogImage: `/og/asa-every-signal-was-green-1200x630.jpg`,
     ogImageAlt:
-      'Flat-vector infographic: a stock nosedive path crossing floor markers at 20, 30, 40 and 50 percent down, with an ejection-seat marker at 55–60 percent.',
+      'Editorial chart: a climb to "$140 · ALL SIGNALS GREEN", then a two-year nosedive through floors at −20, −30, −40 and −50 percent — each marked "a fresh reason to hold" — an orange ejection seat at −55–60%, the line continuing to −70%. Footer: MY 50% CUSHION MET A 70% FLOOR.',
   },
 ];
 
@@ -203,7 +205,7 @@ for (const post of POSTS) {
 <meta property="og:title" content="${escapeHtml(post.metaTitle)}" />
 <meta property="og:description" content="${escapeHtml(post.metaDescription)}" />
 <meta property="og:image" content="${ogImageAbs}" />
-<meta property="og:image:type" content="image/png" />
+<meta property="og:image:type" content="${post.ogImage.endsWith('.jpg') ? 'image/jpeg' : 'image/png'}" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
 <meta property="og:image:alt" content="${escapeHtml(post.ogImageAlt)}" />
