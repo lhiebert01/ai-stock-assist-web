@@ -67,7 +67,9 @@
 <style>
 :root {
   --surface-0: #0a0e1a; --surface-1: #0f1629; --surface-3: #1b2541;
-  --border: #1e293b; --text: #f1f5f9; --text-2: #94a3b8; --muted: #64748b;
+  --border: #1e293b; --text: #f1f5f9; --text-2: #94a3b8;
+  /* WCAG AA: #64748b is only 4.04:1 on the near-black ground — lightened for 4.5+ */
+  --muted: #8494a9;
   --accent: #22d3ee; --sell: #ef4444;
 }
 * { box-sizing: border-box; }
