@@ -3,7 +3,7 @@
 **Canonical (on-site):** https://www.aistockassist.com/blog/every-signal-was-green
 **Author:** Lindsay Hiebert · Founder
 **Date:** 2026-08-06
-**POSTING ORDER:** Canonical publishes FIRST and gets a crawl head start (it is live and in the sitemap). Then ONE channel per day — never batch: Day 1 Reddit (r/ValueInvesting) → Day 2 LinkedIn → Day 3 X + Bluesky → Friday Substack note → Medium evergreen (any time after).
+**POSTING ORDER:** Canonical publishes FIRST and gets a crawl head start (it is live and in the sitemap). Then ONE channel per day — never batch: Day 1 Reddit (r/ValueInvesting) → Day 2 LinkedIn → Day 2+ Facebook groups (2–3 per day, spread across the week) → Day 3 X + Bluesky → Friday Substack note → Medium evergreen (any time after).
 
 _How to use: copy only the text between the ▼ and ▲ markers. Plain text; bare URLs on their own line (don't hyperlink). Post the first comment within ~2 minutes. Never batch — one channel per day. No product prices appear in any post here — everything is value-framed and drives to the on-site essay._
 
@@ -102,6 +102,34 @@ My tuition is paid; let it count for more than one student. If this would help s
 ▼▼▼ COPY BELOW ▼▼▼
 
 The part I sit with most: almost none of what broke this trade was under my control — not the FDA's actions, not the gray-market actors, not the competitive field, not the cockpit of the company itself. Yet the investor is still responsible for everything. You make the decision; you carry all of the risk, known and unknown. That's the weight of the seat. How do you size positions for forces you'll never control — not just risks you can't name?
+
+▲▲▲ COPY ENDS ▲▲▲
+
+## 2b. Facebook — value-investing / investing groups (after LinkedIn · 2–3 groups per day, NOT all at once)
+
+_Value-framed, no hard sell. Body carries NO link — the link goes in the FIRST COMMENT (house convention for FB), and only in groups whose rules allow links at all. IMPORTANT: do NOT paste the same text into many groups in one day — Facebook's spam detection flags identical cross-posts and can restrict the account. Pick 2–3 groups today, vary the opening line slightly per group, and spread the rest across the week. Check each group's rules (many ban self-authored links entirely — in those, post the body and let it stand)._
+
+**Post body (link-free):**
+▼▼▼ COPY BELOW ▼▼▼
+
+The loss that scared me most in 30+ years of investing wasn't a gamble — it was the bet I was sure about.
+
+In 2024 I bought Novo Nordisk near its all-time high. The thesis was right: GLP-1 drugs became one of the biggest healthcare markets in history, and it ended in a duopoly, just like I mapped. I even built in what I considered a 50% margin of safety. And I still exited at a 55–60% loss — the stock kept falling after I sold, all the way to about 70% down.
+
+What broke it wasn't the thesis. It was three things at once, none of which I controlled: the profits concentrated in the geography I'd assigned to the competitor; an FDA-declared shortage made legal gray-market copies possible at a fraction of branded price; and enforcement moved at government speed while the damage moved at internet speed.
+
+The lesson I'd hand any investor: write your exit conditions the day you buy, and make them name specific falsifiers — competitor share data, head-to-head trials, regulatory changes — not just "does the trend hold." At every floor on the way down (20%, 30%, 40%, 50%) I found a fresh reason to hold. Written falsifiers would have taken the negotiation with myself out of it.
+
+Curious how folks here size a margin of safety for the risks you can't name — because the risks I could name weren't the ones that got me.
+
+▲▲▲ COPY ENDS ▲▲▲
+
+**First comment (ONLY in groups whose rules allow links):**
+▼▼▼ COPY BELOW ▼▼▼
+
+A few people asked if I wrote this up in full — the whole story with the timeline and all three rules is here, so it might save someone else the tuition. Personal experience, not investment advice:
+
+https://www.aistockassist.com/blog/every-signal-was-green?utm_source=facebook&utm_medium=social&utm_campaign=nvo-essay
 
 ▲▲▲ COPY ENDS ▲▲▲
 
