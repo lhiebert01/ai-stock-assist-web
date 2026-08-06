@@ -159,7 +159,7 @@ header.site .inner {
 /* ── Article ── */
 .wrap { max-width: 720px; margin: 0 auto; padding: 40px 20px 64px; }
 .crumbs { font-size: 13.5px; color: var(--muted); margin-bottom: 20px; }
-.crumbs a { color: var(--text-2); text-decoration: none; }
+.crumbs a { color: var(--text-2); text-decoration: underline; text-underline-offset: 3px; }
 .crumbs a:hover { color: var(--accent); }
 h1 { font-size: clamp(1.6rem, 4vw, 2.2rem); line-height: 1.25; font-weight: 800; margin: 0 0 16px; }
 .byline { display: flex; align-items: center; gap: 10px; color: var(--muted); font-size: 14px; margin-bottom: 28px; }
@@ -210,7 +210,7 @@ footer.site .inner { max-width: 72rem; margin: 0 auto; padding: 48px 24px; }
   border: 1px solid var(--border); border-radius: 12px; background: var(--surface-1);
   padding: 24px; margin: 28px 0 0;
 }
-.sub-block h4 { font-size: 16px; font-weight: 700; margin: 0 0 4px; }
+.sub-block .sub-h { font-size: 16px; font-weight: 700; margin: 0 0 4px; }
 .sub-block p { font-size: 14px; color: var(--text-2); margin: 0; max-width: 28rem; }
 .sub-form { display: flex; gap: 12px; flex-wrap: wrap; }
 .sub-form .field { position: relative; }
@@ -230,7 +230,7 @@ footer.site .inner { max-width: 72rem; margin: 0 auto; padding: 48px 24px; }
 .sub-form button:hover { opacity: 0.9; }
 .cols { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; margin-bottom: 40px; }
 @media (max-width: 640px) { .cols { grid-template-columns: 1fr; } }
-.cols h4 {
+.cols h3 {
   font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;
   color: var(--muted); margin: 0 0 16px;
 }
@@ -262,7 +262,7 @@ footer.site .inner { max-width: 72rem; margin: 0 auto; padding: 48px 24px; }
 // T1 — marketing variant of the app nav: logo + Analyze / Learn / Blog + CTA.
 const siteHeader = (current) => `
 <header class="site"><div class="inner">
-  <a class="brand" href="/">
+  <a class="brand" href="/" aria-label="AI Stock Assist — home">
     <span class="mark">${ICON_TRENDING}</span>
     <span class="name">AI Stock Assist</span>
   </a>
@@ -295,7 +295,7 @@ const progressScript = `
 const subscribeBlock = (extraClass = '') => `
   <div class="sub-block${extraClass ? ' ' + extraClass : ''}">
     <div>
-      <h4>Invest wealthier and wiser</h4>
+      <h2 class="sub-h">Invest wealthier and wiser</h2>
       <p>Free, story-driven investing lessons in your inbox — the <strong>Intelligence Era</strong> series.</p>
     </div>
     <form class="sub-form" action="https://lindsayhiebert.substack.com/subscribe" method="get" target="_blank" rel="noopener noreferrer">
@@ -312,7 +312,7 @@ ${subscribeBlock()}
 
   <div class="cols">
     <div>
-      <h4>Product</h4>
+      <h3>Product</h3>
       <ul>
         <li><a href="/">Home</a></li>
         <li><a href="/">Analyze Stocks</a></li>
@@ -321,7 +321,7 @@ ${subscribeBlock()}
       </ul>
     </div>
     <div>
-      <h4>Learn</h4>
+      <h3>Learn</h3>
       <ul>
         <li><a href="https://lindsayhiebert.substack.com/s/investing-in-the-intelligence-era" target="_blank" rel="noopener noreferrer">Substack Blog ${ICON_EXT}</a></li>
         <li><a href="/blog/">Blog</a></li>
@@ -330,7 +330,7 @@ ${subscribeBlock()}
       </ul>
     </div>
     <div>
-      <h4>Connect</h4>
+      <h3>Connect</h3>
       <ul>
         <li><a href="https://x.com/aistockassist" target="_blank" rel="noopener noreferrer">Twitter / X ${ICON_EXT}</a></li>
         <li><a href="https://www.linkedin.com/in/lindsayhiebert/" target="_blank" rel="noopener noreferrer">LinkedIn ${ICON_EXT}</a></li>
