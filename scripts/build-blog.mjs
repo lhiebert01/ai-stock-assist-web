@@ -406,6 +406,9 @@ for (const post of POSTS) {
   const { title, bodyHtml } = mdToHtml(src);
   const canonical = `${SITE}/blog/${post.slug}`;
   const ogImageAbs = `${SITE}${post.ogImage}`;
+  // Explicit US-Eastern offset so LinkedIn renders Aug 6, not Aug 5 evening
+  // (a bare date or Z timestamp gets shifted west of UTC). POLISH-002 T8.
+  const publishedIso = `${post.datePublished}T12:00:00-05:00`;
   const words = src.split(/\s+/).filter(Boolean).length;
   const readMins = Math.max(1, Math.round(words / 200));
   const dateHuman = new Date(post.datePublished + 'T12:00:00Z').toLocaleDateString('en-US', {
@@ -431,8 +434,8 @@ for (const post of POSTS) {
           url: `${SITE}/`,
           logo: { '@type': 'ImageObject', url: `${SITE}/icons/favicon.svg` },
         },
-        datePublished: post.datePublished,
-        dateModified: post.datePublished,
+        datePublished: publishedIso,
+        dateModified: publishedIso,
         image: ogImageAbs,
         url: canonical,
         wordCount: words,
@@ -461,7 +464,7 @@ for (const post of POSTS) {
 <meta property="og:image:height" content="630" />
 <meta property="og:image:alt" content="${escapeHtml(post.ogImageAlt)}" />
 <meta property="og:site_name" content="AI Stock Assist" />
-<meta property="article:published_time" content="${post.datePublished}" />
+<meta property="article:published_time" content="${publishedIso}" />
 <meta property="article:author" content="Lindsay Hiebert" />
 <!-- Twitter -->
 <meta name="twitter:card" content="summary_large_image" />

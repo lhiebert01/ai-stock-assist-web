@@ -46,8 +46,8 @@ interface LandingProps {
 const features = [
   {
     icon: <Brain className="w-6 h-6" />,
-    title: 'Gemini AI Analysis',
-    desc: 'Google Gemini 3.5 Flash generates professional BUY/HOLD/SELL recommendations with confidence ratings.',
+    title: 'AI-Powered Analysis',
+    desc: 'Frontier AI generates professional BUY/HOLD/SELL recommendations with confidence ratings.',
   },
   {
     icon: <BarChart3 className="w-6 h-6" />,
@@ -78,7 +78,7 @@ const features = [
 
 const faqs = [
   { question: 'Is AI Stock Assist free?', answer: 'You get 3 free analyses when you sign up. After that, purchase analysis packs starting at $4.99 for 20 analyses.' },
-  { question: 'What AI model powers the analysis?', answer: 'We use Google Gemini 3.5 Flash for primary analysis with Groq Llama 3.3 70B as a reliable backup for consistent availability.' },
+  { question: 'What AI powers the analysis?', answer: 'We use frontier AI models with a redundant backup provider for consistent availability.' },
   { question: 'How accurate are the recommendations?', answer: 'Our AI analyzes real financial data from Yahoo Finance including cash flow, balance sheet, and valuation metrics. Recommendations are data-driven, not predictions. Always do your own due diligence.' },
   { question: 'Can I export my analysis?', answer: 'Yes. Export any analysis as a formatted Word document with all metrics, charts, and AI recommendations included.' },
 ];
@@ -106,7 +106,7 @@ export default function MarketingLanding({ onGetStarted }: LandingProps) {
           <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[var(--color-accent)]/10 border border-[var(--color-accent)]/20 text-sm text-[var(--color-accent)] font-medium mb-8">
               <Sparkles className="w-4 h-4" />
-              Powered by Google Gemini 3.5 Flash
+              AI-Powered Analysis
             </div>
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight mb-6">
               Professional Stock Analysis
@@ -114,7 +114,7 @@ export default function MarketingLanding({ onGetStarted }: LandingProps) {
               <span className="text-[var(--color-accent)]">in Under 30 Seconds</span>
             </h1>
             <p className="text-lg sm:text-xl text-[var(--color-text-secondary)] max-w-2xl mx-auto mb-10 leading-relaxed">
-              AI Stock Assist uses Google Gemini AI to analyze fundamentals, cash flow quality, and valuation —
+              AI Stock Assist uses frontier AI to analyze fundamentals, cash flow quality, and valuation —
               then delivers a clear BUY, HOLD, or SELL recommendation with full reasoning.
             </p>
 
