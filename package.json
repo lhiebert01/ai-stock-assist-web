@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "node scripts/build-blog.mjs && vite build",
+    "build:blog": "node scripts/build-blog.mjs",
     "preview": "vite preview",
     "lint": "tsc --noEmit",
     "check:claims": "node scripts/check-claims.mjs",
