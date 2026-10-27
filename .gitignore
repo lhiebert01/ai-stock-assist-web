@@ -5,3 +5,7 @@ dist
 *.local
 .vercel
 .env*.local
+
+# Env files hold secrets and are never committed; only .env.example templates are.
+.env*
+!.env.example
