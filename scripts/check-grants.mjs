@@ -13,9 +13,9 @@ import { homedir } from 'node:os';
 const spec = JSON.parse(readFileSync('supabase/api-grants.json', 'utf8'));
 const errors = [];
 
-const MIG = 'supabase/migrations';
-if (existsSync(MIG)) {
-  for (const f of readdirSync(MIG).filter((x) => x.endsWith('.sql') && x.slice(0, 8) >= '20261102')) {
+for (const MIG of ['supabase/migrations', 'supabase']) {
+  if (!existsSync(MIG)) continue;
+  for (const f of readdirSync(MIG).filter((x) => x.endsWith('.sql') && /^\d{8}/.test(x) && x.slice(0, 8) >= '20261102')) {
     const sql = readFileSync(`${MIG}/${f}`, 'utf8').replace(/--[^\n]*/g, '').toLowerCase();
     for (const st of sql.split(';')) {
       const g = st.match(/\bgrant\s+([\s\S]*?)\bon\b[\s\S]*?\bto\s+([\s\S]*)$/);
