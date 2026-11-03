@@ -25,10 +25,19 @@ for (const MIG of ['supabase/migrations', 'supabase']) {
   }
 }
 
-export function violations(rows, allowed) {
+export function violations(rows, allowed, columns = {}) {
   const out = [];
   for (const r of rows) {
     if (r.kind === 'rls') { out.push(`row-level security is OFF on ${r.table_name}`); continue; }
+    if (String(r.kind).startsWith('col:')) {
+      // Column privileges include those implied by a table-level grant; only the rest must be listed.
+      const priv = r.kind.slice(4);
+      if (((allowed[r.grantee] || {})[r.table_name] || []).includes(priv)) continue;
+      const okCols = (((columns[r.grantee] || {})[r.table_name] || {})[priv]) || [];
+      const extra = String(r.privs).split(',').filter((c) => c && !okCols.includes(c));
+      if (extra.length) out.push(`${r.grantee} holds ${priv} on ${r.table_name}(${extra.join(', ')}) (allowed columns: ${okCols.join(', ') || 'none'})`);
+      continue;
+    }
     const ok = (allowed[r.grantee] || {})[r.table_name] || [];
     const extra = String(r.privs).split(',').filter((p) => p && !ok.includes(p));
     if (extra.length) out.push(`${r.grantee} holds ${extra.join(', ')} on ${r.table_name} (allowed: ${ok.join(', ') || 'nothing'})`);
@@ -41,10 +50,11 @@ const token = process.env.SUPABASE_ACCESS_TOKEN || (existsSync(tokenFile) ? read
 if (!token) console.log('check:grants: no Supabase access token here; live check skipped (migrations checked).');
 else {
   const query = `select 'grant' kind, table_name, grantee, string_agg(privilege_type, ',' order by privilege_type) privs from information_schema.role_table_grants where table_schema='public' and grantee in ('anon','authenticated') group by table_name, grantee
-    union all select 'rls', c.relname, null, null from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname='public' and c.relkind in ('r','p') and not c.relrowsecurity`;
+    union all select 'rls', c.relname, null, null from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname='public' and c.relkind in ('r','p') and not c.relrowsecurity
+    union all select 'col:' || privilege_type, table_name, grantee, string_agg(column_name, ',' order by column_name) from information_schema.column_privileges where table_schema='public' and grantee in ('anon','authenticated') group by privilege_type, table_name, grantee`;
   const r = await fetch(`https://api.supabase.com/v1/projects/${spec.project}/database/query`, { method: 'POST', headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' }, body: JSON.stringify({ query }) });
   if (!r.ok) { console.error(`check:grants: live query failed (HTTP ${r.status})`); process.exit(1); }
-  errors.push(...violations(await r.json(), spec.allowed));
+  errors.push(...violations(await r.json(), spec.allowed, spec.columns || {}));
 }
 for (const e of errors) console.error(`error: ${e}`);
 console.log(`check:grants: ${errors.length ? `FAIL (${errors.length})` : 'least privilege, row-level security on everywhere'}`);
