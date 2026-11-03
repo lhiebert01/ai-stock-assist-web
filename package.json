@@ -11,7 +11,7 @@
     "lint": "tsc --noEmit",
     "check:claims": "node scripts/check-claims.mjs",
     "check:metrics": "node scripts/check-metrics-drift.mjs",
-    "check:grants": "node scripts/check-migration-grants.mjs"
+    "check:grants": "node scripts/check-migration-grants.mjs && node scripts/check-grants.mjs"
   },
   "dependencies": {
     "@react-oauth/google": "^0.13.5",

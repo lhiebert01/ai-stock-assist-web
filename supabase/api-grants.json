@@ -1,0 +1,12 @@
+{
+  "_note": "Least privilege for the API roles (Nov 2, 2026). Every browser call is signed in: user_profiles (App, Auth, AdminDashboard), analysis_history (StockAnalyzer, AnalysisHistory), watchlists (watchlistApi). users and score_log are server-only (api/ routes use the service role). anon needs nothing.",
+  "project": "gcuvtpccyotujnuufxod",
+  "allowed": {
+    "anon": {},
+    "authenticated": {
+      "user_profiles": ["INSERT", "SELECT", "UPDATE"],
+      "analysis_history": ["DELETE", "INSERT", "SELECT"],
+      "watchlists": ["DELETE", "INSERT", "SELECT", "UPDATE"]
+    }
+  }
+}
