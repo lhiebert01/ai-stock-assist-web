@@ -28,10 +28,6 @@
           "id",
           "is_admin",
           "username"
-        ],
-        "UPDATE": [
-          "analyses_total_lifetime",
-          "credits_remaining"
         ]
       }
     }

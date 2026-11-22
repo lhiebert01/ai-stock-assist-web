@@ -177,9 +177,11 @@ export default function App() {
   };
 
   const deductCredits = async (count: number = 1, serverRemaining: number | null = null) => {
-    // When the backend enforced credits itself (serverRemaining != null), the
-    // DB is already updated — just sync local state. The client-side write
-    // below is the legacy fallback for when server enforcement is off.
+    // Credits are charged ONLY by the backend, with the server key (ai-stock-render
+    // api/lib/credits.py). The browser never writes credits: signed-in users have no
+    // UPDATE privilege on credits_remaining (migration 20261122_credits_server_only).
+    // Here we only sync local state and record analytics.
+    const firstRun = (userProfile?.analyses_total_lifetime || 0) === 0;
     if (serverRemaining != null) {
       console.log('[Credits] Server-enforced charge — remaining:', serverRemaining);
       setUserProfile(prev => prev ? {
@@ -187,41 +189,14 @@ export default function App() {
         credits_remaining: serverRemaining,
         analyses_total_lifetime: (prev.analyses_total_lifetime || 0) + count,
       } : null);
-      return;
+    } else if (user) {
+      // Server did not report a balance (enforcement off/unreachable): re-read the
+      // profile rather than writing a balance from the browser.
+      await loadProfile(user);
     }
-    try {
-      if (!user || !userProfile) {
-        console.warn('[Credits] Cannot deduct — missing user or profile', { user: !!user, profile: !!userProfile });
-        return;
-      }
-      const newCredits = Math.max(0, userProfile.credits_remaining - count);
-      console.log('[Credits] Deducting:', userProfile.credits_remaining, '→', newCredits, `(${count} stocks) for user`, user.id);
-      const { data, error } = await supabase
-        .from('user_profiles')
-        .update({
-          credits_remaining: newCredits,
-          analyses_total_lifetime: (userProfile.analyses_total_lifetime || 0) + count,
-        })
-        .eq('id', user.id)
-        .select('credits_remaining, analyses_total_lifetime')
-        .single();
-      if (error) {
-        console.error('[Credits] Deduction DB error:', JSON.stringify(error));
-      } else if (!data) {
-        console.error('[Credits] Deduction returned no data — RLS may be blocking the update');
-      } else {
-        console.log('[Credits] Deduction confirmed — DB now shows:', data.credits_remaining);
-        // GOAL 2 — activation. Read the lifetime counter BEFORE this run was added:
-        // zero means the analysis we just charged for was the account's first.
-        if ((userProfile.analyses_total_lifetime || 0) === 0) {
-          trackOnce('first_analysis_run', { stocks: count });
-        }
-        track('analysis_run', { stocks: count });
-        setUserProfile(prev => prev ? { ...prev, credits_remaining: data.credits_remaining, analyses_total_lifetime: data.analyses_total_lifetime } : null);
-      }
-    } catch (err) {
-      console.error('[Credits] Deduction exception:', err);
-    }
+    // GOAL 2 — activation: zero lifetime analyses before this run means it was the first.
+    if (firstRun) trackOnce('first_analysis_run', { stocks: count });
+    track('analysis_run', { stocks: count });
   };
 
   // ── Payment callback handling ──────────────────────────────

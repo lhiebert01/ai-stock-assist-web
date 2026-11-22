@@ -116,10 +116,8 @@ export default function AdminDashboard() {
     const user = users.find((u) => u.id === userId);
     if (!user) return;
     const newCredits = Math.max(0, user.credits_remaining + amount);
-    await supabase
-      .from('user_profiles')
-      .update({ credits_remaining: newCredits })
-      .eq('id', userId);
+    // Through the admin API (server key): browsers cannot write credits_remaining.
+    await adminFetch('PUT', { userId, updates: { credits_remaining: newCredits } });
     setUsers((prev) =>
       prev.map((u) => (u.id === userId ? { ...u, credits_remaining: newCredits } : u))
     );
