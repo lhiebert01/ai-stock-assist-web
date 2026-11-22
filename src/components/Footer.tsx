@@ -153,6 +153,9 @@ export default function Footer({ onNavigate }: FooterProps) {
           <p className="text-xs text-[var(--color-text-muted)] flex items-center gap-1">
             &copy; {new Date().getFullYear()} AI Stock Assist. Built with <Heart className="w-3 h-3 text-red-400" /> by Lindsay Hiebert. All rights reserved.
           </p>
+          <p className="text-xs text-[var(--color-text-secondary)]">
+            Built by PIGENAI LLC, Kansas City, Missouri · <a href="https://pigenai.com/products/" className="underline hover:text-white transition-colors">See every PIGENAI app</a>
+          </p>
         </div>
 
         {/* Disclaimer */}
